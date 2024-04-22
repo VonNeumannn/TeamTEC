@@ -95,7 +95,70 @@
   width: 50%;
   margin-top: 10%;
   text-align: center;
+  transition: 300ms;
 }
+
+.blueButton:hover{
+  background-color: #0F5BDA;
+  transition: 300ms;
+}
+
+@keyframes slideInFromTop {
+  from {
+    transform: translate(-50%, -100%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50, -50%);
+    opacity: 1;
+  }
+}
+
+
+
+
+.dialogPopUpInfo{
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 4%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: slideInFromTop 0.80s ease-in-out;
+  justify-content: center;
+  color: #364D63;
+  width:clamp(300px, 50vw, 400px);
+  height: 45dvh;
+  border: none;
+  background-color: rgb(255, 255, 255);
+  z-index: 1000;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  overflow-y: hidden;
+}
+
+.dialogPopUpInfo h2{
+  font-size: clamp(1.3rem, 3vw, 1.5rem);
+  margin-bottom: 10%;
+  width: 100%;
+
+}
+
+.dialogPopUpInfo p{
+  margin-bottom: 5%;
+  size: clamp(1rem, 2vw, 1.2rem);
+  width: 100%;
+}
+
+.show{
+  display: flex;
+}
+
+.blur{
+  filter: blur(20px);
+}
+
 
 @media screen and (max-width: 600px){
   .loginContainer{
@@ -121,5 +184,11 @@
     padding: 5%;
     
   }
+
+  .dialogPopUpInfo{
+    width: 80%;
+    height: 45dvh;
+  }
   
 }
+

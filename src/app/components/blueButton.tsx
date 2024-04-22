@@ -10,7 +10,7 @@ export function BlueButton(BlueButtonProps: BlueButtonProps) {
     const { text, onClick } = BlueButtonProps;
     
     return (
-      <button className={styles.blueButton} onClick={onClick}>
+      <button type='button' className={styles.blueButton} onClick={onClick}>
         {text}
       </button>
     );
