@@ -40,6 +40,7 @@
 
 .formContainer{ 
   width: 90%;
+  height: 70%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -47,33 +48,38 @@
 
 .formGroup{
   position: relative;
-  width: 90%;
+  width: 80%;
+  height: auto;
+  border : 1px solid #364D63;
+  background-color: #ffffff;
+  border-radius: 5px;
+  margin-top: 10%;
 }
 
 .formGroup input{
   width: 100%;
-  
+  height: 100%;
+  font-size: 1rem;
   padding: 3%;
   background:transparent;
-  font-size: 1rem;
-  border : 1px solid #364D63;
   color: #364D63;
-  border-radius: 5px;
-  margin-top: 10%;
-  
+  border: none;
 }
 
-.formGroup label{
+.formGroup label {
   position: absolute;
   left: 5%;
-  top: 55%;
+  top: 50%;
+  transform: translate(0, -50%);
   transition: 250ms;
-  border: 2px solid transparent;
+  pointer-events: none; /* Para que el label no sea clickeable */
 }
 
-.formGroup:focus-within label, .formGroup:not(:has(:placeholder-shown)) label{
-  translate: 0.625rem -1.4rem;
+.formGroup:focus-within label,
+.formGroup:not(:has(:placeholder-shown)) label {
+  top: -5%;  
   background-color: #fff;
+  outline: none;
 }
 
 .formGroup input::placeholder{
@@ -160,35 +166,250 @@
 }
 
 
-@media screen and (max-width: 600px){
-  .loginContainer{
-    width: 85%;
-    height: 65dvh;
-  }
 
-  .formGroup input{
-    margin-top: 5%;
-    padding: 5%;
-    top: 47%;
-  }
 
-  .formGroup label{
-    top: 50%; /* Coloca el label en la mitad vertical del contenedor */
-    left: 5%;
-    transform: translateY(-50%); /* Centra verticalmente el label */
-  }
 
-  .blueButton{
-    margin-top: 15%;
-    width: 70%;
-    padding: 5%;
-    
-  }
 
-  .dialogPopUpInfo{
-    width: 80%;
-    height: 45dvh;
-  }
+
+
+
+/* Professors register screen */
+
+
+.professorRegisterContainer{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  width: clamp(300px, 80vw, 1500px);
+  height: clamp(400px, 85vh, 800px);
+  color: #364D63;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);;
+}
+
+
+
+.professorRegisterContainer button{
+  width: 25%;
+  font-size: 1rem;
+  margin-top: 5%;
+  padding: 1.5%;
+  margin-top: 0;
+}
+
+
+.professorScreenDivider{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 80%;
+  flex-wrap: wrap-reverse;
+  overflow-y: auto;
+
+}
+
+.formRegisterProfessors{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-basis: 65%;
+  height: 100%;
   
 }
 
+.formContainerRegisterProfessors{
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 85%;
+  flex-wrap: wrap;
+  gap: 2%;
+
+}
+
+.formContainerRegisterProfessors span{
+  font-size: 1rem;
+  width: 95%;
+  text-align: left;
+
+}
+
+.formGroupProfessorRegister{
+  position: relative;
+  flex-basis: 48%;
+  height: 10%;
+  border : 1px solid #364D63;
+  background-color: #ffffff;
+  border-radius: 5px;
+  
+}
+
+.formGroupProfessorRegister input{
+  width: 100%;
+  height: 100%;
+  font-size: 1rem;
+  padding: 3%;
+  background:transparent;
+  color: #364D63;
+  border: none;
+}
+
+.formGroupProfessorRegister label {
+  position: absolute;
+  left: 5%;
+  top: 50%;
+  transform: translate(0, -50%);
+  transition: 250ms;
+  pointer-events: none; /* Para que el label no sea clickeable */
+}
+
+.formGroupProfessorRegister:focus-within label,
+.formGroupProfessorRegister:not(:has(:placeholder-shown)) label {
+  top: -5%;  
+  background-color: #fff;
+}
+
+.formGroupProfessorRegister input::placeholder{
+  color: transparent;
+}
+
+.formGroupProfessorRegister select {
+  width: 100%;
+  height: 100%;
+  font-size: 1rem;
+  padding: 3%;
+  background: transparent;
+  color: #364D63;
+  border: none;
+}
+
+/* Personaliza el color de fondo cuando el menú desplegable está abierto */
+.formGroupProfessorRegister select:focus {
+  background-color: #fff;
+}
+
+.dividerLine{
+  width: 1px;
+  height: 90%;
+  background-color: #364D63;
+}
+
+.photoProfessorContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-basis: 30%;
+  height: 100%;
+}
+
+.photoProfessorContainer img{
+  width: 70%;
+  clip-path: circle();
+  height: 50%;
+  object-fit: cover;
+  margin-bottom: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.photoProfessorContainer label{
+  background-color: #1A73E8;
+  color: #fff;
+  padding: 3%;
+  border-radius: 5px;
+  width: 55%;
+  margin-top: 10%;
+  text-align: center;
+  transition: 300ms;
+}
+
+.photoProfessorContainer label:hover{
+  background-color: #0F5BDA;
+  transition: 300ms;
+}
+
+
+@media screen and (max-width: 600px){
+
+
+  .formGroup input{
+    padding: 7%;
+  }
+
+  .formGroupProfessorRegister input{
+    padding: 4%;
+  }
+  
+  
+  
+    .blueButton{
+      margin-top: 15%;
+      width: 70%;
+      padding: 5%;
+      
+    }
+  
+    .dialogPopUpInfo{
+      width: 80%;
+      height: 45dvh;
+    }
+
+
+    .formRegisterProfessors{
+      flex-basis: 100%;
+      margin-bottom: 5%;
+      height: 150%;
+    }
+
+    .photoProfessorContainer{
+      flex-basis: 100%;
+      height: 80%;
+    }
+
+    .professorRegisterContainer{
+      height: 90dvh;
+      width: 90%;
+    }
+
+    .dividerLine{
+      display: none;
+    }
+
+
+
+    .formGroupProfessorRegister{
+      height: 7%;
+      flex-basis: 100%;
+      margin-top: 3%;
+    }
+
+    .professorScreenDivider{
+      justify-content: center;
+      align-items: stretch;
+    }
+
+    .professorRegisterContainer button{
+      width: 50%;
+      font-size: 1rem;
+      margin-top: 5%;
+      padding: 4%;
+      border: none;
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    
+
+
+
+    
+  }
