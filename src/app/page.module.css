@@ -495,6 +495,21 @@
   }
 }
 
+
+
+/* Add Students Screen CSS */
+
+.addStudentsContainer{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  width: clamp(350px, 60vw, 600px);
+  height: 65dvh;
+  padding: 2%;
+
 /* teamMembers CSS */
 
 .teamContainer{
@@ -508,10 +523,62 @@
   background-color: #fff;
   width: clamp(300px, 50vw, 1000px);
   height: clamp(800px, 50vh, 500px);
+
   color: #364D63;
   border-radius: 10px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 }
+
+
+.loadCSVStudents{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  height: 45%;
+  background-color: #47505F;
+  border: #ececec 3px dashed;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  color: #dbdbdb;
+  font-size: 1.05rem;
+  border-radius: 10px;
+  position: relative;
+} 
+
+.loadCSVStudents img{
+  width: 17%;
+  height: auto;
+  margin-bottom: 5%;
+}
+
+.loadCSVStudents p{
+  font-size: 0.75rem;
+
+}
+
+.loadCSVStudents input{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.addStudentsContainer button{
+  background-color: #1A73E8;
+  color: #fff;
+  padding: 3%;
+  border-radius: 5px;
+  width: 35%;
+  margin-top: 10%;
+  text-align: center;
+  transition: 300ms;
+}
+
+.selectedFile{
+  font-size: 1.4rem;
+  margin-top: 3%;
+
 .teamContainer h1{
   padding-bottom: 50px;
 }
