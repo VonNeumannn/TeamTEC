@@ -1,12 +1,34 @@
 'use client'
 import styles from "../page.module.css";
-import { BlueButton } from "../components/blueButton";
 import Image from "next/image";
+import { BlueButton } from "../components/blueButton";
+import DownloadIcon from "../../../public/download_icon.svg";
 import SortIcon from "../../../public/sort_icon.svg";
+import { useRouter } from 'next/navigation';
 
-export default function MainMenuPage() {
+
+export default function ViewStudents() {
+
+    const router = useRouter();
+    
+    const handleClick = () => {
+        // Contenido de ejemplo del archivo CSV
+        const csvContent = "Nombre,Apellido,Edad\nJohn,Doe,30\nJane,Doe,28";
+
+        const downloadLink = document.createElement("a");
+        const blob = new Blob([csvContent], { type: "text/csv" });
+        const url = window.URL.createObjectURL(blob);
+
+        downloadLink.href = url;
+        downloadLink.download = "estudiantes.csv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+
+        document.body.removeChild(downloadLink);
+        window.URL.revokeObjectURL(url);
+    };
     const data = [
-        { nombre: 'Nombre 1', apellidos: 'Apellidos 1', codigo: 'Codigo 1' },
+        { nombre: 'Nombre 1', apellidos: 'akojhdojkashdojashdjkasdhjkasdhkasdasdadasdasdasdasdasd', codigo: 'Codigo 1' },
         { nombre: 'Nombre 2', apellidos: 'Apellidos 2', codigo: 'Codigo 2' },
         { nombre: 'Nombre 3', apellidos: 'Apellidos 3', codigo: 'Codigo 3' },
         { nombre: 'Nombre 4', apellidos: 'Apellidos 4', codigo: 'Codigo 4' },
@@ -68,16 +90,21 @@ export default function MainMenuPage() {
         console.log(`Deleting item at index: ${index}`);
         // Aquí puedes agregar el código para eliminar el item
     }
+
     return (
         <main className={styles.main} id="main">
             <div className={styles.teamContainer}>
                 <h1>Miembros equipo</h1>
-                <p>Buscar profesor</p>
+                <p>Buscar estudiante</p>
                 <div className={styles.searchAddContainer}>
                     <input type="text" />
                     <BlueButton text="Buscar" onClick={() => { }} />
-                    <div className={styles.addContainer}>
-                        <BlueButton text="Agregar Profesor" onClick={() => { }} />
+                    <div className={styles.csvAddStudentContainer}>
+                        <button className={styles.downButton} onClick={handleClick} >
+                            <Image src={DownloadIcon} alt="csv Icon" />
+                            {"CSV"}
+                        </button>
+                        <BlueButton text="Agregar Estudiantes" onClick={() => { router.push('/add_student'); }} />
                     </div>
                 </div>
                 <div className={styles.tableContainer}>
@@ -87,15 +114,18 @@ export default function MainMenuPage() {
                                 <th className={styles.pasenZelda}>Nombre
                                     <button className={styles.sortButton} onClick={() => { }} >
                                         <Image src={SortIcon} alt="sort icon" className={styles.sortButtonIcon} />
-                                    </button></th>
-                                <th className={styles.pasenZelda}>Apellidos
+                                    </button>
+                                </th>
+                                <th className={styles.pasenZelda}>Carné
                                     <button className={styles.sortButton} onClick={() => { }} >
                                         <Image src={SortIcon} alt="sort icon" className={styles.sortButtonIcon} />
-                                    </button></th>
-                                <th className={styles.pasenZelda}>Codigo
-                                    <button className={styles.sortButton} onClick={() => { }} >
+                                    </button>
+                                </th>
+                                <th className={styles.pasenZelda}>Sede
+                                <button className={styles.sortButton} onClick={() => { }} >
                                         <Image src={SortIcon} alt="sort icon" className={styles.sortButtonIcon} />
-                                    </button></th>
+                                    </button>
+                                </th>
                                 <th className={styles.pasenZelda}>Acciones</th>
                             </tr>
 
@@ -123,4 +153,3 @@ export default function MainMenuPage() {
         </main>
     );
 }
-

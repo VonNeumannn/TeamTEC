@@ -3,9 +3,6 @@ import styles from "../page.module.css";
 import Image from "next/image";
 import MainLogo from "../../../public/mainLogo.svg";
 import { BlueButton } from "../components/blueButton";
-import PopUp from "../components/popUpInformation";
-import { useEffect } from "react";
-import { useState } from "react";
 
 export default function MainMenuPage() {
     const printMessage = () => {
