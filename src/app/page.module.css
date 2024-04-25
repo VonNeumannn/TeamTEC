@@ -495,3 +495,219 @@
   }
 }
 
+/* teamMembers CSS */
+
+.teamContainer{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: start;
+  text-align: start;
+  justify-content: top;
+  padding: 30px;
+  background-color: #fff;
+  width: clamp(300px, 50vw, 1000px);
+  height: clamp(800px, 50vh, 500px);
+  color: #364D63;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+.teamContainer h1{
+  padding-bottom: 50px;
+}
+.searchAddContainer{
+  display: flex;
+  padding-top: 5px;
+  flex-direction: row;
+  position: relative;
+  align-items: center;
+  width: 100%;
+  height: 10%;
+}
+.searchAddContainer input{
+  width: 40%;
+  height: 55%;
+  padding: 1%;
+  background:transparent;
+  font-size: 1rem;
+  border : 1px solid #364D63;
+  color: #364D63;
+  border-radius: 5px;
+}
+.searchAddContainer button{
+  padding: 1%;
+  width: auto;
+  height: 55%;
+  margin: 0%;
+}
+.addContainer {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  align-items: center;
+  justify-content: end;
+  width: 60%;
+  height: 100%;
+}
+.addContainer button{
+  padding: 1%;
+  width: auto;
+  height: 55%;
+  margin: 0%;
+}
+.teamContainer table{
+  width: 100%;
+  height: 80%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background-color: #f3f3f3;
+
+}
+.teamContainer table th{
+  text-align: center;
+  justify-content: center;
+  background-color: #fff;
+}
+.teamContainer table tr{
+  border-bottom: 1px solid #a1a1a1;
+}
+.teamContainer table td{
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 2px;
+} 
+.teamContainer table button{
+  width: auto;
+  padding: 5px;
+  margin: 0px;
+}
+.deleteButton{
+  background-color: #d80404;
+  color: #fff;
+  border-radius: 5px;
+}
+
+@media (max-width: 800px) {
+  .teamContainer table{
+    font-size: 70%;
+  }
+  .teamContainer table button{
+    font-size: 80%;
+  }
+}
+.tableContainer{
+  width: 100%;
+  height: 75%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+} 
+
+.tableContainer table{
+  width: 100%;
+  height: 10%;
+  border-collapse: collapse;
+  background-color: #f3f3f3;
+}
+
+.tableContainer table tr{
+  display: flex;
+  justify-content: space-around;
+  background-color: #fff;
+  height: 100%;
+}
+.tableContainer table td{
+  text-overflow: unset;
+}
+
+.tableContentContainer{
+  display: flex;
+  width: 100%;
+  height: 90%;
+  overflow-y: auto;
+  align-items: top;
+}
+.tableContentContainer table td{ 
+  text-align: center;
+  
+}
+
+
+
+/* viewStudent CSS */
+
+.csvAddStudentContainer{
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  align-items: center;
+  justify-content: end;
+  width: 60%;
+  height: 100%;
+}
+.csvAddStudentContainer button{
+  padding: 2%;
+  width: auto;
+  height: 55%;
+  margin: 0%;
+}
+.csvAddStudentContainer button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.downButton{
+  background-color: #1A73E8;
+  color: #fff;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1%;
+  width: auto;
+  height: 55%;
+  margin: 0%;
+  transition: 300ms;
+}
+
+.downButton:hover{
+  background-color: #0F5BDA;
+  cursor: pointer;
+  transition: 300ms;
+}
+
+.downButton img{
+  filter: invert(1);
+}
+
+.pasenZelda{
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.sortButton{
+  background-color: #ffffff;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+
+}
+.sortButtonIcon{
+width: 80%;
+height: auto;
+}
+.sortButton img:hover{
+  cursor: pointer;
+  filter: invert(30%);
+  transition: 300ms;
+}
+
