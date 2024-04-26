@@ -778,6 +778,12 @@
   border-radius: 5px;
 }
 
+.acceptButton{
+  background-color: #04903e;
+  color: #fff;
+  border-radius: 5px;
+}
+
 @media (max-width: 800px) {
   .teamContainer table{
     font-size: 70%;
@@ -899,5 +905,25 @@ height: auto;
   cursor: pointer;
   filter: invert(30%);
   transition: 300ms;
+}
+
+/* view itineraries CSS */
+.addItineraryContainer{
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  height: 100%;
+}
+.addItineraryContainer button{
+  padding: 2%;
+  width: 60%;
+  height: 55%;
+  margin: 0%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
