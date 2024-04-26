@@ -927,3 +927,114 @@ height: auto;
   align-items: center;
 }
 
+/* newActivity CSS */
+.activityContainer{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  width: clamp(300px, 50vw, 800px);
+  height: clamp(700px, 50vh, 500px);
+  color: #364D63;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  padding: 2%;
+}
+
+.activityFormContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+  height: 90%;
+  gap: 2%;
+  padding-top: 5%;
+}
+.activityFormContainer > * {
+  width: 40%;
+  height: 10%;
+  margin: 0%;
+}
+.uploadContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 10%;
+
+}
+.uploadContainer label{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2%;
+  border-radius: 5px;
+  border: 2px dashed #000;
+  width: 30%;
+  text-align: center;
+  transition: 300ms;
+}
+.uploadContainer label:hover{
+  background-color: #c4c4c4;
+  transition: 300ms;
+}
+.buttonActivityContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: 10%;
+}
+.buttonActivityContainer button {
+  width: 30%;
+  height: 55%;
+  margin: 0%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5%;
+}
+.formGroup select {
+  width: 100%;
+  height: 100%;
+  font-size: 1rem;
+  padding: 3%;
+  background: transparent;
+  color: #364D63;
+  border: none;
+}
+.formGroup input[type="date"]::-webkit-calendar-picker-indicator,
+.formGroup input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) hue-rotate(180deg);
+}
+
+/* Personaliza el color de fondo cuando el menú desplegable está abierto */
+.formGroup select:focus {
+  background-color: #fff;
+}
+@media screen and (max-width: 1000px) {
+  .activityContainer {
+      width: 90%;
+      font-size: 14px;
+  }
+  .activityFormContainer label {
+      font-size: 12px;
+  }
+  .activityFormContainer input {
+      font-size: 12px;
+  }
+  .activityFormContainer select {
+      font-size: 12px;
+  } 
+  .uploadContainer label {
+      width: 40%;
+  }
+}
