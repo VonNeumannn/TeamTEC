@@ -109,6 +109,22 @@
   transition: 300ms;
 }
 
+.greenButton{
+  background-color: #3acc77; /* Cambia el color a verde */
+  color: #fff;
+  padding: 3%;
+  border-radius: 5px;
+  width: 50%;
+  margin-top: 10%;
+  text-align: center;
+  transition: 300ms;
+}
+
+.greenButton:hover{
+  background-color: #10c059;
+  transition: 300ms;
+}
+
 @keyframes slideInFromTop {
   from {
     transform: translate(-50%, -100%);
@@ -509,7 +525,7 @@
   width: clamp(350px, 60vw, 600px);
   height: 65dvh;
   padding: 2%;
-
+}
 /* teamMembers CSS */
 
 .teamContainer{
@@ -578,6 +594,7 @@
 .selectedFile{
   font-size: 1.4rem;
   margin-top: 3%;
+}
 
 .teamContainer h1{
   padding-bottom: 50px;
