@@ -3,8 +3,24 @@ import styles from "../page.module.css";
 import { BlueButton } from "../components/blueButton";
 import Image from "next/image";
 import SortIcon from "../../../public/sort_icon.svg";
+import PopUp from '../components/popUpDelete';
+import { useState } from "react";
 
 export default function managersPage() {
+
+    const [dialogOpen, setDialogOpen] = useState(false);
+    
+
+    const openDialog = () => {
+        console.log("Abriedo dialogo");
+        setDialogOpen(true);
+    };
+
+    const closeDialog = () => {
+        console.log("Cerrando dialogo");
+        setDialogOpen(false);
+    };
+
     const data = [
         { nombre: 'Nombre 1', apellidos: 'Apellidos 1', codigo: 'Codigo 1' },
         { nombre: 'Nombre 2', apellidos: 'Apellidos 2', codigo: 'Codigo 2' },
@@ -59,10 +75,17 @@ export default function managersPage() {
     ];
     function handleDelete(index: number) {
         console.log(`Deleting item at index: ${index}`);
-        // Aquí puedes agregar el código para eliminar el item
+        
     }
     return (
         <main className={styles.main} id="main">
+            <PopUp 
+                title="Alerta" 
+                content="¿Seguro de retirar a este profesor de los encargados?" 
+                openDialog={openDialog}
+                closeDialog={closeDialog}
+                dialogOpen={dialogOpen}
+            /> 
             <div className={styles.teamContainer}>
                 <h1>Responsables</h1>
                 <p>Buscar profesor</p>
@@ -103,7 +126,7 @@ export default function managersPage() {
                                         <td>{item.apellidos}</td>
                                         <td>{item.codigo}</td>
                                         <td>
-                                            <button className={styles.deleteButton} onClick={() => handleDelete(index)}>Eliminar</button>
+                                            <button className={styles.deleteButton} onClick={openDialog} >Eliminar</button>
                                         </td>
                                     </tr>
                                 ))}
