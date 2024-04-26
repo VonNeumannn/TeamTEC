@@ -59,16 +59,12 @@ export default function MainMenuPage() {
         { nombre: 'Nombre 50', apellidos: 'Apellidos 50', codigo: 'Codigo 50' }
     ];
 
-    function handleEdit(index: number) {
+    function handleAdding(index: number) {
         const item = data[index];
-        console.log(`Editing item: ${item.nombre} ${item.apellidos} ${item.codigo}`);
-        // Aquí puedes agregar el código para editar el item
+        console.log(`Adding item: ${item.nombre} ${item.apellidos} ${item.codigo}`);
+        // Aquí puedes agregar el código para agregar el item
     }
 
-    function handleDelete(index: number) {
-        console.log(`Deleting item at index: ${index}`);
-        // Aquí puedes agregar el código para eliminar el item
-    }
     return (
         <main className={styles.main} id="main">
             <div className={styles.teamContainer}>
@@ -108,7 +104,7 @@ export default function MainMenuPage() {
                                         <td>{item.apellidos}</td>
                                         <td>{item.codigo}</td>
                                         <td>
-                                            <GreenButton text="Agregar" onClick={() => handleEdit(index)} />
+                                            <GreenButton text="Agregar" onClick={() => handleAdding(index)} />
                                         </td>
                                     </tr>
                                 ))}
