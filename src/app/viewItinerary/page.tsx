@@ -84,7 +84,10 @@ export default function ViewItinerary() {
                                         <td>{item.estado}</td>
                                         <td>
                                             <BlueButton text="Detalles" onClick={() => {}} />
-                                            <button className={styles.acceptButton} onClick={() => {}}>Editar</button>
+                                            <button className={styles.acceptButton} onClick={() => {
+                                                //enviar a la pantalla de editar
+                                                router.push('/edit_activity');
+                                            }}>Editar</button>
                                             <button className={styles.deleteButton} onClick={() => handleDelete(index)}>Eliminar</button>
                                         </td>
                                     </tr>
