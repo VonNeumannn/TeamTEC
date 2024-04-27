@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import PopUp from '../components/popUpImage';
 import Link from 'next/link';
 import Profile from '../../../public/profile-default.webp';
+import MainLogo from "../../../public/mainLogo.svg";
 
 export default function ActivityDetails() {
 
@@ -36,7 +37,7 @@ export default function ActivityDetails() {
         reminder: '',
         link: '',
         afiche_url:Profile.src,
-        prueba_url:Profile.src
+        prueba_url:MainLogo.src
     });
 
     
