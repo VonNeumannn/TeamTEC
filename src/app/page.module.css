@@ -707,7 +707,6 @@
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 }
 
-
 .loadCSVStudents{
   display: flex;
   flex-direction: column;
@@ -786,6 +785,34 @@
   height: 55%;
   margin: 0%;
 }
+
+.searchAddContainerResponses{
+  display: block;
+  padding-top: 5px;
+  flex-direction: row;
+  position: relative;
+  align-items: center;
+  width: 100%;
+  height: 10%;
+  margin: 0px;
+}
+.searchAddContainerResponses input{
+  width: 40%;
+  height: 55%;
+  padding: 1%;
+  background:transparent;
+  font-size: 1rem;
+  border : 1px solid #364D63;
+  color: #364D63;
+  border-radius: 5px;
+}
+.searchAddContainerResponses button{
+  padding: 1%;
+  width: auto;
+  height: 55%;
+  margin: 0%;
+}
+
 .addContainer {
   display: flex;
   flex-direction: row;
@@ -883,6 +910,44 @@
 }
 .tableContentContainer table td{ 
   text-align: center;
+  
+}
+
+.tableContainerResponses{
+  width: 100%;
+  height: 75%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+} 
+
+.tableContainerResponses table{
+  width: 100%;
+  height: 10%;
+  border-collapse: collapse;
+  background-color: #f3f3f3;
+}
+
+.tableContainerResponses table tr{
+  display: flex;
+  justify-content: flex-start;
+  background-color: #fff;
+  height: 100%;
+}
+.tableContainerResponses table td{
+  text-overflow: unset;
+}
+
+.tableContentContainerResponses{
+  display: flex;
+  width: 100%;
+  height: 90%;
+  overflow-y: auto;
+  align-items: top;
+}
+.tableContentContainerResponses table td{ 
+  text-align: flex-start;
   
 }
 
