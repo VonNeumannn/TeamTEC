@@ -69,7 +69,7 @@ export default function responsesPage() {
             <div className={styles.teamContainer}>
                 <h1 style={{ paddingBottom: '30px'}} >Respuestas</h1>
                 <div >
-                    <input type="text" value={commentData.title} readOnly/>
+                    <input type="text" value={commentData.title} style={{width: '300px'}} readOnly/>
                     <div >
                         <textarea value={commentData.redaccion} readOnly style={{ height: '100px', width: '300px', resize: 'none', float: 'left', marginTop: '15px'}} />
                         <button className={styles.blueButton} onClick={() => {}} style={{ width: '120px', height: '40px', marginLeft: '150px'}} >Redactar</button>
