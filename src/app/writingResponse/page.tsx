@@ -22,7 +22,7 @@ export default function writingResponse() {
   return (
     <main className={styles.main} id="main">
         <div className={styles.studentEditContainer}>
-            <h1>Redactar Comentario</h1>
+            <h1>Redactar Respuesta</h1>
                 <div className={styles.formstudentEdit}>
                     <form className={styles.formContainerWriteComment}>
                         <div className={styles.formGroupWriteComment}>
