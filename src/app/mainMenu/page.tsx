@@ -3,11 +3,19 @@ import styles from "../page.module.css";
 import Image from "next/image";
 import MainLogo from "../../../public/mainLogo.svg";
 import { BlueButton } from "../components/blueButton";
+import exp from "constants";
+import Usuario from "@/model/Usuario";
+import { get } from "http";
+
+
+let user : Usuario;
 
 export default function MainMenuPage() {
     const printMessage = () => {
         console.log("Mostrando equipo");
     };
+    getLocalStorage();
+
 
     return (
         <main className={styles.main} id="main">
@@ -17,10 +25,10 @@ export default function MainMenuPage() {
                     <div className={styles.flexContainer}>
                         <Image src={MainLogo} alt="Main Logo" />
                         <div className={styles.flexFlexContainer}>
-                            <BlueButton text="Mostrar equipo" onClick={() => {}}/>
-                            <BlueButton text="Mostrar estudiantes" onClick={() => {}}/>
-                            <BlueButton text="Itinerario" onClick={() => {}}/>
-                            <BlueButton text="Registrar profesor" onClick={() => {}}/>
+                            <BlueButton text="Mostrar equipo" onClick={() => {}} type="button"/>
+                            <BlueButton text="Mostrar estudiantes" onClick={() => {}} type="button"/>
+                            <BlueButton text="Itinerario" onClick={() => {}} type="button"/>
+                            <BlueButton text="Registrar profesor" onClick={() => {}} type="button"/>
                         </div>
                     </div>
                 </div>
@@ -59,4 +67,12 @@ export default function MainMenuPage() {
             </div>
         </main>
     );
+}
+
+const getLocalStorage = () => {
+    const user = localStorage.getItem("user");
+
+    const userJson = JSON.parse(user? user : "{}");
+    console.log(userJson);
+    return new Usuario(userJson.email, userJson.password, userJson.rol, userJson.celular);
 }

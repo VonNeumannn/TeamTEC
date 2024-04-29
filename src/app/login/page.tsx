@@ -8,11 +8,15 @@ import PopUp from "../components/popUpInformation";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import LoginController from "../../controller/LoginController";
+import { handlerLogin } from "../../controller/loginController";
 import Usuario from "../../model/Usuario";
 import React from "react";
 
+
+
+
 export default function LoginPage() {
+    const router = useRouter();
     const [dialogOpen, setDialogOpen] = useState(false);
     useEffect(() => {
         const form = document.querySelector('form');
@@ -21,7 +25,7 @@ export default function LoginPage() {
             const email = (document.getElementById('email') as HTMLInputElement).value;
             const password = (document.getElementById('password') as HTMLInputElement).value;
             const usuario = new Usuario(email, password, "", "");
-            LoginController.handlerLogin(usuario);
+            handlerLogin(email,password, router);
         });
     });
     

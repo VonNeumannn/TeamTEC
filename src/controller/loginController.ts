@@ -1,30 +1,48 @@
 import Usuario from "../model/Usuario";
-import { NextApiRequest, NextApiResponse } from "next";
-import { useRouter } from "next/navigation";
-//const router = useRouter();
+import { searchUserByEmail } from "../app/DAO/usuariodao/daoUsuario";
+import { useRouter } from "next/router";
 
-const handlerLogin = async (usuario: Usuario) => {
-  try {
-      const response = await fetch('/DAO/usuariodao', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(usuario),
-      });
-      if (response.ok) {
-          const data = await response.json();
-          if (data.status === "success") {
-              //router.push("/mainMenu");
-          } else {
-            throw new Error('Failed to login');
-          }
-      } else {
-          throw new Error('Failed to login');
-      }
-  } catch (error) {
-      console.error("Error during login:", error);
-  }
+
+interface userData {
+    email: string;
+    password: string;
+    rol : string;
+    celular : string;
+}
+
+export const handlerLogin = async (email : string, password : string, router: any) => {
+
+    // Define the api request to search for the user with the given email and password
+    
+    let data = await searchUserByEmail(email);
+    // convert the data to a json object
+    data = JSON.parse(JSON.stringify(data));
+    
+    
+
+    
+    if(data == null){
+        console.log("Usuario no encontrado");
+    } else {
+        const user : userData = {
+            email: data.email,
+            password: data.contrasenia,
+            rol: data.rol,
+            celular: data.celular
+        };
+        
+        
+        
+        
+        setLocalStorage(user);
+        router.push('/mainMenu');
+        
+
+        
+    }
+
 };
   
-export default {handlerLogin};
+const setLocalStorage = (user : userData) => {
+    localStorage.setItem("user", JSON.stringify(user));
+}
