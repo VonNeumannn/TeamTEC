@@ -18,17 +18,6 @@ import React from "react";
 export default function LoginPage() {
     const router = useRouter();
     const [dialogOpen, setDialogOpen] = useState(false);
-    useEffect(() => {
-        const form = document.querySelector('form');
-        form?.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = (document.getElementById('email') as HTMLInputElement).value;
-            const password = (document.getElementById('password') as HTMLInputElement).value;
-            const usuario = new Usuario(email, password, "", "");
-            handlerLogin(email,password, router);
-        });
-    });
-    
     const openDialog = () => {
         console.log("Abriendo dialogo");
         setDialogOpen(true);
@@ -38,6 +27,17 @@ export default function LoginPage() {
         console.log("Cerrando dialogo");
         setDialogOpen(false);
     };
+    useEffect(() => {
+        const form = document.querySelector('form');
+        form?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = (document.getElementById('email') as HTMLInputElement).value;
+            const password = (document.getElementById('password') as HTMLInputElement).value;
+            handlerLogin(email,password, router, openDialog);
+        });
+    });
+    
+    
 
     
     return (

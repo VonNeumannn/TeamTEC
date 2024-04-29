@@ -10,7 +10,7 @@ interface userData {
     celular : string;
 }
 
-export const handlerLogin = async (email : string, password : string, router: any) => {
+export const handlerLogin = async (email : string, password : string, router: any, openDialog : any) => {
 
     // Define the api request to search for the user with the given email and password
     
@@ -23,6 +23,7 @@ export const handlerLogin = async (email : string, password : string, router: an
     
     if(data == null){
         console.log("Usuario no encontrado");
+        openDialog();
     } else {
         const user : userData = {
             email: data.email,
@@ -30,14 +31,18 @@ export const handlerLogin = async (email : string, password : string, router: an
             rol: data.rol,
             celular: data.celular
         };
-        
-        
-        
-        
-        setLocalStorage(user);
-        router.push('/mainMenu');
-        
 
+        if(user.password != password){
+            console.log("Contraseña incorrecta");
+            openDialog();
+            return;
+        }else{
+            setLocalStorage(user);
+            router.push('/mainMenu');
+        }
+        
+        
+        
         
     }
 

@@ -1,6 +1,3 @@
-import { access } from "fs";
-import { NextApiRequest } from "next";
-import { NextResponse } from "next/server";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../../constants/connection";
 
