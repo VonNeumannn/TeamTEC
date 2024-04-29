@@ -1159,3 +1159,30 @@ height: auto;
       width: 40%;
   }
 }
+
+/* buttonEditContainer CSS */
+.buttonEditContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 60%;
+  height: auto;
+}
+.buttonEditContainer button{
+  width: 30%;
+  height: auto;
+  margin: 0%;
+}
+.buttonCancel{
+  padding: auto;
+  width: 30%;
+  height: auto;
+  margin: 0%;
+  background-color: #d80404;
+  border-radius: 5px;
+}
+.buttonCancel:hover{
+  background-color: #a10000;
+  transition: 300ms;
+}
