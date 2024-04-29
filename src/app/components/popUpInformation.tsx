@@ -57,7 +57,7 @@ export default function PopUpInformation(PopUpInformationProps: PopUpInformation
         <dialog id={'dialogPopUpInfo'}  className={styles.dialogPopUpInfo} >
             <h2>{title}</h2>
             <p>{content}</p>
-            <BlueButton text="Aceptar" onClick={closeDialog}/>
+            <BlueButton text="Aceptar" onClick={closeDialog} type='button'/>
         </dialog>
     );
 }

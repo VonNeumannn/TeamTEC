@@ -105,7 +105,7 @@ export default function StudentRegister() {
                     />
                 <p className={styles.selectedFile} id='selectedFile'></p>
             </div>
-            <BlueButton text="Agregar" onClick={()=>{}}/>
+            <BlueButton text="Agregar" onClick={()=>{}} type="submit"/>
         </div>
     </main>
   );

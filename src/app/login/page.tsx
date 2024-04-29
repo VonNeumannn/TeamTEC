@@ -7,13 +7,19 @@ import { BlueButton } from "../components/blueButton";
 import PopUp from "../components/popUpInformation";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { handlerLogin } from "../../controller/loginController";
+import Usuario from "../../model/Usuario";
+import React from "react";
+
+
+
 
 export default function LoginPage() {
+    const router = useRouter();
     const [dialogOpen, setDialogOpen] = useState(false);
-    
-
     const openDialog = () => {
-        console.log("Abriedo dialogo");
+        console.log("Abriendo dialogo");
         setDialogOpen(true);
     };
 
@@ -21,7 +27,19 @@ export default function LoginPage() {
         console.log("Cerrando dialogo");
         setDialogOpen(false);
     };
+    useEffect(() => {
+        const form = document.querySelector('form');
+        form?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = (document.getElementById('email') as HTMLInputElement).value;
+            const password = (document.getElementById('password') as HTMLInputElement).value;
+            handlerLogin(email,password, router, openDialog);
+        });
+    });
+    
+    
 
+    
     return (
 
         <main className={styles.main} id="main">
@@ -45,7 +63,7 @@ export default function LoginPage() {
                         <input type="password" id="password" name="password" required placeholder="..." />
                     </div>
                     <Link href="#" >Olvidó su contraseña</Link>
-                    <BlueButton text="LOGIN" onClick={openDialog} />
+                    <BlueButton text="LOGIN" onClick={()=>{}} type="submit" />
                 </form>
             </div>
         </main>
