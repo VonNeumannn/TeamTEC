@@ -6,7 +6,7 @@ import DownloadIcon from "../../../public/download_icon.svg";
 import SortIcon from "../../../public/sort_icon.svg";
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
-import { handlerLoad } from "../../controller/studentsController";
+import { handlerLoad, handleDeleteController, reloadPageAfterOperation } from "../../controller/studentsController";
 import Estudiante from "../../model/Estudiante";
 
 
@@ -66,14 +66,21 @@ export default function ViewStudents() {
 
     function handleEdit(index: number) {
         const item = data[index];
-        //console.log(`Editing item: ${item.nombre} ${item.apellidos} ${item.codigo}`);
+        console.log(`Editing item: ${item.carne} ${item.nombre}`);
         // Aquí puedes agregar el código para editar el item
     }
 
     function handleDelete(index: number) {
-        console.log(`Deleting item at index: ${index}`);
-        // Aquí puedes agregar el código para eliminar el item
+        const item = data[index];
+        handleDeleteController(item.carne);
+        reloadPageAfterOperation();
     }
+
+    
+
+    function delay(ms:number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -96,7 +103,7 @@ export default function ViewStudents() {
                     <input type="text" />
                     <BlueButton text="Buscar" onClick={() => { }} />
                     <div className={styles.csvAddStudentContainer}>
-                        <button className={styles.downButton} onClick={() => handleClick("Local","Cartago")} >
+                        <button className={styles.downButton} onClick={() => handleClick("a","Cartago")} >
                             <Image src={DownloadIcon} alt="csv Icon" />
                             {"CSV"}
                         </button>

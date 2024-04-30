@@ -1,5 +1,5 @@
 import Estudiante from "../model/Estudiante";
-import { loadStudents } from "../app/DAO/estudiantedao/daoEstudiante";
+import { loadStudents, addStudent, deleteStudent } from "../app/DAO/estudiantedao/daoEstudiante";
 import { useRouter } from "next/router";
 
 
@@ -14,8 +14,6 @@ interface studentData {
 }
 
 export const handlerLoad = async () => {
-
-    // Define the api request to search for the student with the given email and password
     try{
         const data = await loadStudents();
         // convert the data to a json object
@@ -33,7 +31,40 @@ export const handlerLoad = async () => {
     }
 
 };
-  
+
+export const handlerAddData = async (students: Estudiante[]) => {
+    try{
+        await addStudent(students);
+        return true;
+    } catch (error) {
+        console.error("Error loading students:", error);
+        return false;
+    }
+
+};
+
+export const handleDeleteController = async (id: string) => {
+    try{
+        await deleteStudent(id);
+        return true;
+    } catch (error) {
+        console.error("Error loading students:", error);
+        return false;
+    }
+
+};
+
+export const reloadPageAfterOperation = async () => {
+    try {
+      await new Promise(resolve => setTimeout(resolve, 800));
+      window.location.reload();
+    } catch (error) {
+      console.error("An error occurred during the operation:", error);
+    }
+  };
+
 const setLocalStorage = (student : studentData) => {
     localStorage.setItem("student", JSON.stringify(student));
 }
+
+
