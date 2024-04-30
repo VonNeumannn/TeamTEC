@@ -1,6 +1,6 @@
 import Usuario from "../model/Usuario";
-import { searchUserByEmail } from "../app/DAO/usuariodao/daoUsuario";
-import { useRouter } from "next/router";
+import { searchUserByEmail } from "../app/DAO/daoUsuario";
+import { useRouter } from "next/navigation";
 
 
 interface userData {

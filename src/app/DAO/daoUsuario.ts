@@ -1,9 +1,7 @@
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "../../../constants/connection";
+import { db } from "../../constants/connection";
 
 export const dynamic = 'force-dynamic'; // Force dynamic route behavior
-
-
 
 export async function searchUserByEmail(email : string) {
   const database = db;
