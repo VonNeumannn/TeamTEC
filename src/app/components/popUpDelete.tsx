@@ -7,6 +7,7 @@ interface PopUpInformationProps {
     content: string;
     openDialog: () => void;
     closeDialog: () => void;
+    confirmDelete: () => void;
     dialogOpen: boolean; // Agregamos dialogOpen como prop
   }
 
@@ -15,7 +16,7 @@ interface PopUpInformationProps {
 
 
 export default function PopUpInformation(PopUpInformationProps: PopUpInformationProps) {
-    const { title, content, openDialog, closeDialog, dialogOpen } = PopUpInformationProps;
+    const { title, content, openDialog, closeDialog, dialogOpen, confirmDelete } = PopUpInformationProps;
 
  
     useEffect(() => {
@@ -55,7 +56,10 @@ export default function PopUpInformation(PopUpInformationProps: PopUpInformation
         <dialog id={'dialogPopUpInfo'}  className={styles.dialogPopUpInfo} >
             <h2>{title}</h2>
             <p>{content}</p>
-            <button className={styles.deleteButton} onClick={closeDialog} style={{ width: '120px', height: '40px' }} >Eliminar</button>
+            <div>
+                <button className={styles.deleteButton} onClick={confirmDelete} style={{ width: '100px', height: '40px', marginRight: '10px' }} >Eliminar</button>
+                <button className={styles.greenButton} onClick={closeDialog} style={{ width: '100px', height: '40px' }}>Cancelar</button>
+            </div>
         </dialog>
     );
 }

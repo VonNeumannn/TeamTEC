@@ -1,6 +1,7 @@
 'use client'
 import styles from "../page.module.css";
 import Image from "next/image";
+import PopUp from '../components/popUpDelete';
 import { BlueButton } from "../components/blueButton";
 import DownloadIcon from "../../../public/download_icon.svg";
 import SortIcon from "../../../public/sort_icon.svg";
@@ -11,12 +12,23 @@ import Estudiante from "../../model/Estudiante";
 
 
 export default function ViewStudents() {
-
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [itemToDelete, setItemToDelete] = useState<Estudiante | null>(null);
     const router = useRouter();
     const [search, setSearch] = useState("");
     const [data, setData] = useState<Estudiante[]>([]);
     const [dataTemp, setDataTemp] = useState<Estudiante[]>([]);
     
+    const openDialog = () => {
+        console.log("Abriedo dialogo");
+        setDialogOpen(true);
+    };
+
+    const closeDialog = () => {
+        console.log("Cerrando dialogo");
+        setDialogOpen(false);
+    };
+
     const handleClick = (tipo: string, sede: string) => {
         if (tipo=="Local"){
             const estudiantesFiltrados = data.filter(estudiante => estudiante.sede === sede);
@@ -76,8 +88,23 @@ export default function ViewStudents() {
 
     function handleDelete(index: number) {
         const item = data[index];
-        handleDeleteController(item.carne);
-        reloadPageAfterOperation();
+        setDialogOpen(true);
+        setItemToDelete(item);
+        
+    }
+
+    function confirmDelete() {
+        setDialogOpen(false);
+        if (itemToDelete) {
+            handleDeleteController(itemToDelete.carne);
+            reloadPageAfterOperation();
+        } else {
+            console.error("El valor a eliminar es null.");
+        }
+    }
+    
+    function cancelDelete() {
+        setDialogOpen(false);
     }
 
     const handleSubmit = () => {
@@ -106,6 +133,16 @@ export default function ViewStudents() {
 
     return (
         <main className={styles.main} id="main">
+            <div>
+                <PopUp
+                    title="Alerta" 
+                    content="¿Seguro de eliminar al estudiante?" 
+                    openDialog={openDialog}
+                    closeDialog={cancelDelete}
+                    dialogOpen={dialogOpen}
+                    confirmDelete={confirmDelete}
+                />
+            </div>
             <div className={styles.teamContainer}>
                 <h1>Miembros equipo</h1>
                 <p>Buscar estudiante</p>
