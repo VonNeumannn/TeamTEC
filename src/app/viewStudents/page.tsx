@@ -13,7 +13,9 @@ import Estudiante from "../../model/Estudiante";
 export default function ViewStudents() {
 
     const router = useRouter();
+    const [search, setSearch] = useState("");
     const [data, setData] = useState<Estudiante[]>([]);
+    const [dataTemp, setDataTemp] = useState<Estudiante[]>([]);
     
     const handleClick = (tipo: string, sede: string) => {
         if (tipo=="Local"){
@@ -67,6 +69,7 @@ export default function ViewStudents() {
     function handleEdit(index: number) {
         const item = data[index];
         console.log(`Editing item: ${item.carne} ${item.nombre}`);
+        router.push(`/edit_student/${item.carne}`); 
         // Aquí puedes agregar el código para editar el item
     }
 
@@ -76,17 +79,25 @@ export default function ViewStudents() {
         reloadPageAfterOperation();
     }
 
-    
-
-    function delay(ms:number) {
-        return new Promise(resolve => setTimeout(resolve, ms));
+    const handleSubmit = () => {
+        console.log(data);
+        console.log("pre data");
+        if (search.toLowerCase() == "") {
+            setData(dataTemp);
+        }else {
+            const resultadosFiltrados = data.filter((estudiante) =>
+            estudiante.nombre.toLowerCase().includes(search.toLowerCase())
+            );
+            setData(resultadosFiltrados);
       }
+    };
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const data = await handlerLoad();
-                setData(data);
+                setData([...data]);
+                setDataTemp([...data]);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -100,8 +111,9 @@ export default function ViewStudents() {
                 <h1>Miembros equipo</h1>
                 <p>Buscar estudiante</p>
                 <div className={styles.searchAddContainer}>
-                    <input type="text" />
-                    <BlueButton text="Buscar" onClick={() => { }} />
+                    <input type="search" 
+                    onChange={(e) => setSearch(e.target.value)}/>
+                    <BlueButton text="Buscar" onClick={() => {handleSubmit()}} />
                     <div className={styles.csvAddStudentContainer}>
                         <button className={styles.downButton} onClick={() => handleClick("a","Cartago")} >
                             <Image src={DownloadIcon} alt="csv Icon" />

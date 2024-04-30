@@ -1,5 +1,5 @@
 import Estudiante from "../model/Estudiante";
-import { loadStudents, addStudent, deleteStudent } from "../app/DAO/estudiantedao/daoEstudiante";
+import { loadStudents, addStudent, deleteStudent, loadOneStudent } from "../app/DAO/estudiantedao/daoEstudiante";
 import { useRouter } from "next/router";
 
 
@@ -21,9 +21,21 @@ export const handlerLoad = async () => {
             console.log("No hay estudiantes ingresados");
             return [];
         } 
-        data.forEach((student: studentData) => {
-            setLocalStorage(student);
-        });
+        return data;
+    } catch (error) {
+        console.error("Error loading students:", error);
+        return [];
+    }
+
+};
+
+export const handlerOneLoad = async (id:string) => {
+    try{
+        const data = await loadOneStudent(id);
+        if (!data || data.length === 0) {
+            console.log("No se encontro el estudiante");
+            return [];
+        } 
         return data;
     } catch (error) {
         console.error("Error loading students:", error);
@@ -62,9 +74,5 @@ export const reloadPageAfterOperation = async () => {
       console.error("An error occurred during the operation:", error);
     }
   };
-
-const setLocalStorage = (student : studentData) => {
-    localStorage.setItem("student", JSON.stringify(student));
-}
 
 

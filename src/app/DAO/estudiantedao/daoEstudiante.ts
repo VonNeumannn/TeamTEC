@@ -18,6 +18,19 @@ export async function loadStudents(): Promise<Estudiante[]> {
   return data;
 }
 
+export async function loadOneStudent(id: string): Promise<Estudiante[]> {
+  const database = db;
+  const studentsRef = collection(database, 'estudiantes');
+  const student = query(studentsRef, where("carne", "==", id));
+  const querySnapshot = await getDocs(student);
+  let EstudianteData: Estudiante;
+  let data: Estudiante[] =[];
+  querySnapshot.forEach((doc) => {
+      data.push(doc.data() as Estudiante);
+  });
+  return data;
+}
+
 export async function deleteStudent(id : string): Promise<boolean> {
   try{
     const database = db;

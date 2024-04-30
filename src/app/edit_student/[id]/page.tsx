@@ -1,9 +1,32 @@
 'use client';
-import styles from '../page.module.css';
-import React, { useState } from 'react';
+import styles from '../../page.module.css';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { handlerOneLoad, reloadPageAfterOperation } from "../../../controller/studentsController";
+import Estudiante from "../../../model/Estudiante";
+import { useRouter } from 'next/router';
 
-export default function StudentEdit() {
+interface Params {
+    id: string;
+}
+
+export default function StudentEdit(params:Params) {
+    const { id } = params;
+    console.log(id);
+    const [loadData, setloadData]= useState<Estudiante[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const loadData = await handlerOneLoad(id);
+                setloadData(loadData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, []);
+
     const [data, setData] = useState({
         carne: '208090874', 
         nombre: 'Manuel', 
@@ -12,6 +35,7 @@ export default function StudentEdit() {
         correo: 'm.aleandro00@gmail.com',
         celular: '87534159'
     });
+    
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setData({
@@ -24,6 +48,9 @@ export default function StudentEdit() {
         console.log(`Editing item: ${data.carne} ${data.nombre} ${data.primerApellido} ${data.segundoApellido} ${data.correo} ${data.celular}`);
         // Aquí puedes agregar el código para editar el item
     }
+
+    
+
   return (
     <main className={styles.main} id="main">
         <div className={styles.studentEditContainer}>
