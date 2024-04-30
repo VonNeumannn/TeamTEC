@@ -15,9 +15,29 @@ export default function ViewStudents() {
     const router = useRouter();
     const [data, setData] = useState<Estudiante[]>([]);
     
-    const handleClick = () => {
-        const content=generateCSVContent(data);
-        downloadCSV(content)
+    const handleClick = (tipo: string, sede: string) => {
+        if (tipo=="Local"){
+            const estudiantesFiltrados = data.filter(estudiante => estudiante.sede === sede);
+            const content=generateCSVContent(estudiantesFiltrados);
+            downloadCSV(content)
+        }
+        
+        else{
+            let content = '';
+            const tiposDeSede: string[] = Array.from(new Set(data.map(estudiante => estudiante.sede)));
+            tiposDeSede.forEach(sede => {
+                content += `Sede: ${sede}\n`;
+                content += 'Carne;Nombre;Primer apellido; Segundo apellido;Correo;Celular;Sede;\n'; 
+                data
+                    .filter(estudiante => estudiante.sede === sede)
+                    .forEach(estudiante => {
+                        content += `${estudiante.carne};${estudiante.nombre};${estudiante.primerApellido};${estudiante.segundoApellido};${estudiante.correo};${estudiante.celular};${estudiante.sede}\n`;
+                    });
+        
+                content += '\n';
+            });
+            downloadCSV(content)
+        }
     };
 
     function estudianteToCSVRow(estudiante: Estudiante): string {
@@ -76,7 +96,7 @@ export default function ViewStudents() {
                     <input type="text" />
                     <BlueButton text="Buscar" onClick={() => { }} />
                     <div className={styles.csvAddStudentContainer}>
-                        <button className={styles.downButton} onClick={handleClick} >
+                        <button className={styles.downButton} onClick={() => handleClick("Local","Cartago")} >
                             <Image src={DownloadIcon} alt="csv Icon" />
                             {"CSV"}
                         </button>
