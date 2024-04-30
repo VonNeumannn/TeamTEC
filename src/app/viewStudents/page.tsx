@@ -16,21 +16,33 @@ export default function ViewStudents() {
     const [data, setData] = useState<Estudiante[]>([]);
     
     const handleClick = () => {
-        // Contenido de ejemplo del archivo CSV
-        const csvContent = "Nombre,Apellido,Edad\nJohn,Doe,30\nJane,Doe,28";
+        const content=generateCSVContent(data);
+        downloadCSV(content)
+    };
 
-        const downloadLink = document.createElement("a");
-        const blob = new Blob([csvContent], { type: "text/csv" });
+    function estudianteToCSVRow(estudiante: Estudiante): string {
+        return `${estudiante.carne};${estudiante.nombre};${estudiante.primerApellido};${estudiante.segundoApellido};${estudiante.correo};${estudiante.celular};${estudiante.sede}\n`;
+    }
+
+    function generateCSVContent(estudiantes: Estudiante[]): string {
+        let csvContent = 'Carne;Nombre;Primer apellido; Segundo apellido;Correo;Celular;Sede;\n'; // Encabezados de columnas
+        estudiantes.forEach(estudiante => {
+            csvContent += estudianteToCSVRow(estudiante);
+        });
+        return csvContent;
+    }
+
+    function downloadCSV(csvContent: string): void {
+        const blob = new Blob([csvContent], { type: 'text/csv' });
         const url = window.URL.createObjectURL(blob);
-
+        const downloadLink = document.createElement('a');
         downloadLink.href = url;
         downloadLink.download = "estudiantes.csv";
         document.body.appendChild(downloadLink);
         downloadLink.click();
-
         document.body.removeChild(downloadLink);
         window.URL.revokeObjectURL(url);
-    };
+    }
 
     function handleEdit(index: number) {
         const item = data[index];
