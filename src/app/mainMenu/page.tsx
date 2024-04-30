@@ -3,19 +3,63 @@ import styles from "../page.module.css";
 import Image from "next/image";
 import MainLogo from "../../../public/mainLogo.svg";
 import { BlueButton } from "../components/blueButton";
-import exp from "constants";
-import Usuario from "@/model/Usuario";
-import { get } from "http";
-
-
-let user : Usuario;
+import Actividad from "@/model/Actividad";
+import { useRouter } from "next/navigation";
+import { handlerNextActivity } from "@/controller/actividadController";
+import { useEffect } from "react";
+import { TipoActividad } from "@/model/TipoActividad";
+import Profesor from "@/model/Profesor";
+import Comentario from "@/model/Comentario";
+import Prueba from "@/model/Prueba";
 
 export default function MainMenuPage() {
     const printMessage = () => {
         console.log("Mostrando equipo");
     };
-    getLocalStorage();
-
+    useEffect(() => {
+        handlerNextActivity();
+        var actividad = getLocalStorage();
+        console.log(actividad); 
+        var nombreActividad = actividad.getNombre();
+        var estadoActividad = actividad.getEstado();
+        var tipoActividad = actividad.getTipoActividad();
+        var modalidadActividad = actividad.getModalidad();
+        var semanaActividad = actividad.getSemana();
+        var fechaActividad = actividad.getFecha();
+        
+        var nombreActividadElement = document.getElementById("nombreActividad");
+        if (nombreActividadElement) {
+            nombreActividadElement.innerText = nombreActividad;
+        }
+        
+        var estadoActividadElement = document.getElementById("estadoActividad");
+        if (estadoActividadElement) {
+            estadoActividadElement.innerText = estadoActividad;
+        }
+        
+        var tipoActividadElement = document.getElementById("tipoActividad");
+        if (tipoActividadElement) {
+            tipoActividadElement.innerText = tipoActividad;
+        }
+        
+        var modalidadActividadElement = document.getElementById("modalidadActividad");
+        if (modalidadActividadElement) {
+            modalidadActividadElement.innerText = modalidadActividad;
+        }
+        
+        var semanaActividadElement = document.getElementById("semanaActividad");
+        if (semanaActividadElement) {
+            console.log(semanaActividad);
+            semanaActividadElement.innerText = semanaActividad.toString();
+        }
+        
+        var fechaActividadElement = document.getElementById("fechaActividad");
+        if (fechaActividadElement) {
+            fechaActividadElement.innerText = fechaActividad.toString(); 
+        }
+    });
+  
+    const router = useRouter();
 
     return (
         <main className={styles.main} id="main">
@@ -25,10 +69,10 @@ export default function MainMenuPage() {
                     <div className={styles.flexContainer}>
                         <Image src={MainLogo} alt="Main Logo" />
                         <div className={styles.flexFlexContainer}>
-                            <BlueButton text="Mostrar equipo" onClick={() => {}} type="button"/>
-                            <BlueButton text="Mostrar estudiantes" onClick={() => {}} type="button"/>
-                            <BlueButton text="Itinerario" onClick={() => {}} type="button"/>
-                            <BlueButton text="Registrar profesor" onClick={() => {}} type="button"/>
+                            <BlueButton text="Mostrar equipo" onClick={() => { router.push('/teamMembers') }} type="button" />
+                            <BlueButton text="Mostrar estudiantes" onClick={() => { router.push('/viewStudents') }} type="button" />
+                            <BlueButton text="Itinerario" onClick={() => { router.push('/itineraries') }} type="button" />
+                            <BlueButton text="Registrar profesor" onClick={() => { router.push('/professor_register') }} type="button" />
                         </div>
                     </div>
                 </div>
@@ -39,27 +83,27 @@ export default function MainMenuPage() {
                         <tbody>
                             <tr>
                                 <td>Nombre</td>
-                                <td>Nombre de la actividad</td>
+                                <td id="nombreActividad"></td>
                             </tr>
                             <tr>
                                 <td>Estado</td>
-                                <td>Estado de la actividad</td>
+                                <td id="estadoActividad"></td>
                             </tr>
                             <tr>
                                 <td>Tipo</td>
-                                <td>Tipo de la actividad</td>
+                                <td id="tipoActividad"></td>
                             </tr>
                             <tr>
                                 <td>Modalidad</td>
-                                <td>Modalidad de la activdad</td>
+                                <td id="modalidadActividad"></td>
                             </tr>
                             <tr>
                                 <td>Semana</td>
-                                <td>Semana de la actividad</td>
+                                <td id="semanaActividad"></td>
                             </tr>
                             <tr>
                                 <td>Fecha</td>
-                                <td>Fecha de la actividad</td>
+                                <td id="fechaActividad"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -69,10 +113,56 @@ export default function MainMenuPage() {
     );
 }
 
-const getLocalStorage = () => {
-    const user = localStorage.getItem("user");
+interface activityData {
+    nombre: string;
+    estado: string;
+    tipo: TipoActividad;
+    modalidad: string;
+    semana: number;
+    fecha: Date;
+    hora: string;
+    activadorRecordatorio: Date;
+    link: string;
+    afiche: string;
+    encargado: Profesor[];
+    responsable: Profesor;
+    comentarios: Comentario[];
+    pruebas: Prueba[];
+}
 
-    const userJson = JSON.parse(user? user : "{}");
-    console.log(userJson);
-    return new Usuario(userJson.email, userJson.password, userJson.rol, userJson.celular);
+const getLocalStorage = () => {
+    const actividad = localStorage.getItem("actividad");
+    const actividadJson = JSON.parse(actividad ? actividad : "{}");
+    const actividadData: activityData = {
+        nombre: actividadJson.nombre,
+        estado: actividadJson.estado,
+        tipo: actividadJson.tipo,
+        modalidad: actividadJson.modalidad,
+        semana: actividadJson.semana,
+        fecha: actividadJson.fecha,
+        hora: actividadJson.hora,
+        activadorRecordatorio: actividadJson.activadorRecordatorio,
+        link: actividadJson.link,
+        afiche: actividadJson.afiche,
+        encargado: actividadJson.encargado,
+        responsable: actividadJson.responsable,
+        comentarios: actividadJson.comentarios,
+        pruebas: actividadJson.pruebas
+    };
+    return new Actividad(
+        actividadData.nombre,
+        actividadData.estado,
+        actividadData.semana,
+        actividadData.tipo,
+        actividadData.modalidad,
+        actividadData.fecha,
+        actividadData.hora,
+        actividadData.activadorRecordatorio,
+        actividadData.link,
+        actividadData.afiche,
+        actividadData.encargado,
+        actividadData.responsable,
+        actividadData.comentarios,
+        actividadData.pruebas
+    );
 }
