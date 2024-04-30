@@ -6,7 +6,7 @@ import DownloadIcon from "../../../public/download_icon.svg";
 import SortIcon from "../../../public/sort_icon.svg";
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
-import { handlerLoad, handleDeleteController, reloadPageAfterOperation } from "../../controller/studentsController";
+import { handlerLoad, handleDeleteController, reloadPageAfterOperation, handlerPassData } from "../../controller/studentsController";
 import Estudiante from "../../model/Estudiante";
 
 
@@ -68,8 +68,9 @@ export default function ViewStudents() {
 
     function handleEdit(index: number) {
         const item = data[index];
+        handlerPassData(item);
         console.log(`Editing item: ${item.carne} ${item.nombre}`);
-        router.push(`/edit_student/${item.carne}`); 
+        router.push(`/edit_student`); 
         // Aquí puedes agregar el código para editar el item
     }
 
@@ -80,8 +81,6 @@ export default function ViewStudents() {
     }
 
     const handleSubmit = () => {
-        console.log(data);
-        console.log("pre data");
         if (search.toLowerCase() == "") {
             setData(dataTemp);
         }else {

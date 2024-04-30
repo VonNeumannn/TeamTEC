@@ -1,5 +1,5 @@
 import Estudiante from "../model/Estudiante";
-import { loadStudents, addStudent, deleteStudent, loadOneStudent } from "../app/DAO/estudiantedao/daoEstudiante";
+import { loadStudents, addStudent, deleteStudent, loadOneStudent, updateStudent } from "../app/DAO/estudiantedao/daoEstudiante";
 import { useRouter } from "next/router";
 
 
@@ -52,7 +52,16 @@ export const handlerAddData = async (students: Estudiante[]) => {
         console.error("Error loading students:", error);
         return false;
     }
+};
 
+export const handlerUpdateController = async (id:string, student: Estudiante) => {
+    try{
+        await updateStudent(id, student);
+        return true;
+    } catch (error) {
+        console.error("Error loading students:", error);
+        return false;
+    }
 };
 
 export const handleDeleteController = async (id: string) => {
@@ -75,4 +84,17 @@ export const reloadPageAfterOperation = async () => {
     }
   };
 
+export const handlerPassData = async (student: Estudiante) => {
+    try{
+        setLocalStorage(student);
+        return true;
+    } catch (error) {
+        console.error("Error loading students:", error);
+        return false;
+    }
 
+};
+
+const setLocalStorage = (student : studentData) => {
+    localStorage.setItem("student", JSON.stringify(student));
+}

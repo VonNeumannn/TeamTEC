@@ -1,25 +1,36 @@
 'use client';
-import styles from '../../page.module.css';
+import styles from '../page.module.css';
+import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { handlerOneLoad, reloadPageAfterOperation } from "../../../controller/studentsController";
-import Estudiante from "../../../model/Estudiante";
-import { useRouter } from 'next/router';
+import { handlerOneLoad, reloadPageAfterOperation, handlerUpdateController } from "../../controller/studentsController";
+import Estudiante from "../../model/Estudiante";
 
-interface Params {
-    id: string;
-}
-
-export default function StudentEdit(params:Params) {
-    const { id } = params;
-    console.log(id);
+export default function StudentEdit() {
+    const router = useRouter();
     const [loadData, setloadData]= useState<Estudiante[]>([]);
+    const [data, setData] = useState({
+        carne: '',
+        nombre: '', 
+        primerApellido: '',
+        segundoApellido: '',
+        correo: '',
+        celular: ''
+    });
+    let carne = '';
+    const storedData = localStorage.getItem("student");
+    if (storedData) {
+        const studentData = JSON.parse(storedData);
+        carne = studentData.carne;
+    } else {
+        console.log("No data found in localStorage for key 'student'");
+    }
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const loadData = await handlerOneLoad(id);
-                setloadData(loadData);
+                const loadData = await handlerOneLoad(carne);
+                setloadData([...loadData]);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -27,14 +38,20 @@ export default function StudentEdit(params:Params) {
         fetchData();
     }, []);
 
-    const [data, setData] = useState({
-        carne: '208090874', 
-        nombre: 'Manuel', 
-        primerApellido: 'Rodríguez',
-        segundoApellido: 'Murillo',
-        correo: 'm.aleandro00@gmail.com',
-        celular: '87534159'
-    });
+    useEffect(() => {
+        if (loadData.length > 0) {
+            setData({
+                carne: loadData[0].carne, 
+                nombre: loadData[0].nombre, 
+                primerApellido: loadData[0].primerApellido,
+                segundoApellido: loadData[0].segundoApellido,
+                correo: loadData[0].correo,
+                celular: loadData[0].celular
+            });
+        }
+    }, [loadData]);
+
+    
     
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +62,18 @@ export default function StudentEdit(params:Params) {
     };
 
     function handleEdit() {
-        console.log(`Editing item: ${data.carne} ${data.nombre} ${data.primerApellido} ${data.segundoApellido} ${data.correo} ${data.celular}`);
+        const student: Estudiante = new Estudiante (
+            data.carne,
+            data.nombre,
+            data.primerApellido,
+            data.segundoApellido,
+            data.correo,
+            data.celular,
+            loadData[0].sede
+          );
+        handlerUpdateController(loadData[0].carne, student);
+        reloadPageAfterOperation();
+        router.push('/viewStudents'); 
         // Aquí puedes agregar el código para editar el item
     }
 
@@ -88,7 +116,7 @@ export default function StudentEdit(params:Params) {
                 
             <div style={{ display: 'flex', gap: '10px' }}> {/* Contenedor de botones */}
                 <button className={styles.greenButton} onClick={() =>  handleEdit()} style={{ width: '120px' }} >Guardar</button>
-                <button className={styles.deleteButton} onClick={() => {}} style={{ width: '120px' }} >Cancelar</button>
+                <button className={styles.deleteButton} onClick={() => {router.push('/viewStudents'); }} style={{ width: '120px' }} >Cancelar</button>
             </div>
         </div>
     </main>

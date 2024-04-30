@@ -53,18 +53,28 @@ export async function deleteStudent(id : string): Promise<boolean> {
     }
 }
 
-export async function updateStudent(id: string, newData: any): Promise<boolean> {
+export async function updateStudent(id: string, newData: Estudiante): Promise<boolean> {
   try {
     const database = db;
     const studentsRef = collection(database, 'estudiantes');
-    const studentQuery = query(studentsRef, where("idStudent", "==", id));
+    const studentData = {
+      carne: newData.carne,
+      nombre: newData.nombre,
+      primerApellido: newData.primerApellido,
+      segundoApellido: newData.segundoApellido,
+      correo: newData.correo,
+      celular: newData.celular,
+      sede: newData.sede,
+    };
+    const studentQuery = query(studentsRef, where("carne", "==", id));
     const querySnapshot = await getDocs(studentQuery);
     if (querySnapshot.empty) {
+      console.log("hemos fallado")
       return false;
     }
-    querySnapshot.forEach(async (doc) => {
-      await updateDoc(doc.ref, newData);
-    });
+    await Promise.all(querySnapshot.docs.map(async (doc) => {
+      await updateDoc(doc.ref, studentData);
+    }));
     return true;
   } catch (error) {
     console.error("Error updating student:", error);
