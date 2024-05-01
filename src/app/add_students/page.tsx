@@ -81,7 +81,6 @@ export default function StudentRegister() {
     }
     else{
       handlerAddData(students);
-      reloadPageAfterOperation();
       router.push('/viewStudents'); 
     }
   }
