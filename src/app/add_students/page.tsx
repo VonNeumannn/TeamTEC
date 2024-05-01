@@ -63,7 +63,7 @@ export default function StudentRegister() {
     
               console.log(students);
               document.getElementById('selectedFile')!.innerText = fileName;
-              document.getElementById('selectedFile')!.style.fontSize = '1.1rem';
+              document.getElementById('selectedFile')!.style.fontSize = '1.0rem';
               
             }
           };
@@ -76,6 +76,7 @@ export default function StudentRegister() {
   function handleAdd() {
     console.log(students);
     if(students.length==0){
+      openDialog();
       return;
     }
     else{
@@ -98,7 +99,7 @@ export default function StudentRegister() {
             <h1>Agregar Estudiantes</h1>
             <div className={styles.loadCSVStudents}>
         
-                <Image src={FileIcon} alt="profile" />
+                <Image src={FileIcon} alt="profile" style={{ width: '45px', height: '45px' }} />
                 <span>Sube o arrastra un archivo</span>
                 <p>Archivos .csv o .xlsx solamente</p>
                 <input 

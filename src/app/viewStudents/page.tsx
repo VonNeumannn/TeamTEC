@@ -22,6 +22,15 @@ export default function ViewStudents() {
     const [data, setData] = useState<Estudiante[]>([]);
     const [dataTemp, setDataTemp] = useState<Estudiante[]>([]);
     
+    /*let sede = '';
+    const storedData = localStorage.getItem("user");
+    if (storedData) {
+        const userData = JSON.parse(storedData);
+        sede = userData.sede;
+    } else {
+        console.log("No data found in localStorage for key 'user'");
+    }*/
+
     const openDialog = () => {
         console.log("Abriedo dialogo");
         setDialogOpen(true);
@@ -31,8 +40,8 @@ export default function ViewStudents() {
         setDialogOpenCSV(true);
     };
 
-    const handleClick = (tipo: string, sede: string) => {
-        if (tipo=="Local"){
+    const createCSV = (tipo: string, sede: string) => {
+        if (tipo=="local"){
             const estudiantesFiltrados = data.filter(estudiante => estudiante.sede === sede);
             const content=generateCSVContent(estudiantesFiltrados);
             downloadCSV(content)
@@ -88,8 +97,8 @@ export default function ViewStudents() {
         // Aquí puedes agregar el código para editar el item
     }
 
-    function handleDownload() {
-        setDialogOpenCSV(true);
+    function handleDownload(tipo:string) {
+        createCSV(tipo, "Cartago");
     }
 
     function handleDownloadCancel() {
@@ -148,18 +157,18 @@ export default function ViewStudents() {
                         openDialog={openDialogCSV}
                         closeDialog={handleDownloadCancel}
                         dialogOpen={dialogOpenCSV}
-                        confirmType={handleDownloadCancel}
+                        confirmType={handleDownload}
                     />
                 )}
                 {dialogOpen && (
-                <PopUp
-                    title="Alerta" 
-                    content="¿Seguro de eliminar al estudiante?" 
-                    openDialog={openDialog}
-                    closeDialog={cancelDelete}
-                    dialogOpen={dialogOpen}
-                    confirmDelete={confirmDelete}
-                />
+                    <PopUp
+                        title="Alerta" 
+                        content="¿Seguro de eliminar al estudiante?" 
+                        openDialog={openDialog}
+                        closeDialog={cancelDelete}
+                        dialogOpen={dialogOpen}
+                        confirmDelete={confirmDelete}
+                    />
                 )}
             </div>
             <div className={styles.teamContainer}>
@@ -170,7 +179,7 @@ export default function ViewStudents() {
                     onChange={(e) => setSearch(e.target.value)}/>
                     <BlueButton text="Buscar" onClick={() => {handleSubmit()}} />
                     <div className={styles.csvAddStudentContainer}>
-                        <button className={styles.downButton} onClick={() => {handleDownload()}}>  
+                        <button className={styles.downButton} onClick={() => {openDialogCSV()}}>  
                             <Image src={DownloadIcon} alt="csv Icon" />
                             {"CSV"}
                         </button>
