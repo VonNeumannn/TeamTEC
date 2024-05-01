@@ -1,5 +1,5 @@
 import Profesor from "../model/Profesor";
-import { addProfesor, loadProfessor } from "../app/DAO/profesordao/daoProfesor";
+import { addProfesor, loadProfessor, uploadFile } from "../app/DAO/profesordao/daoProfesor";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -15,7 +15,16 @@ interface profesorData {
     codigo: string;
     fotoPerfil: string;
     rol: string;
+    estado: string;
 }
+export const handlerUploadFile = async (file:File, fileName: string) => {
+    try{
+        let dataFile = await uploadFile(file, fileName);
+    } catch (error) {
+        console.error("Error subiendo el archivo:", error);
+        return false;
+    }
+};
 
 export const handlerAddData = async (data: any, dataProfessors:Profesor[]) => {
     try{
@@ -53,6 +62,7 @@ export const handlerAddData = async (data: any, dataProfessors:Profesor[]) => {
             codigo,
             data.fotoPerfil,
             'Profesor',
+            'Activo',
         );
         await addProfesor(profesor);
         console.log(data);

@@ -9,6 +9,7 @@ class Profesor {
     codigo: string;
     fotoPerfil: string;
     rol: string;
+    estado: string;
 
     constructor(
         nombre: string,
@@ -21,6 +22,7 @@ class Profesor {
         codigo: string,
         fotoPerfil: string,
         rol: string,
+        estado: string,
     ) {
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -32,6 +34,7 @@ class Profesor {
         this.codigo = codigo;
         this.fotoPerfil = fotoPerfil;
         this.rol = rol;
+        this.estado = estado;
     }
 }
 

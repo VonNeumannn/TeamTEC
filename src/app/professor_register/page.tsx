@@ -6,11 +6,29 @@ import Image from 'next/image';
 import Profile from '../../../public/profile-default.webp';
 import PopUp from '../components/popUpInformation';
 import { useState, useEffect } from "react";
-import { handlerAddData, VerifyPassword, VerifyEmail, handlerLoad  } from "../../controller/profesorController";
+import { handlerAddData, VerifyPassword, VerifyEmail, handlerLoad, handlerUploadFile  } from "../../controller/profesorController";
 import Profesor from '@/model/Profesor';
+
+// Función para generar un nombre único para el archivo
+const generateUniqueFileName = (originalFileName: string) => {
+    const uniqueId = uuidv4(); // Función para generar un UUID
+    const fileExtension = originalFileName.split('.').pop();
+    return `${uniqueId}.${fileExtension}`;
+};
+
+// Función para generar un UUID (Identificador Único Universal)
+const uuidv4 = () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0,
+            v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+};
 
 export default function ProfessorRegister() {
     const [dialogOpen, setDialogOpen] = useState(false);
+    //const [fileName, setfileName] = useState('');
+    const [file, setFile] = useState<File | null>(null);
     const [currentTitle, setcurrentTitle] = useState("");
     const [currentMessage, setcurrentMessage] = useState("");
     const [dataProfessors, setDataProfessors] = useState<Profesor[]>([]);
@@ -23,7 +41,7 @@ export default function ProfessorRegister() {
         cellphone: '',
         opciones: 'San José',
         password: '',
-        fotoPerfil: Profile.src,
+        fotoPerfil: '',
         passwordConfirm: '',
     });
 
@@ -41,6 +59,27 @@ export default function ProfessorRegister() {
         });
     };
 
+    const handlerfileName = (name : string) => {
+        setData({
+            ...data,
+            fotoPerfil:name
+        });
+    }
+
+    const handlerFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const selectedFile = e.target.files[0];
+            const fileName = selectedFile.name;
+            const fileExtension = fileName.split('.').pop()?.toLowerCase();
+            if (!fileExtension || (fileExtension !== 'pdf' && fileExtension !== 'png' && fileExtension !== 'jpg' && fileExtension !== 'jpeg')) {
+                alert("El archivo seleccionado no es válido");
+                return;
+            }
+            handlerfileName(generateUniqueFileName(fileName));
+            setFile(selectedFile);
+        }
+    };
+
     const handleSubmit = async () => {
         for (const key in data) {
             if (data.hasOwnProperty(key)) {
@@ -55,6 +94,9 @@ export default function ProfessorRegister() {
         }
         if(await VerifyPassword(data)){
             if(await VerifyEmail(data,dataProfessors)){
+                if (file !== null) {
+                    handlerUploadFile(file, data.fotoPerfil);
+                }
                 handlerAddData(data,dataProfessors);
             }
             else{
@@ -167,7 +209,7 @@ export default function ProfessorRegister() {
                     
                     <Image src={Profile} alt="Profile" />
                     <label htmlFor="photo">Subir foto de perfil</label>
-                    <input type="file" id="photo" name="photo" accept="image/*" hidden/> 
+                    <input type="file" id="photo" name="photo" accept="image/*, .pdf" hidden onChange={handlerFile}/> 
                     
                     
                 </div>

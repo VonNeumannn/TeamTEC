@@ -1,8 +1,21 @@
 import { collection, query, where, getDocs, deleteDoc, updateDoc, addDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 import { db } from "../../../constants/connection";
 import Profesor from "../../../model/Profesor";
 
 export const dynamic = 'force-dynamic'; // Force dynamic route behavior
+
+export const uploadFile = async (file: File, fileName : string) => {
+  // Create a root reference
+  const storage = getStorage();
+  const storageRef = ref(storage, 'profile/' + fileName);
+  const snapshot = await uploadBytes(storageRef, file);
+  if(snapshot){
+      console.log("Archivo subido correctamente");
+      return true;
+  }
+  return false;
+}
 
 export async function addProfesor(profesor: Profesor): Promise<boolean> {
     try {
@@ -19,6 +32,7 @@ export async function addProfesor(profesor: Profesor): Promise<boolean> {
           codigo: profesor.codigo,
           fotoPerfil: profesor.fotoPerfil,
           rol: profesor.rol,
+          estado:profesor.estado,
         };
         await addDoc(profesorsRef, profesorData);
         return true;
