@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Profile from '../../../public/profile-default.webp';
 import PopUp from '../components/popUpInformation';
 import { useState, useEffect } from "react";
-import { handlerAddData, handlerLoad } from "../../controller/profesorController";
+import { handlerAddData, VerifyPassword, VerifyEmail, handlerLoad  } from "../../controller/profesorController";
 import Profesor from '@/model/Profesor';
 
 export default function ProfessorRegister() {
@@ -14,6 +14,7 @@ export default function ProfessorRegister() {
     const [currentTitle, setcurrentTitle] = useState("");
     const [currentMessage, setcurrentMessage] = useState("");
     const [dataProfessors, setDataProfessors] = useState<Profesor[]>([]);
+    //const [dataProfessors, setDataProfessors] = useState<Profesor[]>([]);
     const [data, setData] = useState({
         name: '',
         lastName: '',
@@ -22,7 +23,7 @@ export default function ProfessorRegister() {
         cellphone: '',
         opciones: 'San José',
         password: '',
-        fotoPerfil: '',
+        fotoPerfil: Profile.src,
         passwordConfirm: '',
     });
 
@@ -40,62 +41,31 @@ export default function ProfessorRegister() {
         });
     };
 
-    const handleSubmit = () => {
-        let duplicado = false;
-        dataProfessors.forEach((professor) => {
-            if(professor.correo==data.email){
-                duplicado=true;
+    const handleSubmit = async () => {
+        for (const key in data) {
+            if (data.hasOwnProperty(key)) {
+                if (data[key as keyof typeof data] === '') {
+                    console.log(`${key} está vacío.`);
+                    setcurrentTitle(`Hay datos vacíos.`);
+                    setcurrentMessage("Se necesita agregar toda la información");
+                    openDialog();
+                    return;
+                }
             }
-        });
-        if (duplicado){
-            setcurrentTitle("Correo duplicado");
-            setcurrentMessage("El correo ingresado ya se encuentra registrado, por favor ingresar otro.");
-            openDialog();
-            return;
-        } else if(data.password!=data.passwordConfirm){
+        }
+        if(await VerifyPassword(data)){
+            if(await VerifyEmail(data,dataProfessors)){
+                handlerAddData(data,dataProfessors);
+            }
+            else{
+                setcurrentTitle("Correo duplicado");
+                setcurrentMessage("El correo ingresado ya se encuentra registrado, por favor ingresar otro.");
+                openDialog();
+            }
+        } else{
             setcurrentTitle("Contraseña erronea");
             setcurrentMessage("Las contraseñas no concuerdan");
             openDialog();
-            return;
-        }
-        else{
-            let cantidad=1;
-            dataProfessors.forEach((professor) => {
-                if(professor.centroAcademico==data.opciones){
-                    cantidad++;
-                }
-            });
-            let codigo="";
-            switch(data.opciones){
-                case "Cartago":
-                    codigo="CA-"+cantidad;
-                    break;
-                case "Alajuela":
-                    codigo="SL-"+cantidad;
-                    break;
-                case "San Carlos":
-                    codigo="SC-"+cantidad;
-                    break;
-                case "Limón":
-                    codigo="LI-"+cantidad;
-                    break;
-                default:
-                    codigo="SJ-"+cantidad;
-            }
-            const profesor: Profesor = new Profesor (
-                data.name,
-                data.lastName,
-                data.telephone,
-                data.email,
-                data.cellphone,
-                data.opciones,
-                data.password,
-                codigo,
-                data.fotoPerfil,
-                'Profesor',
-            );
-            handlerAddData(profesor);
-            console.log(data);
         }
     };
 
