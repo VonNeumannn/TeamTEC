@@ -3,7 +3,7 @@ import styles from '../page.module.css';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { handlerOneLoad, reloadPageAfterOperation, handlerUpdateController } from "../../controller/studentsController";
+import { handlerOneLoad, handlerUpdateController } from "../../controller/studentsController";
 import Estudiante from "../../model/Estudiante";
 
 export default function StudentEdit() {
@@ -72,7 +72,6 @@ export default function StudentEdit() {
             loadData[0].sede
           );
         handlerUpdateController(loadData[0].carne, student);
-        reloadPageAfterOperation();
         router.push('/viewStudents'); 
         // Aquí puedes agregar el código para editar el item
     }
