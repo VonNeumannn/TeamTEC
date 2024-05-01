@@ -101,7 +101,7 @@ export default function StudentRegister() {
         
                 <Image src={FileIcon} alt="profile" style={{ width: '45px', height: '45px' }} />
                 <span>Sube o arrastra un archivo</span>
-                <p>Archivos .csv o .xlsx solamente</p>
+                <p>Archivos .csv solamente</p>
                 <input 
                     type="file" 
                     id="file" 
