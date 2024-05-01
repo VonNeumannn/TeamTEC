@@ -2,6 +2,8 @@
 import styles from "../page.module.css";
 import Image from "next/image";
 import PopUp from '../components/popUpDelete';
+import CSVPopUp from '../components/popUpCSV';
+//import PopUpInfo from "../components/popUpInformation";
 import { BlueButton } from "../components/blueButton";
 import DownloadIcon from "../../../public/download_icon.svg";
 import SortIcon from "../../../public/sort_icon.svg";
@@ -13,6 +15,7 @@ import Estudiante from "../../model/Estudiante";
 
 export default function ViewStudents() {
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [dialogOpenCSV, setDialogOpenCSV] = useState(false);
     const [itemToDelete, setItemToDelete] = useState<Estudiante | null>(null);
     const router = useRouter();
     const [search, setSearch] = useState("");
@@ -24,9 +27,8 @@ export default function ViewStudents() {
         setDialogOpen(true);
     };
 
-    const closeDialog = () => {
-        console.log("Cerrando dialogo");
-        setDialogOpen(false);
+    const openDialogCSV = () => {
+        setDialogOpenCSV(true);
     };
 
     const handleClick = (tipo: string, sede: string) => {
@@ -86,11 +88,18 @@ export default function ViewStudents() {
         // Aquí puedes agregar el código para editar el item
     }
 
+    function handleDownload() {
+        setDialogOpenCSV(true);
+    }
+
+    function handleDownloadCancel() {
+        setDialogOpenCSV(false);
+    }
+
     function handleDelete(index: number) {
         const item = data[index];
         setDialogOpen(true);
-        setItemToDelete(item);
-        
+        setItemToDelete(item); 
     }
 
     function confirmDelete() {
@@ -134,6 +143,15 @@ export default function ViewStudents() {
     return (
         <main className={styles.main} id="main">
             <div>
+                {dialogOpenCSV && (
+                    <CSVPopUp  
+                        openDialog={openDialogCSV}
+                        closeDialog={handleDownloadCancel}
+                        dialogOpen={dialogOpenCSV}
+                        confirmType={handleDownloadCancel}
+                    />
+                )}
+                {dialogOpen && (
                 <PopUp
                     title="Alerta" 
                     content="¿Seguro de eliminar al estudiante?" 
@@ -142,6 +160,7 @@ export default function ViewStudents() {
                     dialogOpen={dialogOpen}
                     confirmDelete={confirmDelete}
                 />
+                )}
             </div>
             <div className={styles.teamContainer}>
                 <h1>Miembros equipo</h1>
@@ -151,7 +170,7 @@ export default function ViewStudents() {
                     onChange={(e) => setSearch(e.target.value)}/>
                     <BlueButton text="Buscar" onClick={() => {handleSubmit()}} />
                     <div className={styles.csvAddStudentContainer}>
-                        <button className={styles.downButton} onClick={() => handleClick("a","Cartago")} >
+                        <button className={styles.downButton} onClick={() => {handleDownload()}}>  
                             <Image src={DownloadIcon} alt="csv Icon" />
                             {"CSV"}
                         </button>

@@ -77,7 +77,7 @@ export const handleDeleteController = async (id: string) => {
 
 export const reloadPageAfterOperation = async () => {
     try {
-      await new Promise(resolve => setTimeout(resolve, 800));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       window.location.reload();
     } catch (error) {
       console.error("An error occurred during the operation:", error);
