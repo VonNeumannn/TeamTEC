@@ -3,7 +3,7 @@ import styles from '../page.module.css';
 import Link from 'next/link';
 import { BlueButton } from '../components/blueButton';
 import Image from 'next/image';
-import Profile from '../../../public/profile-default.webp';
+import Profile from '../../../public/Profile.png';
 import PopUp from '../components/popUpInformation';
 import { useState, useEffect } from "react";
 import { handlerAddData, VerifyPassword, VerifyEmail, handlerLoad, handlerUploadFile  } from "../../controller/profesorController";
