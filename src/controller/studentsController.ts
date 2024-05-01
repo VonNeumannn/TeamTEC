@@ -75,6 +75,55 @@ export const handleDeleteController = async (id: string) => {
 
 };
 
+export const createCSV = (data:Estudiante[], tipo: string, sede: string) => {
+    if (tipo=="local"){
+        const estudiantesFiltrados = data.filter(estudiante => estudiante.sede === sede);
+        const content=generateCSVContent(estudiantesFiltrados);
+        downloadCSV(content)
+    }
+    
+    else{
+        let content = '';
+        const tiposDeSede: string[] = Array.from(new Set(data.map(estudiante => estudiante.sede)));
+        tiposDeSede.forEach(sede => {
+            content += `Sede: ${sede}\n`;
+            content += 'Carne;Nombre;Primer apellido; Segundo apellido;Correo;Celular;Sede;\n'; 
+            data
+                .filter(estudiante => estudiante.sede === sede)
+                .forEach(estudiante => {
+                    content += `${estudiante.carne};${estudiante.nombre};${estudiante.primerApellido};${estudiante.segundoApellido};${estudiante.correo};${estudiante.celular};${estudiante.sede}\n`;
+                });
+    
+            content += '\n';
+        });
+        downloadCSV(content)
+    }
+};
+
+function estudianteToCSVRow(estudiante: Estudiante): string {
+    return `${estudiante.carne};${estudiante.nombre};${estudiante.primerApellido};${estudiante.segundoApellido};${estudiante.correo};${estudiante.celular};${estudiante.sede}\n`;
+}
+
+function generateCSVContent(estudiantes: Estudiante[]): string {
+    let csvContent = 'Carne;Nombre;Primer apellido; Segundo apellido;Correo;Celular;Sede;\n'; // Encabezados de columnas
+    estudiantes.forEach(estudiante => {
+        csvContent += estudianteToCSVRow(estudiante);
+    });
+    return csvContent;
+}
+
+function downloadCSV(csvContent: string): void {
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const downloadLink = document.createElement('a');
+    downloadLink.href = url;
+    downloadLink.download = "estudiantes.csv";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+    window.URL.revokeObjectURL(url);
+}
+
 export const reloadPageAfterOperation = async () => {
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
