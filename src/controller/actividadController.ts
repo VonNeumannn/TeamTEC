@@ -1,5 +1,5 @@
 import Profesor from "@/model/Profesor";
-import { getNextActivity } from "../app/DAO/daoActividad";
+import { getNextActivity, addActivitie, uploadFilePoster } from "../app/DAO/daoActividad";
 import Comentario from "@/model/Comentario";
 import Prueba from "@/model/Prueba";
 import { TipoActividad } from "@/model/TipoActividad";
@@ -19,6 +19,19 @@ interface activityData {
     responsable: Profesor;
     comentarios: Comentario[];
     pruebas: Prueba[];
+}
+
+interface activityDataPrueba {
+    nombre: string;
+    semanaRealizacion: number;
+    tipo: string;
+    modalidad: string;
+    fecha: string;
+    hora: string;
+    iniciarRecordatorio: string;
+    enlace: string;
+    afiche: string;
+
 }
 
 export const handlerNextActivity = async () => {
@@ -51,4 +64,16 @@ export const handlerNextActivity = async () => {
 }
 const setLocalStorage = (actividad: activityData) => {
     localStorage.setItem("actividad", JSON.stringify(actividad));
+}
+
+
+export const handlerAddActivity = async (actividad: activityDataPrueba, file : File, nameFile: string, router : any, openDialog:any) => {
+    let dataFile = await uploadFilePoster(file, nameFile);
+    let data = await addActivitie(actividad);
+    if (data && dataFile) {
+        console.log("Actividad agregada correctamente");
+        openDialog();
+    } else {
+        console.log("Error al agregar la actividad");
+    }
 }
