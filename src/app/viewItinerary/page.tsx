@@ -4,39 +4,36 @@ import Image from "next/image";
 import { BlueButton } from "../components/blueButton";
 import SortIcon from "../../../public/sort_icon.svg";
 import { useRouter } from 'next/navigation';
+import Actividad from "@/model/Actividad";
+import { TipoActividad } from "@/model/TipoActividad";
+import Profesor from "@/model/Profesor";
+import Comentario from "@/model/Comentario";
+import Prueba from "@/model/Prueba";
+import { handlerActivitiesIt } from "@/controller/actividadesItController";
+import { useEffect, useState } from "react";
 
 
 export default function ViewItinerary() {
+    const [actividades, setActividades] = useState([]);
 
-    const router = useRouter();
-    
-    const data = [
-        { semana: 1, nombre: 'Nombre 1', estado: 'Notificada' },
-        { semana: 2, nombre: 'Nombre 2', estado: 'Planeada' },
-        { semana: 3, nombre: 'Nombre 3', estado: 'Cancelada' },
-        { semana: 4, nombre: 'Nombre 4', estado: 'Notificada' },
-        { semana: 5, nombre: 'Nombre 5', estado: 'Planeada' },
-        { semana: 6, nombre: 'Nombre 6', estado: 'Cancelada' },
-        { semana: 7, nombre: 'Nombre 7', estado: 'Notificada' },
-        { semana: 8, nombre: 'Nombre 8', estado: 'Planeada' },
-        { semana: 9, nombre: 'Nombre 9', estado: 'Cancelada' },
-        { semana: 10, nombre: 'Nombre 10', estado: 'Notificada' },
-        { semana: 11, nombre: 'Nombre 11', estado: 'Planeada' },
-        { semana: 12, nombre: 'Nombre 12', estado: 'Cancelada' },
-        { semana: 13, nombre: 'Nombre 13', estado: 'Notificada' },
-        { semana: 14, nombre: 'Nombre 14', estado: 'Planeada' },
-        { semana: 15, nombre: 'Nombre 15', estado: 'Cancelada' },
-        { semana: 16, nombre: 'Nombre 16', estado: 'Notificada' }
-    ];
+    useEffect(() => {
+        localStorage.removeItem("actividades");
+        const itinerarioId = localStorage.getItem('itinerarioId') ?? '';
+        handlerActivitiesIt(itinerarioId).then(() => {
+            var actividades = JSON.parse(localStorage.getItem("actividades") || "[]");
+            console.log(actividades);
+            setActividades(actividades);
+        });
+        localStorage.removeItem("actividades");
+    }, []);
 
     function handleEdit(index: number) {
-        const item = data[index];
-        console.log(`Editing item: ${item.semana} ${item.nombre} ${item.estado}`);
     }
 
     function handleDelete(index: number) {
-        console.log(`Deleting item at index: ${index}`);
     }
+
+    const router = useRouter();
 
     return (
         <main className={styles.main} id="main">
@@ -75,20 +72,20 @@ export default function ViewItinerary() {
                         </tbody>
                     </table>
                     <div className={styles.tableContentContainer}>
-                        <table>
-                            <tbody>
-                                {data.map((item, index) => (
+                        <table id="tableAct">
+                            <tbody id="bodyTableAct">
+                                {actividades.map((act: any, index: number) => (
                                     <tr key={index}>
-                                        <td>{item.semana}</td>
-                                        <td>{item.nombre}</td>
-                                        <td>{item.estado}</td>
+                                        <td id={`semanaAct${index}`}>{act.semana}</td>
+                                        <td id={`nombreAct${index}`}>{act.nombre}</td>
+                                        <td id={`estadoAct${index}`}>{act.estado}</td>
                                         <td>
                                             <BlueButton text="Detalles" onClick={() => {}} />
                                             <button className={styles.acceptButton} onClick={() => {
                                                 //enviar a la pantalla de editar
                                                 router.push('/edit_activity');
                                             }}>Editar</button>
-                                            <button className={styles.deleteButton} onClick={() => handleDelete(index)}>Eliminar</button>
+                                            <button className={styles.deleteButton} onClick={() => handleDelete(0)}>Eliminar</button>
                                         </td>
                                     </tr>
                                 ))}
@@ -98,5 +95,59 @@ export default function ViewItinerary() {
                 </div>
             </div>
         </main>
+    );
+}
+
+interface activityData {
+    nombre: string;
+    estado: string;
+    semana: number;
+    tipo: TipoActividad;
+    modalidad: string;
+    fecha: Date;
+    hora: string;
+    activadorRecordatorio: Date;
+    link: string;
+    afiche: string;
+    encargado: Profesor[];
+    responsable: Profesor;
+    comentarios: Comentario[];
+    pruebas: Prueba[];
+}
+
+const getLocalStorage = () => {
+    const actividad = localStorage.getItem("actividad");
+    const actividadJson = JSON.parse(actividad ? actividad : "{}");
+    const actividadData: activityData = {
+        nombre: actividadJson.nombre,
+        estado: actividadJson.estado,
+        semana: actividadJson.semana,
+        tipo: actividadJson.tipo,
+        modalidad: actividadJson.modalidad,
+        fecha: actividadJson.fecha,
+        hora: actividadJson.hora,
+        activadorRecordatorio: actividadJson.activadorRecordatorio,
+        link: actividadJson.link,
+        afiche: actividadJson.afiche,
+        encargado: actividadJson.encargado,
+        responsable: actividadJson.responsable,
+        comentarios: actividadJson.comentarios,
+        pruebas: actividadJson.pruebas
+    };
+    return new Actividad(
+        actividadData.nombre,
+        actividadData.estado,
+        actividadData.semana,
+        actividadData.tipo,
+        actividadData.modalidad,
+        actividadData.fecha,
+        actividadData.hora,
+        actividadData.activadorRecordatorio,
+        actividadData.link,
+        actividadData.afiche,
+        actividadData.encargado,
+        actividadData.responsable,
+        actividadData.comentarios,
+        actividadData.pruebas
     );
 }
