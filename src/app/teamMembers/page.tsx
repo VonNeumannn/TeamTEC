@@ -6,12 +6,13 @@ import Image from "next/image";
 import SortIcon from "../../../public/sort_icon.svg";
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
-import { handlerLoad, handleDeleteController, reloadPageAfterOperation, handleDeleteConfirmation } from "../../controller/profesorController";
+import { handlerLoad, handleDeleteController, reloadPageAfterOperation, handleDeleteConfirmation, handlerPassData } from "../../controller/profesorController";
 import Profesor from '@/model/Profesor';
 
 export default function MainMenuPage() {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [search, setSearch] = useState("");
+    const router = useRouter();
     const [itemToDelete, setItemToDelete] = useState<Profesor | null>(null);
     const [data, setData] = useState<Profesor[]>([]);
     const [dataTemp, setDataTemp] = useState<Profesor[]>([]);
@@ -23,6 +24,15 @@ export default function MainMenuPage() {
     const closeDialog = () => {
         setDialogOpen(false);
     };
+
+    /*let codigo = '';
+    const storedData = localStorage.getItem("user");
+    if (storedData) {
+        const userData = JSON.parse(storedData);
+        codigo = userData.codigo;
+    } else {
+        console.log("No data found in localStorage for key 'user'");
+    }*/
 
     useEffect(() => {
         const fetchData = async () => {
@@ -41,7 +51,10 @@ export default function MainMenuPage() {
 
     function handleEdit(index: number) {
         const item = data[index];
-        console.log(`Editing item: ${item.nombre} ${item.apellidos} ${item.codigo}`);
+        if("CA-1"==item.codigo || item.rol=="Administradora"){
+            handlerPassData(item);
+            router.push(`/professor_editor`); 
+        };
         // Aquí puedes agregar el código para editar el item
     }
 

@@ -1,5 +1,5 @@
 import Profesor from "../model/Profesor";
-import { addProfesor, loadProfessor, uploadFile, deleteProfessor, deleteConfirmation } from "../app/DAO/profesordao/daoProfesor";
+import { updateProfessor, addProfesor, loadProfessor, uploadFile, deleteProfessor, deleteConfirmation, loadOneProfessor } from "../app/DAO/profesordao/daoProfesor";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -73,6 +73,30 @@ export const handlerAddData = async (data: any, dataProfessors:Profesor[]) => {
     }
 };
 
+export const handlerUpdateController = async (id:string, data: any, codigo:string, rol:string, estado:string) => {
+    try{
+        const professor: Profesor = new Profesor (
+            data.name,
+            data.lastName,
+            data.telephone,
+            data.email,
+            data.cellphone,
+            data.opciones,
+            data.password,
+            codigo,
+            data.fotoPerfil,
+            rol,
+            estado
+          );
+        await updateProfessor(id, professor);
+        return true;
+    } catch (error) {
+        console.error("Error loading professors:", error);
+        return false;
+    }
+};
+
+
 export const VerifyEmail = async (data: any, dataProfessors: Profesor[]) => {
     try{
         let duplicado = false;
@@ -119,9 +143,24 @@ export const handlerLoad = async () => {
 
 };
 
-export const handlerPassData = async (profesor: Profesor) => {
+export const handlerOneLoad = async (id:string) => {
     try{
-        setLocalStorage(profesor);
+        const data = await loadOneProfessor(id);
+        if (!data || data.length === 0) {
+            console.log("No se encontro el profesor");
+            return [];
+        } 
+        return data;
+    } catch (error) {
+        console.error("Error loading professors:", error);
+        return [];
+    }
+
+};
+
+export const handlerPassData = async (professor: Profesor) => {
+    try{
+        setLocalStorage(professor);
         return true;
     } catch (error) {
         console.error("Error loading profesors:", error);

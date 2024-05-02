@@ -89,3 +89,49 @@ export async function addProfesor(profesor: Profesor): Promise<boolean> {
       return false;
     }
   }
+
+  export async function updateProfessor(id: string, newData: Profesor): Promise<boolean> {
+    try {
+      const database = db;
+      const professorsRef = collection(database, 'usuarios');
+      const professorData = {
+        nombre: newData.nombre,
+        apellidos: newData.apellidos,
+        telefono: newData.telefono,
+        correo: newData.correo,
+        celular: newData.celular,
+        centroAcademico: newData.centroAcademico,
+        contraseña: newData.contraseña,
+        codigo: newData.codigo,
+        fotoPerfil: newData.fotoPerfil,
+        rol: newData.rol,
+        estado: newData.estado,
+      };
+      const professorQuery = query(professorsRef, where("correo", "==", id));
+      const querySnapshot = await getDocs(professorQuery);
+      if (querySnapshot.empty) {
+        console.log("hemos fallado")
+        return false;
+      }
+      await Promise.all(querySnapshot.docs.map(async (doc) => {
+        await updateDoc(doc.ref, professorData);
+      }));
+      return true;
+    } catch (error) {
+      console.error("Error updating professor:", error);
+      return false;
+    }
+  }
+
+  export async function loadOneProfessor(id: string): Promise<Profesor[]> {
+    const database = db;
+    const professorsRef = collection(database, 'usuarios');
+    const professor = query(professorsRef, where("correo", "==", id));
+    const querySnapshot = await getDocs(professor);
+    let ProfesorData: Profesor;
+    let data: Profesor[] =[];
+    querySnapshot.forEach((doc) => {
+        data.push(doc.data() as Profesor);
+    });
+    return data;
+  }

@@ -209,7 +209,7 @@ export default function ProfessorRegister() {
                     
                     <Image src={Profile} alt="Profile" />
                     <label htmlFor="photo">Subir foto de perfil</label>
-                    <input type="file" id="photo" name="photo" accept="image/*, .pdf" hidden onChange={handlerFile}/> 
+                    <input type="file" id="photo" name="photo" accept="image/*" hidden onChange={handlerFile}/> 
                     
                     
                 </div>
