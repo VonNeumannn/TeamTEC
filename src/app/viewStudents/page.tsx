@@ -3,13 +3,12 @@ import styles from "../page.module.css";
 import Image from "next/image";
 import PopUp from '../components/popUpDelete';
 import CSVPopUp from '../components/popUpCSV';
-//import PopUpInfo from "../components/popUpInformation";
 import { BlueButton } from "../components/blueButton";
 import DownloadIcon from "../../../public/download_icon.svg";
 import SortIcon from "../../../public/sort_icon.svg";
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
-import { handlerLoad, handleDeleteController, reloadPageAfterOperation, handlerPassData } from "../../controller/studentsController";
+import { handlerLoad, handleDeleteController, reloadPageAfterOperation, handlerPassData, createCSV } from "../../controller/studentsController";
 import Estudiante from "../../model/Estudiante";
 
 
@@ -22,87 +21,44 @@ export default function ViewStudents() {
     const [data, setData] = useState<Estudiante[]>([]);
     const [dataTemp, setDataTemp] = useState<Estudiante[]>([]);
     
-    /*let sede = '';
+    let sede = '';
     const storedData = localStorage.getItem("user");
     if (storedData) {
         const userData = JSON.parse(storedData);
-        sede = userData.sede;
+        sede = userData.centroAcademico;
     } else {
         console.log("No data found in localStorage for key 'user'");
-    }*/
+    }
 
     const openDialog = () => {
         console.log("Abriedo dialogo");
         setDialogOpen(true);
     };
 
+    const closeDialog = () => {
+        setDialogOpen(false);
+    };
+
     const openDialogCSV = () => {
         setDialogOpenCSV(true);
     };
-
-    const createCSV = (tipo: string, sede: string) => {
-        if (tipo=="local"){
-            const estudiantesFiltrados = data.filter(estudiante => estudiante.sede === sede);
-            const content=generateCSVContent(estudiantesFiltrados);
-            downloadCSV(content)
-        }
-        
-        else{
-            let content = '';
-            const tiposDeSede: string[] = Array.from(new Set(data.map(estudiante => estudiante.sede)));
-            tiposDeSede.forEach(sede => {
-                content += `Sede: ${sede}\n`;
-                content += 'Carne;Nombre;Primer apellido; Segundo apellido;Correo;Celular;Sede;\n'; 
-                data
-                    .filter(estudiante => estudiante.sede === sede)
-                    .forEach(estudiante => {
-                        content += `${estudiante.carne};${estudiante.nombre};${estudiante.primerApellido};${estudiante.segundoApellido};${estudiante.correo};${estudiante.celular};${estudiante.sede}\n`;
-                    });
-        
-                content += '\n';
-            });
-            downloadCSV(content)
-        }
+    const closeDialogCSV = () => {
+        setDialogOpenCSV(false);
     };
 
-    function estudianteToCSVRow(estudiante: Estudiante): string {
-        return `${estudiante.carne};${estudiante.nombre};${estudiante.primerApellido};${estudiante.segundoApellido};${estudiante.correo};${estudiante.celular};${estudiante.sede}\n`;
-    }
-
-    function generateCSVContent(estudiantes: Estudiante[]): string {
-        let csvContent = 'Carne;Nombre;Primer apellido; Segundo apellido;Correo;Celular;Sede;\n'; // Encabezados de columnas
-        estudiantes.forEach(estudiante => {
-            csvContent += estudianteToCSVRow(estudiante);
-        });
-        return csvContent;
-    }
-
-    function downloadCSV(csvContent: string): void {
-        const blob = new Blob([csvContent], { type: 'text/csv' });
-        const url = window.URL.createObjectURL(blob);
-        const downloadLink = document.createElement('a');
-        downloadLink.href = url;
-        downloadLink.download = "estudiantes.csv";
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-        window.URL.revokeObjectURL(url);
-    }
 
     function handleEdit(index: number) {
         const item = data[index];
-        handlerPassData(item);
-        console.log(`Editing item: ${item.carne} ${item.nombre}`);
-        router.push(`/edit_student`); 
+        if(sede==item.sede){
+            handlerPassData(item);
+            console.log(`Editing item: ${item.carne} ${item.nombre}`);
+            router.push(`/edit_student`); 
+        };
         // Aquí puedes agregar el código para editar el item
     }
 
     function handleDownload(tipo:string) {
-        createCSV(tipo, "Cartago");
-    }
-
-    function handleDownloadCancel() {
-        setDialogOpenCSV(false);
+        createCSV(data, tipo, sede);
     }
 
     function handleDelete(index: number) {
@@ -119,10 +75,6 @@ export default function ViewStudents() {
         } else {
             console.error("El valor a eliminar es null.");
         }
-    }
-    
-    function cancelDelete() {
-        setDialogOpen(false);
     }
 
     const handleSubmit = () => {
@@ -155,7 +107,7 @@ export default function ViewStudents() {
                 {dialogOpenCSV && (
                     <CSVPopUp  
                         openDialog={openDialogCSV}
-                        closeDialog={handleDownloadCancel}
+                        closeDialog={closeDialogCSV}
                         dialogOpen={dialogOpenCSV}
                         confirmType={handleDownload}
                     />
@@ -165,7 +117,7 @@ export default function ViewStudents() {
                         title="Alerta" 
                         content="¿Seguro de eliminar al estudiante?" 
                         openDialog={openDialog}
-                        closeDialog={cancelDelete}
+                        closeDialog={closeDialog}
                         dialogOpen={dialogOpen}
                         confirmDelete={confirmDelete}
                     />
