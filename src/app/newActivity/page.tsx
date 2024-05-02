@@ -3,6 +3,7 @@ import styles from "../page.module.css";
 import { BlueButton } from "../components/blueButton";
 import Image from "next/image";
 import UploadIcon from "../../../public/upload.svg";
+import router from "next/router";
 
 export default function NewActivity() {
 
@@ -70,8 +71,12 @@ export default function NewActivity() {
                     </div>
                 </div>
                 <div className={styles.buttonActivityContainer}>
-                    <BlueButton text="Crear actividad" onClick={() => { }} />
-                    <BlueButton text="Encargados" onClick={() => { }} />
+                    <BlueButton text="Crear actividad" onClick={() => {
+                        //createActivity().then(() => {
+                           // router.push('/view_itinerary');
+                        //});
+                    } } type={undefined} />
+                    <BlueButton text="Encargados" onClick={() => { } } type={undefined} />
                 </div>
             </div>
         </main>

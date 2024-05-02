@@ -59,7 +59,10 @@ export default function ViewItinerary() {
                         }
                     }} type={undefined} />
                     <div className={styles.addItineraryContainer}>
-                        <BlueButton text="Agregar Actividad" onClick={() => { } } type={undefined} />
+                        <BlueButton text="Agregar Actividad" onClick={() => { 
+                            //enviar a la pantalla de agregar
+                            router.push('/newActivity');
+                        } } type={undefined} />
                     </div>
                 </div>
                 <div className={styles.tableContainer}>

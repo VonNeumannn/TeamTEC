@@ -1,6 +1,10 @@
 import Actividad from "@/model/Actividad";
-import { deleteAct, getActivitiesIt, getLastActivity } from "../app/DAO/daoActividadesIt";
+import { addActivity, deleteAct, getActivitiesIt, getLastActivity } from "../app/DAO/daoActividadesIt";
 import { set } from "firebase/database";
+import { TipoActividad } from "@/model/TipoActividad";
+import Profesor from "@/model/Profesor";
+import Comentario from "@/model/Comentario";
+import Prueba from "@/model/Prueba";
 
 interface activitiesItData {
     semana: number;
@@ -115,6 +119,19 @@ export const searchActivityByName = async (name: string, id: string) => {
     setLocalStorage(actividades);
 }
 
+//crear actividad
+/*
+export const createActivity = async (
+    id: string, semana: number, nombre: string, estado: string, tipoActividad: TipoActividad, 
+    modalidad: string, fecha: Date, hora: string, activadorRecordatorio: Date, link: string, afiche: string, 
+    encargado: Profesor[], responsable: Profesor, comentarios: Comentario[], pruebas: Prueba[]) => {
+
+    const act = new Actividad(
+        nombre, estado, semana, tipoActividad, modalidad, fecha, hora, activadorRecordatorio, 
+        link, afiche, encargado, responsable, comentarios, pruebas);
+    await addActivity(id, act);
+
+}*/
 
 const setLocalStorage = (actividades: activitiesItData[]) => {
     localStorage.setItem("actividades", JSON.stringify(actividades));

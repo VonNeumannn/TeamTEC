@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, orderBy, DocumentData, deleteDoc } from "firebase/firestore";
+import { collection, query, where, getDocs, orderBy, DocumentData, deleteDoc, addDoc } from "firebase/firestore";
 import { db } from "../../constants/connection";
 import Actividad from "@/model/Actividad";
 
@@ -60,4 +60,17 @@ export async function deleteAct(itID: string, nombreAct: string): Promise<boolea
       console.error("Error deleting activity:", error);
       return false;
       }
+}
+
+//agregar actividad
+export async function addActivity(itID: string, actividad: Actividad): Promise<boolean> {
+    try {
+        const database = db;
+        const activityRef = collection(database, `itinerarios/${itID}/actividades`);
+        await addDoc(activityRef, actividad); // Fix: Use addDoc instead of add
+        return true;
+    } catch (error) {
+        console.error("Error adding activity:", error);
+        return false;
+    }
 }
