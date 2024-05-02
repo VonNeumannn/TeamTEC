@@ -4,16 +4,17 @@ import { useEffect } from "react";
 import { BlueButton } from './blueButton';
 import { useState } from 'react';
 
-interface PopUpInformationProps {
+interface PopUpInputProps {
     title: string;
     content: string;
+    input: string;
     openDialog: () => void;
     closeDialog: () => void;
     dialogOpen: boolean; // Agregamos dialogOpen como prop
   }
 
-export default function PopUpInformation(PopUpInformationProps: PopUpInformationProps) {
-    const { title, content, openDialog, closeDialog, dialogOpen } = PopUpInformationProps;
+export default function PopUpInput(PopUpInputProps: PopUpInputProps) {
+    const { title, content, input, openDialog, closeDialog, dialogOpen } = PopUpInputProps;
 
  
     useEffect(() => {
@@ -23,7 +24,6 @@ export default function PopUpInformation(PopUpInformationProps: PopUpInformation
 
             if (dialog) {
                 dialog.classList.add(styles.show);
-                console.log("Hola mundo");
                 dialog.showModal();
             }
 
@@ -35,7 +35,6 @@ export default function PopUpInformation(PopUpInformationProps: PopUpInformation
             const dialog = document.getElementById('dialogPopUpInfo') as HTMLDialogElement | null;
             if (dialog) {
                 dialog.classList.remove(styles.show);
-                console.log("Hola mundo");
                 dialog.close();
             }
             const main = document.getElementById('main') as HTMLDivElement | null;
@@ -45,15 +44,13 @@ export default function PopUpInformation(PopUpInformationProps: PopUpInformation
         }
       }, [dialogOpen]);
     
-
-
-    
     
     return (
         <dialog id={'dialogPopUpInfo'}  className={styles.dialogPopUpInfo} >
             <h2>{title}</h2>
             <p>{content}</p>
-            <BlueButton text="Aceptar" onClick={closeDialog} type='button'/>
+            <input type="text" />
+            <BlueButton text="Guardar" onClick={closeDialog} type='button'/>
         </dialog>
     );
 }

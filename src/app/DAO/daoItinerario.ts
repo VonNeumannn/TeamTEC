@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
+import { collection, query, where, getDocs, orderBy, addDoc } from "firebase/firestore";
 import { db } from "../../constants/connection";
 import Itinerario from "@/model/Itinerario";
 
@@ -15,3 +15,14 @@ export async function getItineraries() {
     });
     return itineraries;
 }
+
+export async function addItinerary(nombre: string, autor: string) {
+    const database = db;
+    const itineraryRef = collection(database, 'itinerarios');
+    const itinerary = {
+        nombre: nombre,
+        autor: autor
+    };
+    await addDoc(itineraryRef, itinerary);
+}
+

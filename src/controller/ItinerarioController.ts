@@ -1,5 +1,5 @@
 import Profesor from "@/model/Profesor";
-import { getItineraries } from "../app/DAO/daoItinerario";
+import { addItinerary, getItineraries } from "../app/DAO/daoItinerario";
 
 interface itinerarioData {
     nombre: string;
@@ -23,4 +23,9 @@ export const handlerItinerario = async () => {
 
 const setLocalStorage = (itinerario: itinerarioData[]) => {
     localStorage.setItem("itinerario", JSON.stringify(itinerario));
+}
+
+export const handlerAddItinerario = async (nombre: string, autor: string) => {
+    await addItinerary(nombre, autor);
+    handlerItinerario();
 }

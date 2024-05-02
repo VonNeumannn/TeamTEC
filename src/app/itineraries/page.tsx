@@ -4,10 +4,10 @@ import Image from "next/image";
 import { BlueButton } from "../components/blueButton";
 import SortIcon from "../../../public/sort_icon.svg";
 import { useRouter } from 'next/navigation';
-import PopUp from "../components/popUpInformation";
+import PopUpInput from "../components/popUpInput";
 import { useState } from "react";
 import { useEffect } from "react";
-import { handlerItinerario } from "@/controller/ItinerarioController";
+import { handlerAddItinerario, handlerItinerario } from "@/controller/ItinerarioController";
 import { db } from '@/constants/connection';
 import { collection, query, where, getDocs } from "firebase/firestore";
 
@@ -34,15 +34,21 @@ export default function ViewItineraries() {
 
     const closeDialog = () => {
         console.log("Cerrando dialogo");
+        //get input data
+        const input = document.getElementsByTagName('input');
+        console.log(input[0].value);
+        //add to db
+        handlerAddItinerario(input[0].value, "Profesor1");
+
         setDialogOpen(false);
     };
     
     return (
         <main className={styles.main} id="main">
-            <PopUp 
+            <PopUpInput 
                 title="Nuevo itinerario" 
                 content="Nombre"
-                 //ponerle input 
+                input="Nombre del itinerario"
                 openDialog={openDialog}
                 closeDialog={closeDialog}
                 dialogOpen={dialogOpen}
@@ -102,7 +108,6 @@ export default function ViewItineraries() {
 }
 
 
-
 const setId_To_LS = (nomb: string) => {
     async function getItinerarioId(nombre: string) {
         const q = query(collection(db, "itinerarios"), where("nombre", "==", nombre));
@@ -114,3 +119,4 @@ const setId_To_LS = (nomb: string) => {
     }
     getItinerarioId(nomb);
 }
+
