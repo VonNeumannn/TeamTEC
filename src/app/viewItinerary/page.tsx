@@ -9,7 +9,7 @@ import { TipoActividad } from "@/model/TipoActividad";
 import Profesor from "@/model/Profesor";
 import Comentario from "@/model/Comentario";
 import Prueba from "@/model/Prueba";
-import { handlerActivitiesIt } from "@/controller/actividadesItController";
+import { handlerActivitiesIt, handlerDeleteActivity } from "@/controller/actividadesItController";
 import { useEffect, useState } from "react";
 
 
@@ -30,7 +30,11 @@ export default function ViewItinerary() {
     function handleEdit(index: number) {
     }
 
-    function handleDelete(index: number) {
+    function handleDelete(nombre: string, index: number) {
+        handlerDeleteActivity(localStorage.getItem('itinerarioId') ?? '', nombre).then(() => {
+            setActividades(actividades.filter((act: any, i: number) => i !== index));
+        }
+        );
     }
 
     const router = useRouter();
@@ -42,9 +46,9 @@ export default function ViewItinerary() {
                 <p>Buscar semana</p>
                 <div className={styles.searchAddContainer}>
                     <input type="text" />
-                    <BlueButton text="Buscar" onClick={() => { }} />
+                    <BlueButton text="Buscar" onClick={() => { } } type={undefined} />
                     <div className={styles.addItineraryContainer}>
-                        <BlueButton text="Agregar Actividad" onClick={() => { }} />
+                        <BlueButton text="Agregar Actividad" onClick={() => { } } type={undefined} />
                     </div>
                 </div>
                 <div className={styles.tableContainer}>
@@ -80,12 +84,12 @@ export default function ViewItinerary() {
                                         <td id={`nombreAct${index}`}>{act.nombre}</td>
                                         <td id={`estadoAct${index}`}>{act.estado}</td>
                                         <td>
-                                            <BlueButton text="Detalles" onClick={() => {}} />
+                                            <BlueButton text="Detalles" onClick={() => { } } type={undefined} />
                                             <button className={styles.acceptButton} onClick={() => {
                                                 //enviar a la pantalla de editar
                                                 router.push('/edit_activity');
                                             }}>Editar</button>
-                                            <button className={styles.deleteButton} onClick={() => handleDelete(0)}>Eliminar</button>
+                                            <button className={styles.deleteButton} onClick={() => handleDelete(act.nombre, index)}>Eliminar</button>
                                         </td>
                                     </tr>
                                 ))}

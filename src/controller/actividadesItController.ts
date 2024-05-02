@@ -36,4 +36,4 @@ export const handlerDeleteActivity = async (itID: string, actID: string) => {
         console.error("Error deleting activity:", error);
         return false;
     }
-}
+} 

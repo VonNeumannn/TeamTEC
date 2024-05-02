@@ -60,4 +60,4 @@ export async function deleteAct(itID: string, nombreAct: string): Promise<boolea
       console.error("Error deleting activity:", error);
       return false;
       }
-  }
+}

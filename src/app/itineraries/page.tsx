@@ -58,9 +58,9 @@ export default function ViewItineraries() {
                 <p>Buscar Itinerarios</p>
                 <div className={styles.searchAddContainer}>
                     <input type="text" />
-                    <BlueButton text="Buscar" onClick={() => { }} />
+                    <BlueButton text="Buscar" onClick={() => { } } type={undefined} />
                     <div className={styles.addItineraryContainer}>
-                        <BlueButton text="Agregar Itinerario" onClick={openDialog} />
+                        <BlueButton text="Agregar Itinerario" onClick={openDialog} type={undefined} />
                     </div>
                 </div>
                 <div className={styles.tableContainer}>
