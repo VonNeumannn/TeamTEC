@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, deleteDoc, updateDoc, addDoc } from "firebase/firestore";
+import { collection, query, where, getDocs, deleteDoc, updateDoc, addDoc,doc  } from "firebase/firestore";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 import { db } from "../../../constants/connection";
 import Profesor from "../../../model/Profesor";
@@ -52,4 +52,40 @@ export async function addProfesor(profesor: Profesor): Promise<boolean> {
         data.push(doc.data() as Profesor);
     });
     return data;
+  }
+
+  export async function deleteProfessor(id : string): Promise<boolean> {
+    try{
+      const database = db;
+      const professorsRef = collection(database, 'usuarios');
+      const professor = query(professorsRef, where("correo", "==", id));
+      const querySnapshot = await getDocs(professor);
+      if (querySnapshot.empty) {
+        return false;
+      }
+      querySnapshot.forEach(async (docSnap) => {
+        const professorDocRef = doc(database, 'usuarios', docSnap.id);
+        await updateDoc(professorDocRef, { estado: "Inhabilitado" });
+    });
+      return true;
+    } catch (error) {
+      console.error("Error deleting professor:", error);
+      return false;
+      }
+  }
+
+  export async function deleteConfirmation(mensaje:string,id:string): Promise<boolean> {
+    try {
+      const database = db;
+      const mensajesRef = collection(database, 'confirmacion');
+        const mensajeData = {
+          correoProfesor: id,
+          porque: mensaje,
+        };
+        await addDoc(mensajesRef, mensajeData);
+        return true;
+    } catch (error) {
+      console.error("Error adding mensaje:", error);
+      return false;
+    }
   }

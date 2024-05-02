@@ -1,5 +1,5 @@
 import Profesor from "../model/Profesor";
-import { addProfesor, loadProfessor, uploadFile } from "../app/DAO/profesordao/daoProfesor";
+import { addProfesor, loadProfessor, uploadFile, deleteProfessor, deleteConfirmation } from "../app/DAO/profesordao/daoProfesor";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -129,6 +129,37 @@ export const handlerPassData = async (profesor: Profesor) => {
     }
 
 };
+
+export const handleDeleteController = async (id: string) => {
+    try{
+        await deleteProfessor(id);
+        return true;
+    } catch (error) {
+        console.error("Error eliminando el profesor:", error);
+        return false;
+    }
+
+};
+
+export const handleDeleteConfirmation = async (mensaje: string, id: string) => {
+    try{
+        await deleteConfirmation(mensaje,id);
+        return true;
+    } catch (error) {
+        console.error("Error eliminando el profesor:", error);
+        return false;
+    }
+
+};
+
+export const reloadPageAfterOperation = async () => {
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      window.location.reload();
+    } catch (error) {
+      console.error("An error occurred during the operation:", error);
+    }
+  };
 
 const setLocalStorage = (profesor : profesorData) => {
     localStorage.setItem("profesor", JSON.stringify(profesor));
