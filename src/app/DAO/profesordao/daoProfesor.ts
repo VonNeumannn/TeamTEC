@@ -74,6 +74,26 @@ export async function addProfesor(profesor: Profesor): Promise<boolean> {
       }
   }
 
+  export async function addProfessor(id : string): Promise<boolean> {
+    try{
+      const database = db;
+      const professorsRef = collection(database, 'usuarios');
+      const professor = query(professorsRef, where("correo", "==", id));
+      const querySnapshot = await getDocs(professor);
+      if (querySnapshot.empty) {
+        return false;
+      }
+      querySnapshot.forEach(async (docSnap) => {
+        const professorDocRef = doc(database, 'usuarios', docSnap.id);
+        await updateDoc(professorDocRef, { estado: "Activo" });
+    });
+      return true;
+    } catch (error) {
+      console.error("Error deleting professor:", error);
+      return false;
+      }
+  }
+
   export async function deleteConfirmation(mensaje:string,id:string): Promise<boolean> {
     try {
       const database = db;

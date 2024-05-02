@@ -1,5 +1,5 @@
 import Profesor from "../model/Profesor";
-import { updateProfessor, addProfesor, loadProfessor, uploadFile, deleteProfessor, deleteConfirmation, loadOneProfessor } from "../app/DAO/profesordao/daoProfesor";
+import { addProfessor, updateProfessor, addProfesor, loadProfessor, uploadFile, deleteProfessor, deleteConfirmation, loadOneProfessor } from "../app/DAO/profesordao/daoProfesor";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -172,6 +172,17 @@ export const handlerPassData = async (professor: Profesor) => {
 export const handleDeleteController = async (id: string) => {
     try{
         await deleteProfessor(id);
+        return true;
+    } catch (error) {
+        console.error("Error eliminando el profesor:", error);
+        return false;
+    }
+
+};
+
+export const handleAddMemberController = async (id: string) => {
+    try{
+        await addProfessor(id);
         return true;
     } catch (error) {
         console.error("Error eliminando el profesor:", error);

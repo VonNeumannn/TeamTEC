@@ -103,7 +103,7 @@ export default function MainMenuPage() {
                     onChange={(e) => setSearch(e.target.value)} />
                     <BlueButton text="Buscar"  onClick={() => {handleSubmit()}} />
                     <div className={styles.addContainer}>
-                        <BlueButton text="Agregar Profesor" onClick={() => { }} />
+                        <BlueButton text="Agregar Profesor" onClick={() => {router.push(`/addMember`)}} />
                     </div>
                 </div>
                 <div className={styles.tableContainer}>
