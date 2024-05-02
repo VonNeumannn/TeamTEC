@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import PopUpInput from "../components/popUpInput";
 import { useState } from "react";
 import { useEffect } from "react";
-import { handlerAddItinerario, handlerItinerario } from "@/controller/ItinerarioController";
+import { handlerAddItinerario, handlerItinerario, searchItineraryByName, sortByAuthor, sortByName } from "@/controller/ItinerarioController";
 import { db } from '@/constants/connection';
 import { collection, query, where, getDocs } from "firebase/firestore";
 
@@ -57,8 +57,21 @@ export default function ViewItineraries() {
                 <h1>Itinerarios</h1>
                 <p>Buscar Itinerarios</p>
                 <div className={styles.searchAddContainer}>
-                    <input type="text" />
-                    <BlueButton text="Buscar" onClick={() => { } } type={undefined} />
+                    <input id="barraBuscadora" name="Barra" type="text" />
+                    <BlueButton text="Buscar" onClick={() => { 
+                        //buscar itinerario
+                        const inputBarra = document.getElementById("barraBuscadora") as HTMLInputElement;
+                        if(inputBarra){
+                            console.log(inputBarra.value);
+                            console.log("Buscando itinerario");
+                            //buscar en db
+                            searchItineraryByName(inputBarra.value).then(() => {
+                                var itinerarios = JSON.parse(localStorage.getItem("itinerario") as string);
+                                console.log(itinerarios);
+                                setItinerarios(itinerarios);
+                            });
+                        }
+                    }} type={undefined} />
                     <div className={styles.addItineraryContainer}>
                         <BlueButton text="Agregar Itinerario" onClick={openDialog} type={undefined} />
                     </div>
@@ -68,12 +81,26 @@ export default function ViewItineraries() {
                         <tbody>
                             <tr>
                                 <th className={styles.pasenZelda}>Nombre
-                                    <button className={styles.sortButton} onClick={() => { }} >
+                                    <button className={styles.sortButton} onClick={() => {
+                                        //ordenar por nombre
+                                        sortByName().then(() => {
+                                            var itinerarios = JSON.parse(localStorage.getItem("itinerario") as string);
+                                            console.log(itinerarios);
+                                            setItinerarios(itinerarios);
+                                        });
+                                     }} >
                                         <Image src={SortIcon} alt="sort icon" className={styles.sortButtonIcon} />
                                     </button>
                                 </th>
                                 <th className={styles.pasenZelda}>Autor
-                                    <button className={styles.sortButton} onClick={() => { }} >
+                                    <button className={styles.sortButton} onClick={() => { 
+                                        //ordenar por autor
+                                        sortByAuthor().then(() => {
+                                            var itinerarios = JSON.parse(localStorage.getItem("itinerario") as string);
+                                            console.log(itinerarios);
+                                            setItinerarios(itinerarios);
+                                        });
+                                    }} >
                                         <Image src={SortIcon} alt="sort icon" className={styles.sortButtonIcon} />
                                     </button>
                                 </th>

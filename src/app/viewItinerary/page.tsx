@@ -9,7 +9,7 @@ import { TipoActividad } from "@/model/TipoActividad";
 import Profesor from "@/model/Profesor";
 import Comentario from "@/model/Comentario";
 import Prueba from "@/model/Prueba";
-import { handlerActivitiesIt, handlerDeleteActivity } from "@/controller/actividadesItController";
+import { handlerActivitiesIt, handlerDeleteActivity, searchActivityByName, sortByName, sortByWeek } from "@/controller/actividadesItController";
 import { useEffect, useState } from "react";
 
 
@@ -43,10 +43,21 @@ export default function ViewItinerary() {
         <main className={styles.main} id="main">
             <div className={styles.teamContainer}>
                 <h1>Actividades</h1>
-                <p>Buscar semana</p>
+                <p>Buscar actividad</p>
                 <div className={styles.searchAddContainer}>
-                    <input type="text" />
-                    <BlueButton text="Buscar" onClick={() => { } } type={undefined} />
+                    <input id="barra" type="text" />
+                    <BlueButton text="Buscar" onClick={() => {
+                        //buscar por nombre
+                        const id = localStorage.getItem("itinerarioId") ?? '';
+                        const inputElement = document.getElementById("barra") as HTMLInputElement;
+                        if (inputElement) {
+                            searchActivityByName(inputElement.value, id).then(() => {
+                                var actividades = JSON.parse(localStorage.getItem("actividades") || "[]");
+                                setActividades(actividades);
+                            }
+                            );
+                        }
+                    }} type={undefined} />
                     <div className={styles.addItineraryContainer}>
                         <BlueButton text="Agregar Actividad" onClick={() => { } } type={undefined} />
                     </div>
@@ -56,17 +67,41 @@ export default function ViewItinerary() {
                         <tbody>
                             <tr>
                                 <th className={styles.pasenZelda}>Semana
-                                    <button className={styles.sortButton} onClick={() => { }} >
+                                    <button className={styles.sortButton} onClick={() => { 
+                                        //ordenar por semana
+                                        const id = localStorage.getItem("itinerarioId") ?? '';
+                                        sortByWeek(id).then(() => {
+                                            var actividades = JSON.parse(localStorage.getItem("actividades") || "[]");
+                                            setActividades(actividades);
+                                        }
+                                        );
+                                    }} >
                                         <Image src={SortIcon} alt="sort icon" className={styles.sortButtonIcon} />
                                     </button>
                                 </th>
                                 <th className={styles.pasenZelda}>Nombre
-                                    <button className={styles.sortButton} onClick={() => { }} >
+                                    <button className={styles.sortButton} onClick={() => { 
+                                        //ordenar por nombre
+                                        const id = localStorage.getItem("itinerarioId") ?? '';
+                                        sortByName(id).then(() => {
+                                            var actividades = JSON.parse(localStorage.getItem("actividades") || "[]");
+                                            setActividades(actividades);
+                                        }
+                                        );
+                                    }} >
                                         <Image src={SortIcon} alt="sort icon" className={styles.sortButtonIcon} />
                                     </button>
                                 </th>
                                 <th className={styles.pasenZelda}>Estado
-                                <button className={styles.sortButton} onClick={() => { }} >
+                                <button className={styles.sortButton} onClick={() => {
+                                        //ordenar por estado
+                                        const id = localStorage.getItem("itinerarioId") ?? '';
+                                        sortByName(id).then(() => {
+                                            var actividades = JSON.parse(localStorage.getItem("actividades") || "[]");
+                                            setActividades(actividades);
+                                        }
+                                        );
+                                 }} >
                                         <Image src={SortIcon} alt="sort icon" className={styles.sortButtonIcon} />
                                     </button>
                                 </th>
