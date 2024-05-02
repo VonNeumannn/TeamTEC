@@ -1,18 +1,29 @@
+import { Timestamp } from "firebase/firestore";
 import Profesor from "./Profesor";
 
 class Respuesta {
-    redactor: Profesor;
-    redaccion: string;
-    fechaYHora: Date;
+    private _redactor: Profesor;
+    private _redaccion: string;
+    private _fechaYHora: Timestamp;
   
     constructor(
       redactor: Profesor,
       redaccion: string,
-      fechaYHora: Date
+      fechaYHora: Timestamp
     ) {
-      this.redactor = redactor;
-      this.redaccion = redaccion;
-      this.fechaYHora = fechaYHora;
+      this._redactor = redactor;
+      this._redaccion = redaccion;
+      this._fechaYHora = fechaYHora;
+    }
+    // Getters
+    get redactor() {
+      return this._redactor;
+    }
+    get redaccion() {
+      return this._redaccion;
+    }
+    get fechaYHora() {
+      return this._fechaYHora;
     }
   }
 export default Respuesta;
