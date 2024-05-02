@@ -3,6 +3,7 @@ import styles from "../page.module.css";
 import { BlueButton } from "../components/blueButton";
 import Image from "next/image";
 import UploadIcon from "../../../public/upload.svg";
+import router from "next/router";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { TipoActividad } from "@/model/TipoActividad";
@@ -55,7 +56,6 @@ const uuidv4 = () => {
         return v.toString(16);
     });
 };
-
 
 export default function NewActivity() {
     const router = useRouter();
@@ -242,6 +242,17 @@ export default function NewActivity() {
                         <BlueButton text="Crear actividad" onClick={() => { }} type="submit" />
                         <BlueButton text="Encargados" onClick={() => { router.push("/addManager") }} type="button" />
                     </div>
+
+                </div>
+                <div className={styles.buttonActivityContainer}>
+                    <BlueButton text="Crear actividad" onClick={() => {
+                        //createActivity().then(() => {
+                           // router.push('/view_itinerary');
+                        //});
+                    } } type={undefined} />
+                    <BlueButton text="Encargados" onClick={() => { } } type={undefined} />
+                </div>
+
                 </form>
 
             </div>
