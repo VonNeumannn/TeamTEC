@@ -40,35 +40,33 @@ interface activitiesItData {
     estado: string;
 }
 
-/*
+
 export const handlerNextActivity = async () => {
     let data = await getNextActivity();
-    data = JSON.parse(JSON.stringify(data));
-
-    if (data == null) {
-        console.log("Actividad no encontrada");
+    let actData = JSON.parse(JSON.stringify(data));
+    if (actData == null) {
+        console.log("No hay actividades");
     } else {
         const actividad: activityData = {
-            nombre: data.nombre,
-            estado: data.estado,
-            tipo: data.tipo,
-            modalidad: data.modalidad,
-            semana: data.semanaRealizacion,
-            fecha: data.fecha,
+            nombre: actData.nombre,
+            estado: actData.estado,
+            tipo: actData.tipo,
+            modalidad: actData.modalidad,
+            semana: actData.semana,
+            fecha: actData.fecha,
             hora: "", 
             activadorRecordatorio: 0, 
             link: "", 
             afiche: "", 
             encargado: [], 
-            responsable: null,
+            responsable: {} as Profesor,
             comentarios: [],
             pruebas: [] 
         };
         console.log(actividad);
         setLocalStorage(actividad);
     }
-
-}*/
+}
 
 export const handlerActivitiesIt = async (idIt: string) => {
     let data = await getActivitiesIt(idIt);
