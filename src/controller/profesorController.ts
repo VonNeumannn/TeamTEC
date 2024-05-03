@@ -1,5 +1,5 @@
 import Profesor from "../model/Profesor";
-import { addProfessor, updateProfessor, addProfesor, loadProfessor, uploadFile, deleteProfessor, deleteConfirmation, loadOneProfessor } from "../app/DAO/profesordao/daoProfesor";
+import { addProfessor, updateProfessor, addProfesor, loadProfessor, uploadFile, deleteProfessor, deleteConfirmation, loadOneProfessor, loadProfessorByYear } from "../app/DAO/profesordao/daoProfesor";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -211,6 +211,23 @@ export const reloadPageAfterOperation = async () => {
     }
   };
 
+
+
+
 const setLocalStorage = (profesor : profesorData) => {
     localStorage.setItem("profesor", JSON.stringify(profesor));
+}
+
+export const handlerLoadProfessorByYear = async () => {
+    try {
+        const data = await loadProfessorByYear();
+        if (!data || data.length === 0) {
+            console.log("No hay profesores ingresados");
+            return [];
+        } 
+        return data;
+    } catch (error) {
+        console.error("Error loading professor:", error);
+        return [];
+    }
 }

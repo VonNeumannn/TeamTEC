@@ -4,10 +4,56 @@ import { BlueButton } from "../components/blueButton";
 import Image from "next/image";
 import UploadIcon from "../../../public/upload.svg";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { TipoActividad } from "@/model/TipoActividad";
 import PopUp from "../components/popUpInformation";
 import { handlerAddActivity } from "../../controller/actividadController";
+import Profesor from "@/model/Profesor";
+import { openDB, DBSchema, IDBPDatabase } from 'idb';
+
+interface FileDB extends DBSchema {
+    files: {
+        key: number;
+        value: File;
+    };
+}
+
+class IndexedDBService {
+    private dbPromise: Promise<IDBPDatabase<FileDB>>;
+
+    constructor() {
+        this.dbPromise = openDB<FileDB>('file-store', 1, {
+            upgrade(db) {
+                db.createObjectStore('files', { keyPath: 'key', autoIncrement: true });
+            },
+        });
+    }
+
+    async saveFile(file: File): Promise<void> {
+        const db = await this.dbPromise;
+        const tx = db.transaction('files', 'readwrite');
+        const store = tx.objectStore('files');
+        await store.add(file);
+        await tx.done;
+    }
+
+    async getFile(): Promise<File | undefined> {
+        const db = await this.dbPromise;
+        const tx = db.transaction('files', 'readonly');
+        const store = tx.objectStore('files');
+        const files = await store.getAll();
+        await tx.done;
+        return files.length > 0 ? files[0] : undefined;
+    }
+
+    async deleteFile(): Promise<void> {
+        const db = await this.dbPromise;
+        const tx = db.transaction('files', 'readwrite');
+        const store = tx.objectStore('files');
+        await store.clear();
+        await tx.done;
+    }
+}
 
 
 interface activityDataPrueba {
@@ -20,7 +66,7 @@ interface activityDataPrueba {
     iniciarRecordatorio: string;
     enlace: string;
     afiche: string;
-
+    encargados: Profesor[];
 }
 
 const tipoActividadFabrica = (tipo: string) => {
@@ -37,6 +83,23 @@ const tipoActividadFabrica = (tipo: string) => {
             return TipoActividad.RECREACION;
         default:
             return TipoActividad.ORIENTADORA;
+    }
+}
+
+const tipoActividadInversa = (tipo: string) => {
+    switch (tipo) {
+        case TipoActividad.ORIENTADORA:
+            return 1;
+        case TipoActividad.MOTIVACIONAL:
+            return 2;
+        case TipoActividad.VIDA_ESTUDIANTIL:
+            return 3;
+        case TipoActividad.ORDEN_TECNICO:
+            return 4;
+        case TipoActividad.RECREACION:
+            return 5;
+        default:
+            return 0;
     }
 }
 
@@ -57,7 +120,76 @@ const uuidv4 = () => {
 };
 
 
+
+
 export default function NewActivity() {
+
+    let isChanged = true;
+
+    const setIsChanged = () => {
+        isChanged = false;
+    }
+
+    useEffect(() => {
+        if (localStorage.getItem('actividad') !== '{}' && isChanged) {
+            setIsChanged();
+
+            const formData = JSON.parse(localStorage.getItem('actividad') as string);
+
+            // Actualizar los estados solo si los valores son diferentes
+            if (nombre === '') {
+                setNombre(formData.nombre);
+            }
+            if (semana === 0) {
+                changeSemana(formData.semanaRealizacion);
+            }
+            if (tipoActividad === '') {
+                changeTipoActividad(formData.tipo);
+            }
+            if (modalidad === '') {
+                changeModalidad(formData.modalidad);
+            }
+            if (fecha === '') {
+                setFecha(formData.fecha);
+            }
+            if (hora === '') {
+                setHora(formData.hora);
+            }
+            if (recordatorio === '') {
+                setRecordatorio(formData.iniciarRecordatorio);
+            }
+            if (enlace === '') {
+                setEnlace(formData.enlace);
+            }
+            if (aficheName === '') {
+                setAficheName(formData.aficheName);
+            }
+            if (file === null) {
+                const loadFileFromDB = async () => {
+                    const indexedDBService = new IndexedDBService();
+                    const archivoDB = await indexedDBService.getFile();
+                    if (archivoDB) {
+                        console.log('Archivo cargado desde IndexedDB:', archivoDB);
+                        setFile(archivoDB);
+                    }
+                };
+
+                // Llama a la función para cargar el archivo si el archivo en el estado es null
+                loadFileFromDB();
+            }
+        }
+    }, []);
+
+
+
+    const [titlePopUp, setTitlePopUp] = useState('Actividad creada');
+    const [contentPopUp, setContentPopUp] = useState('La actividad se ha creado correctamente');
+    const changeTitlePopUp = (title: string) => {
+        setTitlePopUp(title);
+    }
+    const changeContentPopUp = (content: string) => {
+        setContentPopUp(content);
+    }
     const router = useRouter();
     const [dialogOpen, setDialogOpen] = useState(false);
     const openDialog = () => {
@@ -75,21 +207,35 @@ export default function NewActivity() {
     const handlerNombre = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNombre(e.target.value);
     }
-    
+
     const [tipoActividad, setTipoActividad] = useState('');
     const handlerTipoActividad = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setTipoActividad(tipoActividadFabrica(e.target.value));
-        
+    }
+    const changeTipoActividad = (tipo: string) => {
+        setTipoActividad(tipo);
+        const tipoHTML: HTMLSelectElement = document.getElementById('tipo') as HTMLSelectElement;
+        tipoHTML.selectedIndex = tipoActividadInversa(tipo);
     }
 
     const [modalidad, setModalidad] = useState('');
     const handlerModalidad = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setModalidad(e.target.value);
     }
+    const changeModalidad = (modalidad: string) => {
+        setModalidad(modalidad);
+        const modalidadHTML: HTMLSelectElement = document.getElementById('modalidad') as HTMLSelectElement;
+        modalidadHTML.selectedIndex = modalidad === 'Virtual' ? 1 : 2;
+    }
 
     const [semana, setSemana] = useState(0);
     const handlerSemana = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSemana(parseInt(e.target.value));
+    }
+    const changeSemana = (semana: number) => {
+        setSemana(semana);
+        const semanaHTML: HTMLSelectElement = document.getElementById('semana') as HTMLSelectElement;
+        semanaHTML.selectedIndex = semana;
     }
 
     const [fecha, setFecha] = useState('');
@@ -121,34 +267,63 @@ export default function NewActivity() {
     }
 
     const [aficheName, setAficheName] = useState('');
-    const handlerAficheName = (name : string) => {
+    const handlerAficheName = (name: string) => {
         setAficheName(name);
     }
 
+    const createFileFromPath = (filePath: string): File | null => {
+        // Extraer el nombre del archivo de la ruta
+        const fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
+
+        // Crear un objeto Blob a partir de la ruta
+        const blob = new Blob([filePath], { type: 'application/octet-stream' });
+
+        // Crear un objeto File a partir del Blob
+        const file = new File([blob], fileName);
+
+        return file;
+    };
+
+    const [filePath, setFilePath] = useState('');
+
+
     const [file, setFile] = useState<File | null>(null);
-    const handlerFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    const handlerFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             const selectedFile = e.target.files[0];
             const fileName = selectedFile.name;
             const fileExtension = fileName.split('.').pop()?.toLowerCase();
 
-            if (!fileExtension || (fileExtension !== 'pdf' && fileExtension !== 'png' && fileExtension !== 'jpg' && fileExtension !== 'jpeg')) {
+            if (!fileExtension || !['pdf', 'png', 'jpg', 'jpeg'].includes(fileExtension)) {
                 alert("El archivo seleccionado no es válido");
                 return;
             }
 
+            // Guardar el archivo en IndexedDB
+            const indexedDBService = new IndexedDBService();
+            await indexedDBService.saveFile(selectedFile);
+            console.log('Archivo guardado con éxito.');
 
-
-            handlerAficheName(generateUniqueFileName(fileName));
+            // Actualizar el estado con el archivo seleccionado
             setFile(selectedFile);
 
-
+            // También puedes realizar otras acciones aquí, como cambiar el nombre del archivo, etc.
         }
     };
 
+
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        const chosenProfessors: Profesor[] = JSON.parse(localStorage.getItem('chosenProfessors') as string);
         e.preventDefault();
-            
+
+        if (chosenProfessors.length === 0) {
+            changeTitlePopUp('Error');
+            changeContentPopUp('No se han seleccionado encargados, por favor seleccione al menos uno.');
+            openDialog();
+
+        } else {
             const actividad: activityDataPrueba = {
                 nombre: nombre,
                 semanaRealizacion: semana,
@@ -159,20 +334,52 @@ export default function NewActivity() {
                 iniciarRecordatorio: recordatorio,
                 enlace: enlace,
                 afiche: aficheName,
+                encargados: chosenProfessors
             };
 
-            handlerAddActivity(actividad, file, aficheName, router, openDialog);
+            localStorage.setItem('actividad', JSON.stringify({}));
+
+            handlerAddActivity(actividad, file, aficheName, router, openDialog, chosenProfessors);
+            // Eliminar el archivo de IndexedDB después de agregar la actividad
+            const deleteFileFromDB = async () => {
+                const indexedDBService = new IndexedDBService();
+                await indexedDBService.deleteFile();
+                console.log('Archivo eliminado de IndexedDB con éxito.');
+            };
+            deleteFileFromDB();
+        }
+
+
+
 
     }
 
-   
+    const selectProfesor = () => {
+        console.log("Seleccionar profesor");
+        const actividad = {
+            nombre: nombre,
+            semanaRealizacion: semana,
+            tipo: tipoActividad,
+            modalidad: modalidad,
+            fecha: fecha,
+            hora: hora,
+            iniciarRecordatorio: recordatorio,
+            enlace: enlace,
+            aficheName: aficheName,
+            encargados: []
+        };
+        localStorage.setItem('actividad', JSON.stringify(actividad));
+
+        router.push("/addManager");
+    }
+
 
 
     return (
         <main className={styles.main} id="main">
             <PopUp
-                title="Actividad creada"
-                content="La actividad se ha creado correctamente"
+                title={titlePopUp}
+                content={contentPopUp}
                 openDialog={openDialog}
                 closeDialog={closeDialog}
                 dialogOpen={dialogOpen}
@@ -182,7 +389,7 @@ export default function NewActivity() {
                 <form className={styles.activityFormContainer} onSubmit={handleSubmit}>
                     <div className={styles.formGroup}>
                         <label htmlFor="nombre">Nombre</label>
-                        <input type="nombre" id="nombre" name="nombre" required placeholder="..." onChange={handlerNombre} />
+                        <input type="nombre" id="nombre" name="nombre" required placeholder="..." onChange={handlerNombre} value={nombre !== '' ? nombre : ""} />
                     </div>
                     <div className={styles.formGroup}>
                         <label htmlFor="semana">Semana de realización</label>
@@ -216,19 +423,19 @@ export default function NewActivity() {
                     </div>
                     <div className={styles.formGroup}>
                         <label htmlFor="fecha">Fecha</label>
-                        <input type="date" id="fecha" name="fecha" required placeholder="..." onChange={handlerFecha}/>
+                        <input type="date" id="fecha" name="fecha" required placeholder="..." onChange={handlerFecha} value={fecha !== "" ? fecha : ""} />
                     </div>
                     <div className={styles.formGroup}>
                         <label htmlFor="hora">Hora</label>
-                        <input type="time" id="hora" name="hora" required placeholder="..." onChange={handlerHora}/>
+                        <input type="time" id="hora" name="hora" required placeholder="..." onChange={handlerHora} value={hora !== "" ? hora : ""} />
                     </div>
                     <div className={styles.formGroup}>
                         <label htmlFor="recordatorio">Iniciar recordatorio</label>
-                        <input type="date" id="recordatorio" name="recordatorio" required placeholder="..." onChange={handleRecordatorioChange}/>
+                        <input type="date" id="recordatorio" name="recordatorio" required placeholder="..." onChange={handleRecordatorioChange} value={recordatorio !== "" ? recordatorio : ""} />
                     </div>
                     <div className={styles.formGroup}>
                         <label htmlFor="enlace">Enlace</label>
-                        <input type="link" id="enlace" name="enlace" placeholder="..." onChange={handlerEnlace}/>
+                        <input type="link" id="enlace" name="enlace" placeholder="..." onChange={handlerEnlace} value={enlace !== "" ? enlace : ""} />
                     </div>
                     <div className={styles.uploadContainer}>
                         <label htmlFor="afiche">
@@ -240,7 +447,7 @@ export default function NewActivity() {
 
                     <div className={styles.buttonActivityContainer}>
                         <BlueButton text="Crear actividad" onClick={() => { }} type="submit" />
-                        <BlueButton text="Encargados" onClick={() => { router.push("/addManager") }} type="button" />
+                        <BlueButton text="Encargados" onClick={selectProfesor} type="button" />
                     </div>
                 </form>
 

@@ -54,6 +54,19 @@ export async function addProfesor(profesor: Profesor): Promise<boolean> {
     return data;
   }
 
+  export async function loadProfessorByYear(): Promise<Profesor[]> {
+    const database = db;
+    const currentYear = new Date().getFullYear();
+    const professorsRef = collection(database, 'usuarios');
+    const professor = query(professorsRef, where("estado", "==", "Activo"), where("rol", "==", "Profesor"), where("año", "==", currentYear));
+    const querySnapshot = await getDocs(professor);
+    let data: Profesor[] =[];
+    querySnapshot.forEach((doc) => {
+        data.push(doc.data() as Profesor);
+    });
+    return data;
+  }
+
   export async function deleteProfessor(id : string): Promise<boolean> {
     try{
       const database = db;

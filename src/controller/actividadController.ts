@@ -31,6 +31,7 @@ interface activityDataPrueba {
     iniciarRecordatorio: string;
     enlace: string;
     afiche: string;
+    encargados: Profesor[];
 
 }
 
@@ -67,7 +68,7 @@ const setLocalStorage = (actividad: activityData) => {
 }
 
 
-export const handlerAddActivity = async (actividad: activityDataPrueba, file : File, nameFile: string, router : any, openDialog:any) => {
+export const handlerAddActivity = async (actividad: activityDataPrueba, file : File, nameFile: string, router : any, openDialog:any, chosenProfessors : Profesor[]) => {
     let dataFile = await uploadFilePoster(file, nameFile);
     let data = await addActivitie(actividad);
     if (data && dataFile) {

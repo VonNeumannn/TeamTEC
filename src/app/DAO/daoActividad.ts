@@ -1,6 +1,7 @@
 import { collection, query, where, getDocs, orderBy, addDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 import { db } from "../../constants/connection";
+import Profesor from "@/model/Profesor";
 
 export const dynamic = 'force-dynamic'; // Force dynamic route behavior
 
@@ -26,7 +27,7 @@ interface activityData {
     iniciarRecordatorio: string;
     enlace: string;
     afiche: string;
-
+    encargados: Profesor[];
 }
 
 export async function getNextActivity() {
