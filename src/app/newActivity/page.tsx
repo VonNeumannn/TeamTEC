@@ -3,6 +3,7 @@ import styles from "../page.module.css";
 import { BlueButton } from "../components/blueButton";
 import Image from "next/image";
 import UploadIcon from "../../../public/upload.svg";
+import router from "next/router";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { TipoActividad } from "@/model/TipoActividad";
@@ -118,9 +119,6 @@ const uuidv4 = () => {
         return v.toString(16);
     });
 };
-
-
-
 
 export default function NewActivity() {
 
@@ -337,9 +335,11 @@ export default function NewActivity() {
                 encargados: chosenProfessors
             };
 
-            localStorage.setItem('actividad', JSON.stringify({}));
 
-            handlerAddActivity(actividad, file, aficheName, router, openDialog);
+            localStorage.setItem('actividad', JSON.stringify({}));
+            const idItinerario = localStorage.getItem('itinerarioId');
+
+            handlerAddActivity(actividad,idItinerario, file, aficheName, router, openDialog);
             // Eliminar el archivo de IndexedDB después de agregar la actividad
             const deleteFileFromDB = async () => {
                 const indexedDBService = new IndexedDBService();
@@ -348,9 +348,6 @@ export default function NewActivity() {
             };
             deleteFileFromDB();
         }
-
-
-
 
     }
 
@@ -449,6 +446,8 @@ export default function NewActivity() {
                         <BlueButton text="Crear actividad" onClick={() => { }} type="submit" />
                         <BlueButton text="Encargados" onClick={selectProfesor} type="button" />
                     </div>
+
+
                 </form>
 
             </div>
