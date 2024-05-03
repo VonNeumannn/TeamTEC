@@ -15,7 +15,7 @@ export default function ViewItineraries() {
     const [its, setItinerarios] = useState([]);
 
     useEffect(() => {
-        localStorage.removeItem("actividades"); //limpio memoria
+        //localStorage.removeItem("actividades"); //limpio memoria
         handlerItinerario().then(() => {
             var itinerarios = JSON.parse(localStorage.getItem("itinerario") as string);
             console.log(itinerarios);
@@ -117,12 +117,14 @@ export default function ViewItineraries() {
                                     <td id={`nombreItinerario${index}`}>{itinerario.nombre}</td>
                                     <td id={`autorItinerario${index}`}>{itinerario.autor}</td>
                                     <td>
-                                    <BlueButton text="Mostrar" onClick={() => { 
-                                        cleanLocalStorage;
-                                        localStorage.removeItem("actividades");
-                                        setId_To_LS(document.getElementById(`nombreItinerario${index}`)!.innerText);
-                                        router.push('/viewItinerary'); 
-                                    }} type="button" />
+                                        <BlueButton text="Mostrar" onClick={async () => { 
+                                            setId_To_LS(document.getElementById(`nombreItinerario${index}`)!.innerText);
+                                            setTimeout(() => {
+                                                console.log(localStorage.getItem("itinerarioId"));
+                                                cleanLocalStorage()
+                                                router.push('/viewItinerary');
+                                            }, 500);   
+                                        }} type="button" />
                                     </td>
                                 </tr>
                             ))}
@@ -138,6 +140,7 @@ export default function ViewItineraries() {
 
 const setId_To_LS = (nomb: string) => {
     async function getItinerarioId(nombre: string) {
+        localStorage.setItem("itinerarioId", JSON.stringify([]));
         const q = query(collection(db, "itinerarios"), where("nombre", "==", nombre));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
@@ -148,6 +151,8 @@ const setId_To_LS = (nomb: string) => {
     getItinerarioId(nomb);
 }
 
+
 const cleanLocalStorage = () => {
     localStorage.setItem('chosenProfessors', JSON.stringify([]));
 }
+

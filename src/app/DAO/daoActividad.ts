@@ -80,8 +80,6 @@ export async function deleteAct(itID: string, nombreAct: string): Promise<boolea
     return true;
 }
 
-
-
 //agregar actividad
 export async function addActivity(itID: string, actividad: activityData): Promise<boolean> {
     try {
