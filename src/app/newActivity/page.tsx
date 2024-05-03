@@ -161,7 +161,7 @@ export default function NewActivity() {
                 afiche: aficheName,
             };
 
-            handlerAddActivity(actividad, file, aficheName, router, openDialog);
+            //handlerAddActivity(actividad, file, aficheName, router, openDialog);
 
     }
 
@@ -243,7 +243,6 @@ export default function NewActivity() {
                         <BlueButton text="Encargados" onClick={() => { router.push("/addManager") }} type="button" />
                     </div>
 
-                </div>
                 <div className={styles.buttonActivityContainer}>
                     <BlueButton text="Crear actividad" onClick={() => {
                         //createActivity().then(() => {
