@@ -44,16 +44,15 @@ interface activitiesItData {
 export const handlerNextActivity = async () => {
     let data = await getNextActivity();
     let actData = JSON.parse(JSON.stringify(data));
-
     if (actData == null) {
-        console.log("Actividad no encontrada");
+        console.log("No hay actividades");
     } else {
         const actividad: activityData = {
             nombre: actData.nombre,
             estado: actData.estado,
             tipo: actData.tipo,
             modalidad: actData.modalidad,
-            semana: actData.semanaRealizacion,
+            semana: actData.semana,
             fecha: actData.fecha,
             hora: "", 
             activadorRecordatorio: 0, 
@@ -67,7 +66,6 @@ export const handlerNextActivity = async () => {
         console.log(actividad);
         setLocalStorage(actividad);
     }
-
 }
 
 export const handlerActivitiesIt = async (idIt: string) => {
