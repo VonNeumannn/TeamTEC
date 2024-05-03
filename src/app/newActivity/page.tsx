@@ -122,63 +122,6 @@ const uuidv4 = () => {
 
 export default function NewActivity() {
 
-    let isChanged = true;
-
-    const setIsChanged = () => {
-        isChanged = false;
-    }
-
-    useEffect(() => {
-        if (localStorage.getItem('actividad') !== '{}' && isChanged) {
-            setIsChanged();
-
-            const formData = JSON.parse(localStorage.getItem('actividad') as string);
-
-            // Actualizar los estados solo si los valores son diferentes
-            if (nombre === '') {
-                setNombre(formData.nombre);
-            }
-            if (semana === 0) {
-                changeSemana(formData.semanaRealizacion);
-            }
-            if (tipoActividad === '') {
-                changeTipoActividad(formData.tipo);
-            }
-            if (modalidad === '') {
-                changeModalidad(formData.modalidad);
-            }
-            if (fecha === '') {
-                setFecha(formData.fecha);
-            }
-            if (hora === '') {
-                setHora(formData.hora);
-            }
-            if (recordatorio === '') {
-                setRecordatorio(formData.iniciarRecordatorio);
-            }
-            if (enlace === '') {
-                setEnlace(formData.enlace);
-            }
-            if (aficheName === '') {
-                setAficheName(formData.aficheName);
-            }
-            if (file === null) {
-                const loadFileFromDB = async () => {
-                    const indexedDBService = new IndexedDBService();
-                    const archivoDB = await indexedDBService.getFile();
-                    if (archivoDB) {
-                        console.log('Archivo cargado desde IndexedDB:', archivoDB);
-                        setFile(archivoDB);
-                    }
-                };
-
-                // Llama a la función para cargar el archivo si el archivo en el estado es null
-                loadFileFromDB();
-            }
-        }
-    }, []);
-
-
 
     const [titlePopUp, setTitlePopUp] = useState('Actividad creada');
     const [contentPopUp, setContentPopUp] = useState('La actividad se ha creado correctamente');
@@ -287,6 +230,57 @@ export default function NewActivity() {
 
     const [file, setFile] = useState<File | null>(null);
 
+
+    useEffect(() => {
+        if (localStorage.getItem('actividad') !== '{}' && localStorage.getItem('actividad') !== null){
+            
+
+            const formData = JSON.parse(localStorage.getItem('actividad') as string);
+
+            // Actualizar los estados solo si los valores son diferentes
+            if (nombre === '') {
+                setNombre(formData.nombre);
+            }
+            if (semana === 0) {
+                changeSemana(formData.semanaRealizacion);
+            }
+            if (tipoActividad === '') {
+                changeTipoActividad(formData.tipo);
+            }
+            if (modalidad === '') {
+                changeModalidad(formData.modalidad);
+            }
+            if (fecha === '') {
+                setFecha(formData.fecha);
+            }
+            if (hora === '') {
+                setHora(formData.hora);
+            }
+            if (recordatorio === '') {
+                setRecordatorio(formData.iniciarRecordatorio);
+            }
+            if (enlace === '') {
+                setEnlace(formData.enlace);
+            }
+            if (aficheName === '') {
+                setAficheName(formData.aficheName);
+            }
+            if (file === null) {
+                const loadFileFromDB = async () => {
+                    const indexedDBService = new IndexedDBService();
+                    const archivoDB = await indexedDBService.getFile();
+                    if (archivoDB) {
+                        console.log('Archivo cargado desde IndexedDB:', archivoDB);
+                        setFile(archivoDB);
+                    }
+                };
+
+                // Llama a la función para cargar el archivo si el archivo en el estado es null
+                loadFileFromDB();
+            }
+        }
+    }, []);
+
     const handlerFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             const selectedFile = e.target.files[0];
@@ -305,6 +299,7 @@ export default function NewActivity() {
 
             // Actualizar el estado con el archivo seleccionado
             setFile(selectedFile);
+            setAficheName(generateUniqueFileName(fileName));
 
             // También puedes realizar otras acciones aquí, como cambiar el nombre del archivo, etc.
         }
@@ -334,6 +329,8 @@ export default function NewActivity() {
                 afiche: aficheName,
                 encargados: chosenProfessors
             };
+
+            console.log(actividad);
 
 
             localStorage.setItem('actividad', JSON.stringify({}));

@@ -3,6 +3,7 @@ import { getNextActivity, addActivity, uploadFilePoster, deleteAct, getActivitie
 import Comentario from "@/model/Comentario";
 import Prueba from "@/model/Prueba";
 import { TipoActividad } from "@/model/TipoActividad";
+import { act } from "react-dom/test-utils";
 
 interface activityData {
     nombre: string;
@@ -16,7 +17,6 @@ interface activityData {
     link: string;
     afiche: string;
     encargado: Profesor[];
-    responsable: Profesor;
     comentarios: Comentario[];
     pruebas: Prueba[];
 }
@@ -53,14 +53,14 @@ export const handlerNextActivity = async () => {
             estado: actData.estado,
             tipo: actData.tipo,
             modalidad: actData.modalidad,
-            semana: actData.semana,
+            semana: actData.semanaRealizacion,
             fecha: actData.fecha,
-            hora: "", 
+            hora: actData.hora, 
             activadorRecordatorio: 0, 
-            link: "", 
+            link: actData.enlace, 
             afiche: "", 
-            encargado: [], 
-            responsable: {} as Profesor,
+            encargado: actData.encargados, 
+            
             comentarios: [],
             pruebas: [] 
         };
@@ -193,7 +193,7 @@ export const searchActivityByName = async (name: string, id: string) => {
 
 
 const setLocalStorage = (actividad: activityData) => {
-    localStorage.setItem("actividad", JSON.stringify(actividad));
+    localStorage.setItem("actividadProxima", JSON.stringify(actividad));
 }
 
 const setActsInLS = (actividades: activitiesItData[]) => {

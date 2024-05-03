@@ -49,13 +49,13 @@ export default function MainMenuPage() {
         
         var semanaActividadElement = document.getElementById("semanaActividad");
         if (semanaActividadElement) {
-            console.log(semanaActividad);
-            semanaActividadElement.innerText = semanaActividad.toString();
+            
+            semanaActividadElement.innerText = semanaActividad+"";
         }
         
         var fechaActividadElement = document.getElementById("fechaActividad");
         if (fechaActividadElement) {
-            fechaActividadElement.innerText = fechaActividad.toString(); 
+            fechaActividadElement.innerText = fechaActividad; 
         }
     });
   
@@ -131,7 +131,7 @@ interface activityData {
 }
 
 const getLocalStorage = () => {
-    const actividad = localStorage.getItem("actividad");
+    const actividad = localStorage.getItem("actividadProxima");
     const actividadJson = JSON.parse(actividad ? actividad : "{}");
     const actividadData: activityData = {
         nombre: actividadJson.nombre,
