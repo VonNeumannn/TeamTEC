@@ -17,14 +17,15 @@ export default function ViewItinerary() {
     const [actividades, setActividades] = useState([]);
 
     useEffect(() => {
-        localStorage.removeItem("actividades");
+        //localStorage.setItem("actividades", '');
         const itinerarioId = localStorage.getItem('itinerarioId') ?? '';
+        
         handlerActivitiesIt(itinerarioId).then(() => {
             var actividades = JSON.parse(localStorage.getItem("actividades") || "[]");
             console.log(actividades);
             setActividades(actividades);
         });
-        localStorage.removeItem("actividades");
+        //localStorage.removeItem("actividades");
     }, []);
 
     function handleEdit(index: number) {
