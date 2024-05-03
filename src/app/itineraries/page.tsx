@@ -118,6 +118,7 @@ export default function ViewItineraries() {
                                     <td id={`autorItinerario${index}`}>{itinerario.autor}</td>
                                     <td>
                                     <BlueButton text="Mostrar" onClick={() => { 
+                                        cleanLocalStorage;
                                         localStorage.removeItem("actividades");
                                         setId_To_LS(document.getElementById(`nombreItinerario${index}`)!.innerText);
                                         router.push('/viewItinerary'); 
@@ -147,3 +148,6 @@ const setId_To_LS = (nomb: string) => {
     getItinerarioId(nomb);
 }
 
+const cleanLocalStorage = () => {
+    localStorage.setItem('chosenProfessors', JSON.stringify([]));
+}

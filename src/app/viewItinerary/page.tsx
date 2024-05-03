@@ -9,7 +9,7 @@ import { TipoActividad } from "@/model/TipoActividad";
 import Profesor from "@/model/Profesor";
 import Comentario from "@/model/Comentario";
 import Prueba from "@/model/Prueba";
-import { handlerActivitiesIt, handlerDeleteActivity, searchActivityByName, sortByName, sortByWeek } from "@/controller/actividadesItController";
+import { handlerActivitiesIt, handlerDeleteActivity, searchActivityByName, sortByName, sortByWeek } from "@/controller/actividadController";
 import { useEffect, useState } from "react";
 
 
