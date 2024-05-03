@@ -339,7 +339,7 @@ export default function NewActivity() {
 
             localStorage.setItem('actividad', JSON.stringify({}));
 
-            handlerAddActivity(actividad, file, aficheName, router, openDialog, chosenProfessors);
+            handlerAddActivity(actividad, file, aficheName, router, openDialog);
             // Eliminar el archivo de IndexedDB después de agregar la actividad
             const deleteFileFromDB = async () => {
                 const indexedDBService = new IndexedDBService();

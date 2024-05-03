@@ -68,7 +68,7 @@ const setLocalStorage = (actividad: activityData) => {
 }
 
 
-export const handlerAddActivity = async (actividad: activityDataPrueba, file : File, nameFile: string, router : any, openDialog:any, chosenProfessors : Profesor[]) => {
+export const handlerAddActivity = async (actividad: activityDataPrueba, file : File, nameFile: string, router : any, openDialog:any) => {
     let dataFile = await uploadFilePoster(file, nameFile);
     let data = await addActivitie(actividad);
     if (data && dataFile) {
