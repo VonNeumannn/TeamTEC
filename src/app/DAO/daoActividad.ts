@@ -18,7 +18,9 @@ export async function getActivitiesIt(itID: string) {
         const querySnapshot = await getDocs(activity);
         var activities:Actividad[] = [];
         querySnapshot.forEach((doc) => {
-            activities.push(doc.data() as Actividad);
+            let actividad = doc.data() as Actividad;
+            actividad.id = doc.id; // Add this line
+            activities.push(actividad);
         });
         console.log(activities)
         return activities;
@@ -56,15 +58,19 @@ interface activityData {
 
 export async function getNextActivity() {
     const database = db;
-    const activityRef = collection(database, 'actividades');
-    const activity = query(activityRef, orderBy("fecha"));
-    const querySnapshot = await getDocs(activity);
-    let data = null;
-    querySnapshot.forEach((doc) => {
-        data = doc.data();
-    });
-    return data;
-  }
+    const itinerarioRef = collection(database, 'itinerarios');
+    const itinerarioSnapshot = await getDocs(itinerarioRef);
+    let actividades: Actividad[] = [];
+    for (const itinerarioDoc of itinerarioSnapshot.docs) {
+        const actividadRef = collection(itinerarioDoc.ref, 'actividades');
+        const actividadSnapshot = await getDocs(actividadRef);
+        actividadSnapshot.forEach((doc) => {
+            const actividad = doc.data() as Actividad;
+            actividades.push(actividad);
+        });
+    }
+    return actividades;
+}
 
 //borrar actividad
 export async function deleteAct(itID: string, nombreAct: string): Promise<boolean> {

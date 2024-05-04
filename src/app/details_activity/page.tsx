@@ -1,16 +1,35 @@
 'use client';
 import styles from '../page.module.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PopUp from '../components/popUpImage';
-import Link from 'next/link';
-import Profile from '../../../public/profile-default.webp';
-import MainLogo from "../../../public/mainLogo.svg";
+
+import { handlerActivitiesIt, handlerActivityDetails } from '@/controller/actividadController';
+import Actividad from '@/model/Actividad';
+import { useRouter } from 'next/navigation';
+import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 
 export default function ActivityDetails() {
 
     const [dialogOpen, setDialogOpen] = useState(false);
     const [currentImageUrl, setCurrentImageUrl] = useState("");
-    
+
+    const [data, setData] = useState<Actividad>();
+    const router = useRouter();
+   
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const actividad = JSON.parse(localStorage.getItem("actividad") || "{}");
+                const idIt = localStorage.getItem('itinerarioId') ?? '';
+                const data = await handlerActivityDetails(idIt, actividad.id);
+                setData(data);
+                console.log(actividad);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, []);
 
     const openDialog = () => {
         console.log("Abriedo dialogo");
@@ -21,83 +40,80 @@ export default function ActivityDetails() {
         console.log("Cerrando dialogo");
         setDialogOpen(false);
     };
-
-    const handleButtonClick = (imageUrl: string) => {
+    // pasarlo al DAO
+    const handleButtonPoster = (imageUrl: string) => {
+        const storage = getStorage();
+        const starsRef = ref(storage, 'gs://teamtec-727df.appspot.com/poster/' + imageUrl);
+        getDownloadURL(starsRef)
+            .then((url) => {
+                setCurrentImageUrl(url);
+                openDialog();
+            })
+            .catch((error) => {
+                console.error("Error downloading image:", error);
+            });
+    };
+    const handleButtonEvidence = (imageUrl: string) => {
         setCurrentImageUrl(imageUrl);
         openDialog();
     };
 
-    const [data, setData] = useState({
-        name: 'Carrera', 
-        type: 'Deportiva', 
-        week: '11',
-        modality: 'Presencial',
-        date: '2024-04-27',
-        time: '08:00',
-        reminder: '',
-        link: '',
-        afiche_url:Profile.src,
-        prueba_url:MainLogo.src
-    });
-
-    
-
-  return (
-    <main className={styles.main} id="main">
-        <div>
-            <PopUp
-                imageUrl={currentImageUrl}
-                openDialog={openDialog}
-                closeDialog={closeDialog}
-                dialogOpen={dialogOpen}
-            />
-        </div>
-        <div className={styles.studentEditContainer}>
-            <h1>Detalles Actividad</h1>
+    return (
+        <main className={styles.main} id="main">
+            <div>
+                <PopUp
+                    imageUrl={currentImageUrl}
+                    openDialog={openDialog}
+                    closeDialog={closeDialog}
+                    dialogOpen={dialogOpen}
+                />
+            </div>
+            <div className={styles.studentEditContainer}>
+                <h1>Detalles Actividad</h1>
                 <div className={styles.formstudentEdit}>
                     <form className={styles.formContainerstudentEdit}>
 
                         <div className={styles.formGroupStudentEdit}>
                             <label htmlFor="name">Nombre</label>
-                            <input type="text" id="name" name="name" placeholder="..." value={data.name} readOnly />
+                            <input type="text" id="name" name="name" placeholder="..." value={data?.nombre} readOnly />
                         </div>
                         <div className={styles.formGroupStudentEdit}>
                             <label htmlFor="week">Semana de realización</label>
-                            <input type="text" id="week" name="week" required placeholder="..." value={data.week} readOnly/>
+                            <input type="text" id="week" name="week" required placeholder="..." value={data?.semanaRealizacion} readOnly />
                         </div>
                         <div className={styles.formGroupStudentEdit}>
                             <label htmlFor="type">Tipo</label>
-                            <input type="text" id="type" name="type" required placeholder="..." value={data.type} readOnly/>
+                            <input type="text" id="type" name="type" required placeholder="..." value={data?.tipo} readOnly />
                         </div>
                         <div className={styles.formGroupStudentEdit}>
                             <label htmlFor="modality">Modalidad</label>
-                            <input type="text" id="modality" name="modality" required placeholder="..." value={data.modality} readOnly/>
+                            <input type="text" id="modality" name="modality" required placeholder="..." value={data?.modalidad} readOnly />
                         </div>
                         <div className={styles.formGroupStudentEdit}>
                             <label htmlFor="date">Fecha</label>
-                            <input type="date" id="date" name="date" placeholder="..." value={data.date} disabled />
+                            <input type="date" id="date" name="date" placeholder="..." value={data?.fecha + ""} disabled />
                         </div>
                         <div className={styles.formGroupStudentEdit}>
                             <label htmlFor="time">Hora</label>
-                            <input type="time" id="time" name="time" required placeholder="..." value={data.time} disabled />
+                            <input type="time" id="time" name="time" required placeholder="..." value={data?.hora} disabled />
                         </div>
                         <div className={styles.formGroupStudentEdit}>
                             <label htmlFor="reminder">Iniciar recordatorio</label>
-                            <input type="text" id="reminder" name="reminder" required placeholder="..." value={data.reminder} readOnly/>
+                            <input type="text" id="reminder" name="reminder" required placeholder="..." value={data?.iniciarRecordatorio + ""} readOnly />
                         </div>
                         <div className={styles.formGroupStudentEdit}>
                             <label htmlFor="link">Enlace</label>
-                            <input type="text" id="link" name="link" required placeholder="..." value={data.link} readOnly/>
+                            <input type="text" id="link" name="link" required placeholder="..." value={data?.link} readOnly />
                         </div>
                     </form>
                 </div>
-                
-            <div style={{ display: 'flex', gap: '10px' }}> {/* Contenedor de botones */}
-                <button className={styles.blueButton} onClick={() => {}} style={{ width: '120px' }} >Comentarios</button>
-                <button className={styles.blueButton} onClick={() => {handleButtonClick(data.afiche_url)}} style={{ width: '120px' }} >Afiche</button>
-                <button className={styles.blueButton} onClick={() => {handleButtonClick(data.prueba_url)}} style={{ width: '120px' }} >Pruebas</button>
+
+                <div style={{ display: 'flex', gap: '10px' }}> {/* Contenedor de botones */}
+                    <button className={styles.blueButton} onClick={() => { router.push('/comments') }} style={{ width: '120px' }} >Comentarios</button>
+                    <button className={styles.blueButton} onClick={() => { handleButtonPoster(data?.afiche + "") }} style={{ width: '120px' }} >Afiche</button>
+                    <button className={styles.blueButton} onClick={() => { handleButtonEvidence(data?.pruebas + "") }} style={{ width: '120px' }} >Pruebas</button>
+                </div>
             </div>
-        </div>
-    </main>
-  );
+        </main>
+    );
 }

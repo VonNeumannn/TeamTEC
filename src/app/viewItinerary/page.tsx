@@ -37,6 +37,11 @@ export default function ViewItinerary() {
         }
         );
     }
+    function handleDetails(index: number) {
+        const actividad = actividades[index];
+        localStorage.setItem("actividad", JSON.stringify(actividad));
+        router.push('/details_activity');
+    }
 
     const router = useRouter();
 
@@ -123,7 +128,7 @@ export default function ViewItinerary() {
                                         <td id={`nombreAct${index}`}>{act.nombre}</td>
                                         <td id={`estadoAct${index}`}>{act.estado}</td>
                                         <td>
-                                            <BlueButton text="Detalles" onClick={() => { } } type={undefined} />
+                                            <BlueButton text="Detalles" onClick={() => { handleDetails(index)} } type={undefined} />
                                             <button className={styles.acceptButton} onClick={() => {
                                                 //enviar a la pantalla de editar
                                                 router.push('/edit_activity');
@@ -142,6 +147,7 @@ export default function ViewItinerary() {
 }
 
 interface activityData {
+    id: string;
     nombre: string;
     estado: string;
     semana: number;
@@ -162,6 +168,7 @@ const getLocalStorage = () => {
     const actividad = localStorage.getItem("actividad");
     const actividadJson = JSON.parse(actividad ? actividad : "{}");
     const actividadData: activityData = {
+        id: actividadJson.id,
         nombre: actividadJson.nombre,
         estado: actividadJson.estado,
         semana: actividadJson.semanaRealizacion,
@@ -178,6 +185,7 @@ const getLocalStorage = () => {
         pruebas: actividadJson.pruebas
     };
     return new Actividad(
+        actividadJson.id,
         actividadData.nombre,
         actividadData.estado,
         actividadData.semana,

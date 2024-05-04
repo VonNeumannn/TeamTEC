@@ -23,9 +23,11 @@ export default function writingComment() {
 
     function handlePost() {
         const userData = JSON.parse(localStorage.getItem('user') || '{}');
+        const itinerarioId = localStorage.getItem('itinerarioId');
+        const activityId = localStorage.getItem('activityId');
         const timestamp = Timestamp.now();
         const comentario = new Comentario('',data.title,userData.email, data.writing, timestamp, []);
-        handlerAddComment("TUpzi7WjSW0ScPhR0auf","4IizMfLigz9cDgylBDQM",comentario);
+        handlerAddComment(itinerarioId+"",activityId+"",comentario);
         router.push('/comments');
     }
     return (

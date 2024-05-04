@@ -13,38 +13,35 @@ import Comentario from "@/model/Comentario";
 import Prueba from "@/model/Prueba";
 
 export default function MainMenuPage() {
-    const printMessage = () => {
-        console.log("Mostrando equipo");
-    };
     useEffect(() => {
-        handlerNextActivity();
-        var actividad = getLocalStorage();
-        console.log(actividad); 
-        var nombreActividad = actividad.getNombre();
-        var estadoActividad = actividad.getEstado();
-        var tipoActividad = actividad.getTipoActividad();
-        var modalidadActividad = actividad.getModalidad();
-        var semanaActividad = actividad.getSemana();
-        var fechaActividad = actividad.getFecha();
+        const fetchData = async () => {
+        const data = await handlerNextActivity();
+        console.log(data); 
+        var nombreActividad = data?.nombre;
+        var estadoActividad = data?.estado;
+        var tipoActividad = data?.tipo;
+        var modalidadActividad = data?.modalidad;
+        var semanaActividad = data?.semanaRealizacion;
+        var fechaActividad = data?.fecha;
         
         var nombreActividadElement = document.getElementById("nombreActividad");
         if (nombreActividadElement) {
-            nombreActividadElement.innerText = nombreActividad;
+            nombreActividadElement.innerText = nombreActividad+"";
         }
         
         var estadoActividadElement = document.getElementById("estadoActividad");
         if (estadoActividadElement) {
-            estadoActividadElement.innerText = estadoActividad;
+            estadoActividadElement.innerText = estadoActividad+"";
         }
         
         var tipoActividadElement = document.getElementById("tipoActividad");
         if (tipoActividadElement) {
-            tipoActividadElement.innerText = tipoActividad;
+            tipoActividadElement.innerText = tipoActividad+"";
         }
         
         var modalidadActividadElement = document.getElementById("modalidadActividad");
         if (modalidadActividadElement) {
-            modalidadActividadElement.innerText = modalidadActividad;
+            modalidadActividadElement.innerText = modalidadActividad+"";
         }
         
         var semanaActividadElement = document.getElementById("semanaActividad");
@@ -55,9 +52,11 @@ export default function MainMenuPage() {
         
         var fechaActividadElement = document.getElementById("fechaActividad");
         if (fechaActividadElement) {
-            fechaActividadElement.innerText = fechaActividad.toString(); 
+            fechaActividadElement.innerText = fechaActividad+""; 
         }
-    });
+    };
+    fetchData();
+}, []);
   
     const router = useRouter();
 
@@ -113,56 +112,3 @@ export default function MainMenuPage() {
     );
 }
 
-interface activityData {
-    nombre: string;
-    estado: string;
-    tipo: TipoActividad;
-    modalidad: string;
-    semana: number;
-    fecha: Date;
-    hora: string;
-    activadorRecordatorio: Date;
-    link: string;
-    afiche: string;
-    encargado: Profesor[];
-    responsable: Profesor;
-    comentarios: Comentario[];
-    pruebas: Prueba[];
-}
-
-const getLocalStorage = () => {
-    const actividad = localStorage.getItem("actividadProxima");
-    const actividadJson = JSON.parse(actividad ? actividad : "{}");
-    const actividadData: activityData = {
-        nombre: actividadJson.nombre,
-        estado: actividadJson.estado,
-        tipo: actividadJson.tipo,
-        modalidad: actividadJson.modalidad,
-        semana: actividadJson.semana,
-        fecha: actividadJson.fecha,
-        hora: actividadJson.hora,
-        activadorRecordatorio: actividadJson.activadorRecordatorio,
-        link: actividadJson.link,
-        afiche: actividadJson.afiche,
-        encargado: actividadJson.encargado,
-        responsable: actividadJson.responsable,
-        comentarios: actividadJson.comentarios,
-        pruebas: actividadJson.pruebas
-    };
-    return new Actividad(
-        actividadData.nombre,
-        actividadData.estado,
-        actividadData.semana,
-        actividadData.tipo,
-        actividadData.modalidad,
-        actividadData.fecha,
-        actividadData.hora,
-        actividadData.activadorRecordatorio,
-        actividadData.link,
-        actividadData.afiche,
-        actividadData.encargado,
-        actividadData.responsable,
-        actividadData.comentarios,
-        actividadData.pruebas
-    );
-}

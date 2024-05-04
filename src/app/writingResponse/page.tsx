@@ -22,10 +22,11 @@ export default function writingResponse() {
 
     async function handlePost() {
         const commentData = JSON.parse(localStorage.getItem('comment') || '{}');
-        console.log(commentData);
+        const itinerarioId = localStorage.getItem('itinerarioId');
+        const activityId = localStorage.getItem('activityId');
         const timestamp = Timestamp.now();
         const respuesta = new Respuesta(data.redaccion,timestamp);
-        handlerAddResponse("TUpzi7WjSW0ScPhR0auf","4IizMfLigz9cDgylBDQM",commentData.id,respuesta);
+        handlerAddResponse(itinerarioId+"",activityId+"",commentData.id,respuesta);
         router.push('/responses');
     };
   return (

@@ -36,6 +36,7 @@ interface activityDataPrueba {
 }
 
 interface activitiesItData {
+    id: string;
     semana: number;
     nombre: string;
     estado: string;
@@ -43,29 +44,22 @@ interface activitiesItData {
 
 
 export const handlerNextActivity = async () => {
-    let data = await getNextActivity();
-    let actData = JSON.parse(JSON.stringify(data));
-    if (actData == null) {
-        console.log("No hay actividades");
-    } else {
-        const actividad: activityData = {
-            nombre: actData.nombre,
-            estado: actData.estado,
-            tipo: actData.tipo,
-            modalidad: actData.modalidad,
-            semana: actData.semanaRealizacion,
-            fecha: actData.fecha,
-            hora: actData.hora, 
-            activadorRecordatorio: 0, 
-            link: actData.enlace, 
-            afiche: "", 
-            encargado: actData.encargados, 
-            
-            comentarios: [],
-            pruebas: [] 
-        };
-        console.log(actividad);
-        setLocalStorage(actividad);
+    try {
+        const data = await getNextActivity();
+        if (!data || data.length === 0) {
+            console.log("No hay actividades");
+            return null;
+        } 
+        // Ordenar
+        data.sort((a, b) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime());
+        const now = new Date();
+        // Encuentra próxima actividad
+        const nextActivity = data.find(activity => new Date(activity.fecha).getTime() > now.getTime() 
+        && activity.estado == ("Planeada" || "Notificada") );
+        return nextActivity || null;
+    } catch (error) {
+        console.error("Error al cargar proxima actividad:", error);
+        return null;
     }
 }
 
@@ -78,6 +72,7 @@ export const handlerActivitiesIt = async (idIt: string) => {
     data.forEach((actividad: any) => {
         if (actividad.isDeleted != 1) {
             const actividadData: activitiesItData = {
+                id: actividad.id,
                 semana: actividad.semana,
                 nombre: actividad.nombre,
                 estado: actividad.estado
@@ -86,6 +81,12 @@ export const handlerActivitiesIt = async (idIt: string) => {
         }
     });
     setActsInLS(actividades);
+}
+export const handlerActivityDetails = async (idIt: string, idAct: string) => {
+    let data = await getActivitiesIt(idIt);
+    data = JSON.parse(JSON.stringify(data));
+    let actividad = data.find((actividad: any) => actividad.id === idAct);
+    return actividad;
 }
 
 export const handlerDeleteActivity = async (itID: string, actID: string) => {
@@ -119,6 +120,7 @@ export const sortByWeek = async (id: string) => {
     let actividades: activitiesItData[] = [];
     data.forEach((actividad: any) => {
         const actividadData: activitiesItData = {
+            id: actividad.id,
             semana: actividad.semana,
             nombre: actividad.nombre,
             estado: actividad.estado
@@ -139,6 +141,7 @@ export const sortByName = async (id: string) => {
     let actividades: activitiesItData[] = [];
     data.forEach((actividad: any) => {
         const actividadData: activitiesItData = {
+            id: actividad.id,
             semana: actividad.semana,
             nombre: actividad.nombre,
             estado: actividad.estado
@@ -159,6 +162,7 @@ export const sortByState = async (id: string) => {
     let actividades: activitiesItData[] = [];
     data.forEach((actividad: any) => {
         const actividadData: activitiesItData = {
+            id: actividad.id,
             semana: actividad.semana,
             nombre: actividad.nombre,
             estado: actividad.estado
@@ -179,6 +183,7 @@ export const searchActivityByName = async (name: string, id: string) => {
     let actividades: activitiesItData[] = [];
     data.forEach((actividad: any) => {
         const actividadData: activitiesItData = {
+            id: actividad.id,
             semana: actividad.semana,
             nombre: actividad.nombre,
             estado: actividad.estado
@@ -189,11 +194,6 @@ export const searchActivityByName = async (name: string, id: string) => {
         return actividad.nombre.toLowerCase().includes(name.toLowerCase());
     });
     setActsInLS(actividades);
-}
-
-
-const setLocalStorage = (actividad: activityData) => {
-    localStorage.setItem("actividadProxima", JSON.stringify(actividad));
 }
 
 const setActsInLS = (actividades: activitiesItData[]) => {
