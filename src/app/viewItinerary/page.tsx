@@ -164,7 +164,7 @@ const getLocalStorage = () => {
     const actividadData: activityData = {
         nombre: actividadJson.nombre,
         estado: actividadJson.estado,
-        semana: actividadJson.semana,
+        semana: actividadJson.semanaRealizacion,
         tipo: actividadJson.tipo,
         modalidad: actividadJson.modalidad,
         fecha: actividadJson.fecha,

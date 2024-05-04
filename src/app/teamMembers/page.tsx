@@ -8,6 +8,82 @@ import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import { handlerLoad, handleDeleteController, reloadPageAfterOperation, handleDeleteConfirmation, handlerPassData } from "../../controller/profesorController";
 import Profesor from '@/model/Profesor';
+import { set } from "firebase/database";
+
+const sortProfessorsByName = (professors: Profesor[], direction : boolean) => {
+    if (direction) {
+        return professors.sort((a, b) => {
+            if (a.nombre.toLowerCase() < b.nombre.toLowerCase()) {
+                return -1;
+            }
+            if (a.nombre > b.nombre) {
+                return 1;
+            }
+            return 0;
+        });
+    }else{
+    
+        return professors.sort((a, b) => {
+            if (a.nombre.toLowerCase() > b.nombre.toLowerCase()) {
+                return -1;
+            }
+            if (a.nombre < b.nombre) {
+                return 1;
+            }
+            return 0;
+        });
+    }
+}
+
+const sortProfessorsByLastName = (professors: Profesor[], direction : boolean) => {
+    if (direction) {
+        return professors.sort((a, b) => {
+            if (a.apellidos.toLowerCase() < b.apellidos.toLowerCase()) {
+                return -1;
+            }
+            if (a.apellidos > b.apellidos) {
+                return 1;
+            }
+            return 0;
+        });
+    }else{
+    
+        return professors.sort((a, b) => {
+            if (a.apellidos.toLowerCase() > b.apellidos.toLowerCase()) {
+                return -1;
+            }
+            if (a.apellidos < b.apellidos) {
+                return 1;
+            }
+            return 0;
+        });
+    }
+}
+
+const sortProfessorsByCode = (professors: Profesor[], direction : boolean) => {
+    if (direction) {
+        return professors.sort((a, b) => {
+            if (a.codigo.toLowerCase() < b.codigo.toLowerCase()) {
+                return -1;
+            }
+            if (a.codigo > b.codigo) {
+                return 1;
+            }
+            return 0;
+        });
+    }else{
+    
+        return professors.sort((a, b) => {
+            if (a.codigo.toLowerCase() > b.codigo.toLowerCase()) {
+                return -1;
+            }
+            if (a.codigo < b.codigo) {
+                return 1;
+            }
+            return 0;
+        });
+    }
+}
 
 export default function MainMenuPage() {
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -24,6 +100,37 @@ export default function MainMenuPage() {
     const closeDialog = () => {
         setDialogOpen(false);
     };
+
+    const [sortNameDirection, setSortNameDirection] = useState(true);
+
+    const handlerSortName = () => {
+        const sortedData = sortProfessorsByName(data, sortNameDirection);
+        setData(sortedData);
+        setSortNameDirection(!sortNameDirection);
+        setSortLastNameDirection(true);
+        setSortCodeDirection(true);
+    };
+
+    const [sortLastNameDirection, setSortLastNameDirection] = useState(true);
+    const handlerSortLastName = () => {
+        const sortedData = sortProfessorsByLastName(data, sortLastNameDirection);
+        setData(sortedData);
+        setSortLastNameDirection(!sortLastNameDirection);
+        setSortNameDirection(true);
+        setSortCodeDirection(true);
+    };
+
+    const [sortCodeDirection, setSortCodeDirection] = useState(true);
+    const handlerSortCode = () => {
+        const sortedData = sortProfessorsByCode(data, sortCodeDirection);
+        setData(sortedData);
+        setSortCodeDirection(!sortCodeDirection);
+        setSortNameDirection(true);
+        setSortLastNameDirection(true);
+    };
+
+
+
 
     /*let codigo = '';
     const storedData = localStorage.getItem("user");
@@ -51,10 +158,11 @@ export default function MainMenuPage() {
 
     function handleEdit(index: number) {
         const item = data[index];
-        if("CA-1"==item.codigo || item.rol=="Administradora"){
+        console.log(item);
+        //if("CA-1"==item.codigo || item.rol=="Administradora"){
             handlerPassData(item);
             router.push(`/professor_editor`); 
-        };
+        //};
         // Aquí puedes agregar el código para editar el item
     }
 
@@ -76,12 +184,15 @@ export default function MainMenuPage() {
     }
 
     const handleSubmit = () => {
-        if (search.toLowerCase() == "") {
+        const searchField = document.getElementById('searchField') as HTMLInputElement;
+        if (searchField?.value == "") {
             setData(dataTemp);
         }else {
-            const resultadosFiltrados = data.filter((profesor) =>
-            profesor.nombre.toLowerCase().includes(search.toLowerCase())
+            const resultadosFiltrados = dataTemp.filter((profesor) =>
+                profesor.nombre.toLowerCase().includes(searchField?.value.toLowerCase()) ||
+                profesor.apellidos.toLowerCase().includes(searchField?.value.toLowerCase())
             );
+            
             setData(resultadosFiltrados);
       }
     };
@@ -100,10 +211,12 @@ export default function MainMenuPage() {
                 <p>Buscar profesor</p>
                 <div className={styles.searchAddContainer}>
                     <input type="text"  
-                    onChange={(e) => setSearch(e.target.value)} />
-                    <BlueButton text="Buscar"  onClick={() => {handleSubmit()}} />
+                    onChange={(e) => {setSearch(e.target.value); handleSubmit()}} 
+                    id="searchField"
+                    />
+                    <BlueButton text="Buscar"  onClick={() => {handleSubmit()}} type="button" />
                     <div className={styles.addContainer}>
-                        <BlueButton text="Agregar Profesor" onClick={() => {router.push(`/addMember`)}} />
+                        <BlueButton text="Agregar Profesor" onClick={() => {router.push(`/addMember`)}} type="button"/>
                     </div>
                 </div>
                 <div className={styles.tableContainer}>
@@ -111,15 +224,15 @@ export default function MainMenuPage() {
                         <tbody>
                             <tr>
                                 <th className={styles.pasenZelda}>Nombre
-                                    <button className={styles.sortButton} onClick={() => { }} >
+                                    <button className={styles.sortButton} onClick={handlerSortName} >
                                         <Image src={SortIcon} alt="sort icon" className={styles.sortButtonIcon} />
                                     </button></th>
                                 <th className={styles.pasenZelda}>Apellidos
-                                    <button className={styles.sortButton} onClick={() => { }} >
+                                    <button className={styles.sortButton} onClick={handlerSortLastName} >
                                         <Image src={SortIcon} alt="sort icon" className={styles.sortButtonIcon} />
                                     </button></th>
                                 <th className={styles.pasenZelda}>Codigo
-                                    <button className={styles.sortButton} onClick={() => { }} >
+                                    <button className={styles.sortButton} onClick={handlerSortCode} >
                                         <Image src={SortIcon} alt="sort icon" className={styles.sortButtonIcon} />
                                     </button></th>
                                 <th className={styles.pasenZelda}>Acciones</th>
@@ -136,7 +249,7 @@ export default function MainMenuPage() {
                                         <td>{item.apellidos}</td>
                                         <td>{item.codigo}</td>
                                         <td>
-                                            <BlueButton text="Editar" onClick={() => handleEdit(index)} />
+                                            <BlueButton text="Editar" onClick={() => handleEdit(index)} type='button' />
                                             <button className={styles.deleteButton} onClick={() => handleDelete(index)}>Eliminar</button>
                                         </td>
                                     </tr>
