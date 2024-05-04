@@ -24,8 +24,9 @@ export default function writingComment() {
     function handlePost() {
         const userData = JSON.parse(localStorage.getItem('user') || '{}');
         const timestamp = Timestamp.now();
-        const comentario = new Comentario(data.title,userData.email, data.writing, timestamp, []);
+        const comentario = new Comentario('',data.title,userData.email, data.writing, timestamp, []);
         handlerAddComment("TUpzi7WjSW0ScPhR0auf","4IizMfLigz9cDgylBDQM",comentario);
+        router.push('/comments');
     }
     return (
         <main className={styles.main} id="main">

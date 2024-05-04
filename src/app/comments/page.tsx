@@ -71,7 +71,7 @@ export default function commentsPage() {
                                     <tr key={index}>
                                         <td>{item.titulo}</td>
                                         <td>{user.email}</td>
-                                        <td>{item.fechaYHora.toDate().toUTCString()}</td>
+                                        <td>{item.fechaYHora.toDate().toLocaleString()}</td>
                                         <td>
                                             <BlueButton text="Seleccionar" onClick={() => handleOpening(index)} type={undefined} />
                                         </td>

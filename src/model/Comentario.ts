@@ -3,6 +3,7 @@ import Respuesta from "./Respuesta";
 import Usuario from "./Usuario";
 
 class Comentario {
+    private _id: string
     private _titulo: string;
     private _redactor: string;
     private _redaccion: string;
@@ -10,12 +11,14 @@ class Comentario {
     private _respuestas: Respuesta[];
   
     constructor(
+      id: string,
       titulo: string,
       redactor: string,
       redaccion: string,
       fechaYHora: Timestamp,
       respuestas: Respuesta[]
     ) {
+      this._id = id;
       this._titulo = titulo;
       this._redactor = redactor;
       this._redaccion = redaccion;
@@ -24,6 +27,9 @@ class Comentario {
     }
 
     // Getters
+    get id() {
+      return this._id;
+    }
     get titulo() {
       return this._titulo;
     }
@@ -42,6 +48,9 @@ class Comentario {
     // Setters
     set respuestas(respuestas: Respuesta[]) {
       this._respuestas = respuestas;
+    }
+    set id(id: string) {
+      this._id = id;
     }
   }
 export default Comentario;

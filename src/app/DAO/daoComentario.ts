@@ -15,6 +15,7 @@ export async function getComments(itinerarioId: string, actividadId: string): Pr
     let comentarios: Comentario[] = [];
     for (const comentarioDoc of comentariosSnapshot.docs) {
         let comentario = comentarioDoc.data() as Comentario;
+        comentario.id = comentarioDoc.id;
         const respuestasRef = collection(comentarioDoc.ref, 'respuestas');
         const respuestasSnapshot = await getDocs(respuestasRef);
         const respuestas: Respuesta[] = [];
@@ -39,4 +40,31 @@ export async function addComment(itinerarioId: string, actividadId: string, come
     });
     const respuestasRef = collection(commentDocRef, 'respuestas');
     await addDoc(respuestasRef, {});
+}
+
+export async function getResponses(itinerarioId: string, actividadId: string, comentarioId: string): Promise<Respuesta[]> {
+    const database = db;
+    const itinerarioRef = doc(database, 'itinerarios', itinerarioId);
+    const actividadRef = doc(itinerarioRef, 'actividades', actividadId);
+    const comentariosRef = collection(actividadRef, 'comentarios');
+    const comentarioRef = doc(comentariosRef, comentarioId);
+    const respuestasRef = collection(comentarioRef, 'respuestas');
+    const respuestasSnapshot = await getDocs(respuestasRef);
+    let respuestas: Respuesta[] = [];
+    respuestasSnapshot.forEach((respuestaDoc) => {
+        respuestas.push(respuestaDoc.data() as Respuesta);
+    });
+    return respuestas;
+}
+export async function addResponse(itinerarioId: string, actividadId: string, comentarioId: string, respuesta: Respuesta): Promise<void> {
+    const database = db;
+    const itinerarioRef = doc(database, 'itinerarios', itinerarioId);
+    const actividadRef = doc(itinerarioRef, 'actividades', actividadId);
+    const comentariosRef = collection(actividadRef, 'comentarios');
+    const comentarioRef = doc(comentariosRef, comentarioId);
+    const respuestasRef = collection(comentarioRef, 'respuestas');
+    await addDoc(respuestasRef, {
+        redaccion: respuesta.redaccion,
+        fechaYHora: respuesta.fechaYHora,
+    });
 }
