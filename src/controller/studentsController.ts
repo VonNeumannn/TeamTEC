@@ -26,7 +26,6 @@ export const handlerLoad = async () => {
         console.error("Error loading students:", error);
         return [];
     }
-
 };
 
 export const handlerOneLoad = async (id:string) => {

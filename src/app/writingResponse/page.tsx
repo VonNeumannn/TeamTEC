@@ -2,12 +2,17 @@
 import styles from '../page.module.css';
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { handlerAddResponse } from '@/controller/comentarioController';
+import { Timestamp } from 'firebase/firestore';
+import Respuesta from '@/model/Respuesta';
 
 export default function writingResponse() {
     const [data, setData] = useState({
+        fechaYHora: '',
         redaccion: ''
     });
-
+   const  router = useRouter()
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setData({
             ...data,
@@ -15,10 +20,14 @@ export default function writingResponse() {
         });
     };
 
-    function handlePost() {
-        console.log(`handlePosting item: ${data.redaccion}`);
-        // Aquí puedes agregar el código para editar el item
-    }
+    async function handlePost() {
+        const commentData = JSON.parse(localStorage.getItem('comment') || '{}');
+        console.log(commentData);
+        const timestamp = Timestamp.now();
+        const respuesta = new Respuesta(data.redaccion,timestamp);
+        handlerAddResponse("TUpzi7WjSW0ScPhR0auf","4IizMfLigz9cDgylBDQM",commentData.id,respuesta);
+        router.push('/responses');
+    };
   return (
     <main className={styles.main} id="main">
         <div className={styles.studentEditContainer}>
@@ -26,14 +35,14 @@ export default function writingResponse() {
                 <div className={styles.formstudentEdit}>
                     <form className={styles.formContainerWriteComment}>
                         <div className={styles.formGroupWriteComment}>
-                        <textarea id="redaccion" name="writing" placeholder="..." value={data.redaccion} style={{ height: '150px', width: '300px', resize: 'none'}} onChange={handleChange}/>
+                        <textarea id="redaccion" name="writing" placeholder="..." value={data.redaccion} style={{color: 'black', height: '150px', width: '300px', resize: 'none',backgroundColor: 'white'}} onChange={handleChange}/>
                         </div>
                     </form>
                 </div>
                 
             <div style={{ display: 'flex', gap: '10px' }}> {/* Contenedor de botones */}
                 <button className={styles.greenButton} onClick={() =>  handlePost()} style={{ width: '120px' }} >Publicar</button>
-                <button className={styles.deleteButton} onClick={() => {}} style={{ width: '120px' }} >Cancelar</button>
+                <button className={styles.deleteButton} onClick={() => { router.push('/responses') }} style={{ width: '120px' }} >Cancelar</button>
             </div>
         </div>
     </main>
