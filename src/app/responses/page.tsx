@@ -14,8 +14,10 @@ export default function responsesPage() {
     useEffect(() => {
         const fetchData = async () => {
             const data = JSON.parse(localStorage.getItem('comment') || '{}');
+            const itinerarioId = localStorage.getItem('itinerarioId');
+            const activityId = localStorage.getItem('activityId');
             setData(data);
-            const responses = await handlerGetResponses("TUpzi7WjSW0ScPhR0auf", "4IizMfLigz9cDgylBDQM", data.id);
+            const responses = await handlerGetResponses(itinerarioId+"", activityId+"", data.id);
             setResponses([...responses]);
 
         };

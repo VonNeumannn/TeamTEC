@@ -17,7 +17,7 @@ export const handlerItinerario = async () => {
             autor: itinerario.autor
         };
         itinerarios.push(itinerarioData);
-    });
+    }); 
     setLocalStorage(itinerarios);
 }
 

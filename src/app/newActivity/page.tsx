@@ -317,7 +317,7 @@ export default function NewActivity() {
             openDialog();
 
         } else {
-            const actividad: activityDataPrueba = {
+            const actividad = {
                 nombre: nombre,
                 semanaRealizacion: semana,
                 tipo: tipoActividad,
@@ -327,7 +327,8 @@ export default function NewActivity() {
                 iniciarRecordatorio: recordatorio,
                 enlace: enlace,
                 afiche: aficheName,
-                encargados: chosenProfessors
+                encargados: chosenProfessors,
+                estado: "Planeada"
             };
 
             console.log(actividad);

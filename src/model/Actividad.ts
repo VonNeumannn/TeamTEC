@@ -4,30 +4,32 @@ import Comentario from './Comentario';
 import Prueba from './Prueba';
 
 class Actividad {
-    private nombre: string;
-    private estado: string;
-    private semana: number;
-    private tipoActividad: TipoActividad;
-    private modalidad: string;
-    private fecha: Date;
-    private hora: string; // Suponiendo que Time es una cadena de texto en formato de hora
-    private activadorRecordatorio: Date;
-    private link: string;
-    private afiche: string;
-    private encargado: Profesor[];
-    private responsable: Profesor;
-    private comentarios: Comentario[];
-    private pruebas: Prueba[];
+    private _id: string;
+    private _nombre: string;
+    private _estado: string;
+    private _semanaRealizacion: number;
+    private _tipo: TipoActividad;
+    private _modalidad: string;
+    private _fecha: Date;
+    private _hora: string; // Suponiendo que Time es una cadena de texto en formato de hora
+    private _iniciarRecordatorio: Date;
+    private _link: string;
+    private _afiche: string;
+    private _encargado: Profesor[];
+    private _responsable: Profesor;
+    private _comentarios: Comentario[];
+    private _pruebas: Prueba[];
 
     constructor(
+        id: string,
         nombre: string,
         estado: string,
-        semana: number,
-        tipoActividad: TipoActividad,
+        semanaRealizacion: number,
+        tipo: TipoActividad,
         modalidad: string,
         fecha: Date,
         hora: string,
-        activadorRecordatorio: Date,
+        iniciarRecordatorio: Date,
         link: string,
         afiche: string,
         encargado: Profesor[],
@@ -35,106 +37,72 @@ class Actividad {
         comentarios: Comentario[],
         pruebas: Prueba[]
     ) {
-        this.nombre = nombre;
-        this.estado = estado;
-        this.semana = semana;
-        this.tipoActividad = tipoActividad;
-        this.modalidad = modalidad;
-        this.fecha = fecha;
-        this.hora = hora;
-        this.activadorRecordatorio = activadorRecordatorio;
-        this.link = link;
-        this.afiche = afiche;
-        this.encargado = encargado;
-        this.responsable = responsable;
-        this.comentarios = comentarios;
-        this.pruebas = pruebas;
+        this._id = id;
+        this._nombre = nombre;
+        this._estado = estado;
+        this._semanaRealizacion = semanaRealizacion;
+        this._tipo = tipo;
+        this._modalidad = modalidad;
+        this._fecha = fecha;
+        this._hora = hora;
+        this._iniciarRecordatorio = iniciarRecordatorio;
+        this._link = link;
+        this._afiche = afiche;
+        this._encargado = encargado;
+        this._responsable = responsable;
+        this._comentarios = comentarios;
+        this._pruebas = pruebas;
     }
-    getNombre(): string {
-        return this.nombre;
+    // Getters
+    get id() {
+        return this._id;
     }
-    setNombre(nombre: string): void {
-        this.nombre = nombre;
+    get nombre() {
+        return this._nombre;
     }
-    getEstado(): string {
-        return this.estado;
+    get estado() {
+        return this._estado;
     }
-    setEstado(estado: string): void {
-        this.estado = estado;
+    get semanaRealizacion() {
+        return this._semanaRealizacion;
     }
-    getSemana(): number {
-        return this.semana;
+    get tipo() {
+        return this._tipo;
     }
-    setSemana(semana: number): void {
-        this.semana = semana;
+    get modalidad() {
+        return this._modalidad;
     }
-    getTipoActividad(): TipoActividad {
-        return this.tipoActividad;
+    get fecha() {
+        return this._fecha;
     }
-    setTipoActividad(tipoActividad: TipoActividad): void {
-        this.tipoActividad = tipoActividad;
+    get hora() {
+        return this._hora;
     }
-    getModalidad(): string {
-        return this.modalidad;
+    get activadorRecordatorio() {
+        return this._iniciarRecordatorio;
     }
-    setModalidad(modalidad: string): void {
-        this.modalidad = modalidad;
+    get link() {
+        return this._link;
     }
-    getFecha(): Date {
-        return this.fecha;
+    get afiche() {
+        return this._afiche;
     }
-    setFecha(fecha: Date): void {
-        this.fecha = fecha;
+    get encargado() {
+        return this._encargado;
     }
-    getHora(): string {
-        return this.hora;
+    get responsable() {
+        return this._responsable;
     }
-    setHora(hora: string): void {
-        this.hora = hora;
+    get comentarios() {
+        return this._comentarios;
     }
-    getActivadorRecordatorio(): Date {
-        return this.activadorRecordatorio;
+    get pruebas() {
+        return this._pruebas;
     }
-    setActivadorRecordatorio(activadorRecordatorio: Date): void {
-        this.activadorRecordatorio = activadorRecordatorio;
+    // Setters
+    set id(id: string) {
+        this._id = id;
     }
-    getLink(): string {
-        return this.link;
-    }
-    setLink(link: string): void {
-        this.link = link;
-    }
-    getAfiche(): string {
-        return this.afiche;
-    }
-    setAfiche(afiche: string): void {
-        this.afiche = afiche;
-    }
-    getEncargado(): Profesor[] {
-        return this.encargado;
-    }
-    setEncargado(encargado: Profesor[]): void {
-        this.encargado = encargado;
-    }
-    getResponsable(): Profesor {
-        return this.responsable;
-    }
-    setResponsable(responsable: Profesor): void {
-        this.responsable = responsable;
-    }
-    getComentarios(): Comentario[] {
-        return this.comentarios;
-    }
-    setComentarios(comentarios: Comentario[]): void {
-        this.comentarios = comentarios;
-    }
-    getPruebas(): Prueba[] {
-        return this.pruebas;
-    }
-    setPruebas(pruebas: Prueba[]): void {
-        this.pruebas = pruebas;
-    }
-    
 }
 
 export default Actividad;

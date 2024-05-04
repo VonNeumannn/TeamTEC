@@ -17,7 +17,9 @@ export default function commentsPage() {
             try {
                 const userData = JSON.parse(localStorage.getItem('user') || '{}');
                 setUser(userData);
-                const data = await handlerAllComments("TUpzi7WjSW0ScPhR0auf","4IizMfLigz9cDgylBDQM"); 
+                const itinerarioId = localStorage.getItem('itinerarioId');
+                const activityId = localStorage.getItem('activityId');
+                const data = await handlerAllComments(itinerarioId+"",activityId+""); 
                 setData([...data]);
             } catch (error) {
                 console.error('Error fetching data:', error);
