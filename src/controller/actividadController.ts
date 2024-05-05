@@ -119,13 +119,15 @@ export const sortByWeek = async (id: string) => {
 
     let actividades: activitiesItData[] = [];
     data.forEach((actividad: any) => {
-        const actividadData: activitiesItData = {
-            id: actividad.id,
-            semana: actividad.semana,
-            nombre: actividad.nombre,
-            estado: actividad.estado
-        };
-        actividades.push(actividadData);
+        if (actividad.isDeleted != 1) {
+            const actividadData: activitiesItData = {
+                id: actividad.id,
+                semana: actividad.semana,
+                nombre: actividad.nombre,
+                estado: actividad.estado
+            };
+            actividades.push(actividadData);
+        }
     });
     actividades.sort((a, b) => {
         return a.semana - b.semana;
@@ -140,13 +142,15 @@ export const sortByName = async (id: string) => {
 
     let actividades: activitiesItData[] = [];
     data.forEach((actividad: any) => {
-        const actividadData: activitiesItData = {
-            id: actividad.id,
-            semana: actividad.semana,
-            nombre: actividad.nombre,
-            estado: actividad.estado
-        };
-        actividades.push(actividadData);
+        if (actividad.isDeleted != 1) {
+            const actividadData: activitiesItData = {
+                id: actividad.id,
+                semana: actividad.semana,
+                nombre: actividad.nombre,
+                estado: actividad.estado
+            };
+            actividades.push(actividadData);
+        }
     });
     actividades.sort((a, b) => {
         return a.nombre.localeCompare(b.nombre);
@@ -161,13 +165,15 @@ export const sortByState = async (id: string) => {
 
     let actividades: activitiesItData[] = [];
     data.forEach((actividad: any) => {
-        const actividadData: activitiesItData = {
-            id: actividad.id,
-            semana: actividad.semana,
-            nombre: actividad.nombre,
-            estado: actividad.estado
-        };
-        actividades.push(actividadData);
+        if (actividad.isDeleted != 1) {
+            const actividadData: activitiesItData = {
+                id: actividad.id,
+                semana: actividad.semana,
+                nombre: actividad.nombre,
+                estado: actividad.estado
+            };
+            actividades.push(actividadData);
+        }
     });
     actividades.sort((a, b) => {
         return a.estado.localeCompare(b.estado);
@@ -182,13 +188,15 @@ export const searchActivityByName = async (name: string, id: string) => {
 
     let actividades: activitiesItData[] = [];
     data.forEach((actividad: any) => {
-        const actividadData: activitiesItData = {
-            id: actividad.id,
-            semana: actividad.semana,
-            nombre: actividad.nombre,
-            estado: actividad.estado
-        };
-        actividades.push(actividadData);
+        if (actividad.isDeleted != 1) {
+            const actividadData: activitiesItData = {
+                id: actividad.id,
+                semana: actividad.semana,
+                nombre: actividad.nombre,
+                estado: actividad.estado
+            };
+            actividades.push(actividadData);
+        }
     });
     actividades = actividades.filter((actividad) => {
         return actividad.nombre.toLowerCase().includes(name.toLowerCase());
