@@ -73,7 +73,7 @@ export const handlerAddData = async (data: any, dataProfessors:Profesor[]) => {
     }
 };
 
-export const handlerUpdateController = async (id:string, data: any, codigo:string, rol:string, estado:string) => {
+export const handlerUpdateController = async (id:string, data: any, codigo:string, estado:string) => {
     try{
         const professor: Profesor = new Profesor (
             data.name,
@@ -85,7 +85,7 @@ export const handlerUpdateController = async (id:string, data: any, codigo:strin
             data.password,
             codigo,
             data.fotoPerfil,
-            rol,
+            data.rol,
             estado
           );
         await updateProfessor(id, professor);

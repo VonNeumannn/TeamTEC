@@ -132,14 +132,16 @@ export default function MainMenuPage() {
 
 
 
-    /*let codigo = '';
+    let codigo = '';
+    let rol = '';
     const storedData = localStorage.getItem("user");
     if (storedData) {
         const userData = JSON.parse(storedData);
         codigo = userData.codigo;
+        rol = userData.rol;
     } else {
         console.log("No data found in localStorage for key 'user'");
-    }*/
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -159,17 +161,25 @@ export default function MainMenuPage() {
     function handleEdit(index: number) {
         const item = data[index];
         console.log(item);
-        //if("CA-1"==item.codigo || item.rol=="Administradora"){
+        if(codigo==item.codigo || rol=="Administradora"){
             handlerPassData(item);
             router.push(`/professor_editor`); 
-        //};
+        };
         // Aquí puedes agregar el código para editar el item
+    }
+
+    function handleAdd() {
+        if(rol=="Administradora"){
+            router.push(`/addMember`)
+        };
     }
 
     function handleDelete(index: number) {
         const item = data[index];
-        setDialogOpen(true);
-        setItemToDelete(item); 
+        if(rol=="Administradora"){
+            setDialogOpen(true);
+            setItemToDelete(item); 
+        };
     }
 
     function confirmDelete(mensaje:string) {
@@ -216,7 +226,7 @@ export default function MainMenuPage() {
                     />
                     <BlueButton text="Buscar"  onClick={() => {handleSubmit()}} type="button" />
                     <div className={styles.addContainer}>
-                        <BlueButton text="Agregar Profesor" onClick={() => {router.push(`/addMember`)}} type="button"/>
+                        <BlueButton text="Agregar Profesor" onClick={() => {handleAdd()}} type="button"/>
                     </div>
                 </div>
                 <div className={styles.tableContainer}>

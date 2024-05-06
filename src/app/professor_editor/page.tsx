@@ -45,6 +45,7 @@ export default function ProfessorEditor() {
         password: '',
         fotoPerfil: '',
         passwordConfirm: '',
+        rol: '',
     });
     const openDialog = () => {
         console.log("Abriedo dialogo");
@@ -62,6 +63,15 @@ export default function ProfessorEditor() {
         correo = professorData.correo;
     } else {
         console.log("No data found in localStorage for key 'professor'");
+    }
+
+    let rol = '';
+    const storedUserData = localStorage.getItem("user");
+    if (storedUserData) {
+        const userData = JSON.parse(storedUserData);
+        rol = userData.rol;
+    } else {
+        console.log("No data found in localStorage for key 'user'");
     }
 
     useEffect(() => {
@@ -100,6 +110,7 @@ export default function ProfessorEditor() {
                 password: loadData[0].contraseña,
                 fotoPerfil: loadData[0].fotoPerfil,
                 passwordConfirm: loadData[0].contraseña,
+                rol: loadData[0].rol,
             });
         }
     }, [loadData]);
@@ -116,6 +127,15 @@ export default function ProfessorEditor() {
             ...data,
             [e.target.id]: e.target.value
         });
+    };
+
+    const handleChangeSelectRol = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        if(rol=="Administradora"){
+            setData({
+                ...data,
+                [e.target.id]: e.target.value
+            });
+        };
     };
 
     const handlerfileName = (name : string) => {
@@ -156,7 +176,7 @@ export default function ProfessorEditor() {
                 if (file !== null) {
                     handlerUploadFile(file, data.fotoPerfil);
                 }
-                handlerUpdateController(loadData[0].correo, data, loadData[0].codigo, loadData[0].rol, loadData[0].estado);
+                handlerUpdateController(loadData[0].correo, data, loadData[0].codigo, loadData[0].estado);
                 router.push(`/teamMembers`);
             }
             else{
@@ -225,6 +245,14 @@ export default function ProfessorEditor() {
                         <div className={styles.formGroupProfessorRegister}>
                             <label htmlFor="passwordConfirm">Confirmación de contraseña</label>
                             <input type="password" id="passwordConfirm" name="passwordConfirm" required placeholder="..." value={data.passwordConfirm} onChange={handleChange}/>
+                        </div>
+                        <div className={styles.formGroupProfessorRegister}>
+                            <label htmlFor="rol">Rol</label>
+                            <select id="rol" name="rol" value={data.rol} onChange={handleChangeSelectRol}>
+                                <option value="Profesor">Profesor</option>
+                                <option value="Administradora">Administradora</option>
+                                <option value="Coordinador">Coordinador</option>
+                            </select>
                         </div>
                         <span>
                             ❌ Ocho caracteres <br />

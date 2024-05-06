@@ -63,8 +63,10 @@ export default function ViewStudents() {
 
     function handleDelete(index: number) {
         const item = data[index];
-        setDialogOpen(true);
-        setItemToDelete(item); 
+        if(sede==item.sede){
+            setDialogOpen(true);
+            setItemToDelete(item);
+        };
     }
 
     function confirmDelete() {
@@ -124,7 +126,7 @@ export default function ViewStudents() {
                 )}
             </div>
             <div className={styles.teamContainer}>
-                <h1>Miembros equipo</h1>
+                <h1>Estudiantes</h1>
                 <p>Buscar estudiante</p>
                 <div className={styles.searchAddContainer}>
                     <input type="search" 
