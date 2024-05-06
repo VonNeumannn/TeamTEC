@@ -210,7 +210,47 @@
 }
 
 
+.dialogPopUpInfoDelete{
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 4%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: slideInFromTop 0.80s ease-in-out;
+  justify-content: center;
+  color: #364D63;
+  width:clamp(500px, 50vw, 400px);
+  height: 60dvh;
+  border: none;
+  background-color: rgb(255, 255, 255);
+  z-index: 1000;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  overflow-y: hidden;
+}
 
+.dialogPopUpInfoDelete h2{
+  font-size: clamp(1.3rem, 3vw, 1.5rem);
+  margin-bottom: 10%;
+  width: 100%;
+
+}
+
+.dialogPopUpInfoDelete p{
+  margin-bottom: 5%;
+  size: clamp(1rem, 2vw, 1.2rem);
+  width: 100%;
+}
+
+.show{
+  display: flex;
+}
+
+.blur{
+  filter: blur(20px);
+}
 
 
 

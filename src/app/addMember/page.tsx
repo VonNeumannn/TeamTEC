@@ -8,6 +8,81 @@ import React, { useState, useEffect } from 'react';
 import { handlerLoad, reloadPageAfterOperation, handleAddMemberController} from "../../controller/profesorController";
 import Profesor from '@/model/Profesor';
 
+const sortProfessorsByName = (professors: Profesor[], direction : boolean) => {
+    if (direction) {
+        return professors.sort((a, b) => {
+            if (a.nombre.toLowerCase() < b.nombre.toLowerCase()) {
+                return -1;
+            }
+            if (a.nombre > b.nombre) {
+                return 1;
+            }
+            return 0;
+        });
+    }else{
+    
+        return professors.sort((a, b) => {
+            if (a.nombre.toLowerCase() > b.nombre.toLowerCase()) {
+                return -1;
+            }
+            if (a.nombre < b.nombre) {
+                return 1;
+            }
+            return 0;
+        });
+    }
+}
+
+const sortProfessorsByLastName = (professors: Profesor[], direction : boolean) => {
+    if (direction) {
+        return professors.sort((a, b) => {
+            if (a.apellidos.toLowerCase() < b.apellidos.toLowerCase()) {
+                return -1;
+            }
+            if (a.apellidos > b.apellidos) {
+                return 1;
+            }
+            return 0;
+        });
+    }else{
+    
+        return professors.sort((a, b) => {
+            if (a.apellidos.toLowerCase() > b.apellidos.toLowerCase()) {
+                return -1;
+            }
+            if (a.apellidos < b.apellidos) {
+                return 1;
+            }
+            return 0;
+        });
+    }
+}
+
+const sortProfessorsByCode = (professors: Profesor[], direction : boolean) => {
+    if (direction) {
+        return professors.sort((a, b) => {
+            if (a.codigo.toLowerCase() < b.codigo.toLowerCase()) {
+                return -1;
+            }
+            if (a.codigo > b.codigo) {
+                return 1;
+            }
+            return 0;
+        });
+    }else{
+    
+        return professors.sort((a, b) => {
+            if (a.codigo.toLowerCase() > b.codigo.toLowerCase()) {
+                return -1;
+            }
+            if (a.codigo < b.codigo) {
+                return 1;
+            }
+            return 0;
+        });
+    }
+}
+
 export default function MainMenuPage() {
     const [search, setSearch] = useState("");
     const [data, setData] = useState<Profesor[]>([]);
@@ -44,6 +119,34 @@ export default function MainMenuPage() {
       }
     };
 
+    const [sortNameDirection, setSortNameDirection] = useState(true);
+
+    const handlerSortName = () => {
+        const sortedData = sortProfessorsByName(data, sortNameDirection);
+        setData(sortedData);
+        setSortNameDirection(!sortNameDirection);
+        setSortLastNameDirection(true);
+        setSortCodeDirection(true);
+    };
+
+    const [sortLastNameDirection, setSortLastNameDirection] = useState(true);
+    const handlerSortLastName = () => {
+        const sortedData = sortProfessorsByLastName(data, sortLastNameDirection);
+        setData(sortedData);
+        setSortLastNameDirection(!sortLastNameDirection);
+        setSortNameDirection(true);
+        setSortCodeDirection(true);
+    };
+
+    const [sortCodeDirection, setSortCodeDirection] = useState(true);
+    const handlerSortCode = () => {
+        const sortedData = sortProfessorsByCode(data, sortCodeDirection);
+        setData(sortedData);
+        setSortCodeDirection(!sortCodeDirection);
+        setSortNameDirection(true);
+        setSortLastNameDirection(true);
+    };
+
     return (
         <main className={styles.main} id="main">
             <div className={styles.teamContainer}>
@@ -59,15 +162,15 @@ export default function MainMenuPage() {
                         <tbody>
                             <tr>
                                 <th className={styles.pasenZelda}>Nombre
-                                    <button className={styles.sortButton} onClick={() => { }} >
+                                    <button className={styles.sortButton} onClick={handlerSortName} >
                                         <Image src={SortIcon} alt="sort icon" className={styles.sortButtonIcon} />
                                     </button></th>
                                 <th className={styles.pasenZelda}>Apellidos
-                                    <button className={styles.sortButton} onClick={() => { }} >
+                                    <button className={styles.sortButton} onClick={handlerSortLastName} >
                                         <Image src={SortIcon} alt="sort icon" className={styles.sortButtonIcon} />
                                     </button></th>
                                 <th className={styles.pasenZelda}>Codigo
-                                    <button className={styles.sortButton} onClick={() => { }} >
+                                    <button className={styles.sortButton} onClick={handlerSortCode} >
                                         <Image src={SortIcon} alt="sort icon" className={styles.sortButtonIcon} />
                                     </button></th>
                                 <th className={styles.pasenZelda}>Acciones</th>

@@ -26,10 +26,8 @@ export const handlerLogin = async (email : string, password : string, router: an
         openDialog();
     } else {
         const user : userData = {
-            email: data.email,
-            password: data.contrasenia,
-            rol: data.rol,
-            celular: data.celular
+            email: data.correo,
+            password: data.contraseña
         };
 
         if(user.password != password){
@@ -37,7 +35,7 @@ export const handlerLogin = async (email : string, password : string, router: an
             openDialog();
             return;
         }else{
-            setLocalStorage(user);
+            setLocalStorage(data);
             router.push('/mainMenu');
         }
         
@@ -48,6 +46,6 @@ export const handlerLogin = async (email : string, password : string, router: an
 
 };
   
-const setLocalStorage = (user : userData) => {
-    localStorage.setItem("user", JSON.stringify(user));
+const setLocalStorage = (data : any) => {
+    localStorage.setItem("user", JSON.stringify(data));
 }

@@ -49,7 +49,7 @@ export default function PopUpInformation(PopUpInformationProps: PopUpInformation
     
     
     return (
-        <dialog id={'dialogPopUpInfo'}  className={styles.dialogPopUpInfo} >
+        <dialog id={'dialogPopUpInfo'}  className={styles.dialogPopUpInfoDelete} >
             <h2>{title}</h2>
             <p>{content}</p>
             <textarea id="redaccion" name="writing" placeholder="..." value={selectedValue} style={{ height: '150px', width: '300px', resize: 'none'}} onChange={(e) => setSelectedValue(e.target.value)}/>

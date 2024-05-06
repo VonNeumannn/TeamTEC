@@ -60,6 +60,14 @@ export default function MainMenuPage() {
   
     const router = useRouter();
 
+    const storedData = localStorage.getItem("user");
+    if (storedData) {
+        const userData = JSON.parse(storedData);
+        console.log(userData);
+    } else {
+        console.log("No data found in localStorage for key 'user'");
+    }
+
     return (
         <main className={styles.main} id="main">
             <div className={styles.mainMenuContainer}>
