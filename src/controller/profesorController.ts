@@ -1,5 +1,5 @@
 import Profesor from "../model/Profesor";
-import { addProfessor, updateProfessor, addProfesor, loadProfessor, uploadFile, deleteProfessor, deleteConfirmation, loadOneProfessor, loadProfessorByYear } from "../app/DAO/profesordao/daoProfesor";
+import { deleteFile, addProfessor, updateProfessor, addProfesor, loadProfessor, uploadFile, deleteProfessor, deleteConfirmation, loadOneProfessor, loadProfessorByYear } from "../app/DAO/profesordao/daoProfesor";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -27,14 +27,14 @@ export const handlerUploadFile = async (file:File, fileName: string) => {
     }
 };
 
-/*export const handlerDeleteFile = async (fileName: string) => {
+export const handlerDeleteFile = async (fileName: string) => {
     try{
         let dataFile = await deleteFile(fileName);
     } catch (error) {
         console.error("Error subiendo el archivo:", error);
         return false;
     }
-};*/
+};
 
 export const handlerAddData = async (data: any, dataProfessors:Profesor[]) => {
     try{

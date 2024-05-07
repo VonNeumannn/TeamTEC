@@ -17,7 +17,7 @@ export const uploadFile = async (file: File, fileName : string) => {
   return false;
 }
 
-/*export const deleteFile = async (fileName: string) => {
+export const deleteFile = async (fileName: string) => {
   const storage = getStorage();
   const fileRef = ref(storage, 'gs://teamtec-727df.appspot.com/profile/' +  fileName);
   
@@ -29,7 +29,7 @@ export const uploadFile = async (file: File, fileName : string) => {
     console.error("Error al eliminar el archivo:", error);
     return false;
   }
-}*/
+}
 
 export async function addProfesor(profesor: Profesor): Promise<boolean> {
     try {

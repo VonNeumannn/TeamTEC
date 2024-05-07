@@ -7,7 +7,7 @@ import Profile from '../../../public/Profile.png';
 import PopUp from '../components/popUpInformation';
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
-import { handlerLoad, handlerOneLoad, VerifyPassword, VerifyEmail, handlerUploadFile,handlerUpdateController } from "../../controller/profesorController";
+import { handlerDeleteFile, handlerLoad, handlerOneLoad, VerifyPassword, VerifyEmail, handlerUploadFile,handlerUpdateController } from "../../controller/profesorController";
 import Profesor from '@/model/Profesor';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import { profile } from 'console';
@@ -35,6 +35,7 @@ export default function ProfessorEditor() {
     const [currentMessage, setcurrentMessage] = useState("");
     const [dataProfessors, setDataProfessors] = useState<Profesor[]>([]);
     const [currentImageUrl, setCurrentImageUrl] = useState("");
+    const [originalFileName, setoriginalFileName] = useState("");
 
     const router = useRouter();
     const [loadData, setloadData]= useState<Profesor[]>([]);
@@ -115,6 +116,7 @@ export default function ProfessorEditor() {
                 passwordConfirm: loadData[0].contraseña,
                 rol: loadData[0].rol,
             });
+            setoriginalFileName(loadData[0].fotoPerfil);
             handleLoadProfile(loadData[0].fotoPerfil);
         }
     }, [loadData]);
@@ -171,7 +173,9 @@ export default function ProfessorEditor() {
                 alert("El archivo seleccionado no es válido");
                 return;
             }
-            //handlerDeleteFile(data.fotoPerfil);
+            if (data.fotoPerfil!=originalFileName){
+                handlerDeleteFile(data.fotoPerfil);
+            }
             const newName = generateUniqueFileName(fileName);
             handlerfileName(newName);
             setFile(selectedFile);
@@ -203,6 +207,9 @@ export default function ProfessorEditor() {
         }
         if(await VerifyPassword(data)){
             if(await VerifyEmail(data,dataProfessors) || data.email==loadData[0].correo){
+                if (data.fotoPerfil!=originalFileName){
+                    handlerDeleteFile(originalFileName);
+                }
                 //if (file !== null) {
                 //    handlerUploadFile(file, data.fotoPerfil);
                 //}
@@ -219,6 +226,13 @@ export default function ProfessorEditor() {
             setcurrentMessage("Las contraseñas no concuerdan");
             openDialog();
         }
+    };
+
+    const handleCancele = () => {
+        if (data.fotoPerfil!=originalFileName){
+            handlerDeleteFile(data.fotoPerfil);
+        }
+        router.push(`/teamMembers`)
     };
     
   return (
@@ -313,7 +327,7 @@ export default function ProfessorEditor() {
 
             <div className={styles.buttonEditContainer}>
                 <BlueButton text="Guardar" onClick={()=>{handleEdit()}}/>
-                <button className={styles.buttonCancel} onClick={()=>{router.push(`/teamMembers`)}}>Cancelar</button>
+                <button className={styles.buttonCancel} onClick={()=>{handleCancele()}}>Cancelar</button>
             </div>
         </div>
     </main>

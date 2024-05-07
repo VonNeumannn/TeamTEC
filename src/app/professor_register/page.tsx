@@ -7,7 +7,7 @@ import Profile from '../../../public/Profile.png';
 import PopUp from '../components/popUpInformation';
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
-import { handlerAddData, VerifyPassword, VerifyEmail, handlerLoad, handlerUploadFile  } from "../../controller/profesorController";
+import { handlerDeleteFile, handlerAddData, VerifyPassword, VerifyEmail, handlerLoad, handlerUploadFile  } from "../../controller/profesorController";
 import Profesor from '@/model/Profesor';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 
@@ -92,6 +92,9 @@ export default function ProfessorRegister() {
                 alert("El archivo seleccionado no es válido");
                 return;
             }
+            if (data.fotoPerfil!=""){
+                handlerDeleteFile(data.fotoPerfil);
+            }
             const newName = generateUniqueFileName(fileName);
             handlerfileName(newName);
             setFile(selectedFile);
@@ -162,6 +165,13 @@ export default function ProfessorRegister() {
         };
         fetchData();
     }, []);
+
+    const handleCancele = () => {
+        if (data.fotoPerfil!=""){
+                handlerDeleteFile(data.fotoPerfil);
+            }
+            router.push(`/mainMenu`);
+    };
 
   return (
     <main className={styles.main} id="main">
@@ -250,7 +260,10 @@ export default function ProfessorRegister() {
                 </div>
                 
             </div>
-            <BlueButton text="Registrar" onClick={()=>{handleSubmit()}}/>
+            <div className={styles.buttonEditContainer}>
+                <BlueButton text="Registrar" onClick={()=>{handleSubmit()}}/>
+                <button className={styles.buttonCancel} onClick={()=>{handleCancele()}}>Cancelar</button>
+            </div>
         </div>
     </main>
   );
