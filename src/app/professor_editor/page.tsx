@@ -9,6 +9,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import { handlerLoad, handlerOneLoad, VerifyPassword, VerifyEmail, handlerUploadFile,handlerUpdateController } from "../../controller/profesorController";
 import Profesor from '@/model/Profesor';
+import { getDownloadURL, getStorage, ref } from 'firebase/storage';
+import { profile } from 'console';
 
 // Función para generar un nombre único para el archivo
 const generateUniqueFileName = (originalFileName: string) => {
@@ -32,6 +34,7 @@ export default function ProfessorEditor() {
     const [currentTitle, setcurrentTitle] = useState("");
     const [currentMessage, setcurrentMessage] = useState("");
     const [dataProfessors, setDataProfessors] = useState<Profesor[]>([]);
+    const [currentImageUrl, setCurrentImageUrl] = useState("");
 
     const router = useRouter();
     const [loadData, setloadData]= useState<Profesor[]>([]);
@@ -112,8 +115,22 @@ export default function ProfessorEditor() {
                 passwordConfirm: loadData[0].contraseña,
                 rol: loadData[0].rol,
             });
+            handleLoadProfile(loadData[0].fotoPerfil);
         }
     }, [loadData]);
+
+    const handleLoadProfile = (imageUrl: string) => {
+        const storage = getStorage();
+        const starsRef = ref(storage, 'gs://teamtec-727df.appspot.com/profile/' + imageUrl);
+        getDownloadURL(starsRef)
+            .then((url) => {
+                console.log(url);
+                setCurrentImageUrl(url);
+            })
+            .catch((error) => {
+                console.error("Error downloading image:", error);
+            });
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setData({
@@ -154,8 +171,21 @@ export default function ProfessorEditor() {
                 alert("El archivo seleccionado no es válido");
                 return;
             }
-            handlerfileName(generateUniqueFileName(fileName));
+            //handlerDeleteFile(data.fotoPerfil);
+            const newName = generateUniqueFileName(fileName);
+            handlerfileName(newName);
             setFile(selectedFile);
+            handlerUploadFile(selectedFile, newName)
+            .then(resulta => {
+                console.log(resulta);
+                if (resulta) {
+                    handleLoadProfile(newName);
+                } else {
+                }
+            })
+            .catch(error => {
+                console.log("Error cargando la imagen");
+            });
         }
     };
 
@@ -173,9 +203,9 @@ export default function ProfessorEditor() {
         }
         if(await VerifyPassword(data)){
             if(await VerifyEmail(data,dataProfessors) || data.email==loadData[0].correo){
-                if (file !== null) {
-                    handlerUploadFile(file, data.fotoPerfil);
-                }
+                //if (file !== null) {
+                //    handlerUploadFile(file, data.fotoPerfil);
+                //}
                 handlerUpdateController(loadData[0].correo, data, loadData[0].codigo, loadData[0].estado);
                 router.push(`/teamMembers`);
             }
@@ -272,7 +302,7 @@ export default function ProfessorEditor() {
                 
                 <div className={styles.photoProfessorContainer}>
                     
-                    <Image src={Profile} alt="Profile" />
+                <Image src={currentImageUrl} alt="Profile" width={500}  height={500} />
                     <label htmlFor="photo">Subir foto de perfil</label>
                     <input type="file" id="photo" name="photo" accept="image/*" hidden onChange={handlerFile}/> 
                     

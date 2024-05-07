@@ -20,11 +20,21 @@ interface profesorData {
 export const handlerUploadFile = async (file:File, fileName: string) => {
     try{
         let dataFile = await uploadFile(file, fileName);
+        return true;
     } catch (error) {
         console.error("Error subiendo el archivo:", error);
         return false;
     }
 };
+
+/*export const handlerDeleteFile = async (fileName: string) => {
+    try{
+        let dataFile = await deleteFile(fileName);
+    } catch (error) {
+        console.error("Error subiendo el archivo:", error);
+        return false;
+    }
+};*/
 
 export const handlerAddData = async (data: any, dataProfessors:Profesor[]) => {
     try{

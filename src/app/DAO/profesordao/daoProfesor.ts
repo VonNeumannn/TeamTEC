@@ -1,5 +1,5 @@
 import { collection, query, where, getDocs, deleteDoc, updateDoc, addDoc,doc  } from "firebase/firestore";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getStorage, ref, uploadBytes, deleteObject } from "firebase/storage";
 import { db } from "../../../constants/connection";
 import Profesor from "../../../model/Profesor";
 
@@ -16,6 +16,20 @@ export const uploadFile = async (file: File, fileName : string) => {
   }
   return false;
 }
+
+/*export const deleteFile = async (fileName: string) => {
+  const storage = getStorage();
+  const fileRef = ref(storage, 'gs://teamtec-727df.appspot.com/profile/' +  fileName);
+  
+  try {
+    await deleteObject(fileRef);
+    console.log("Archivo eliminado correctamente");
+    return true;
+  } catch (error) {
+    console.error("Error al eliminar el archivo:", error);
+    return false;
+  }
+}*/
 
 export async function addProfesor(profesor: Profesor): Promise<boolean> {
     try {
