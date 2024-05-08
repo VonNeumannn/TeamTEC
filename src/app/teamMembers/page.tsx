@@ -5,7 +5,7 @@ import PopUp from '../components/popUpDeleteProfessor';
 import Image from "next/image";
 import SortIcon from "../../../public/sort_icon.svg";
 import { useRouter } from 'next/navigation';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import { handlerLoad, handleDeleteController, reloadPageAfterOperation, handleDeleteConfirmation, handlerPassData } from "../../controller/profesorController";
 import Profesor from '@/model/Profesor';
 import { set } from "firebase/database";
@@ -139,9 +139,23 @@ export default function MainMenuPage() {
         const userData = JSON.parse(storedData);
         codigo = userData.codigo;
         rol = userData.rol;
+
+        useEffect(() => {
+            if (rol !== "Administradora") {
+                const buttonAdd = document.querySelector(`.${styles.addContainer}`) as HTMLDivElement;
+                if (buttonAdd) {
+                    buttonAdd.style.display = 'none';
+                }
+            }
+
+        }, [userData]);
+
     } else {
         console.log("No data found in localStorage for key 'user'");
     }
+
+    
+    
 
     useEffect(() => {
         const fetchData = async () => {

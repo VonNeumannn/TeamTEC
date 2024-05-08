@@ -1226,3 +1226,12 @@ height: auto;
   background-color: #a10000;
   transition: 300ms;
 }
+
+.recoveryButtons{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: auto;
+}

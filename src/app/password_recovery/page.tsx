@@ -2,7 +2,7 @@
 import styles from "../page.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import UserLogo from "../../../public/circle-user-round.svg";
+import UserLogo from "../../../public/password_recovry.svg";
 import { BlueButton } from "../components/blueButton";
 import PopUp from "../components/popUpInformation";
 import { useEffect } from "react";
@@ -18,6 +18,15 @@ import React from "react";
 export default function LoginPage() {
     const router = useRouter();
     const [dialogOpen, setDialogOpen] = useState(false);
+
+    const defaultMessage = {
+        title: "Correo enviado",
+        content: "Se ha enviado una contraseña a su correo"
+    };
+
+    const [title, setTitle] = useState(defaultMessage.title);
+    const [content, setContent] = useState(defaultMessage.content);
+
     const openDialog = () => {
         console.log("Abriendo dialogo");
         setDialogOpen(true);
@@ -32,8 +41,8 @@ export default function LoginPage() {
         form?.addEventListener('submit', (e) => {
             e.preventDefault();
             const email = (document.getElementById('email') as HTMLInputElement).value;
-            const password = (document.getElementById('password') as HTMLInputElement).value;
-            handlerLogin(email,password, router, openDialog);
+            
+            handlerRecoveryEmail(email, openDialog);
         });
     });
     
@@ -44,26 +53,26 @@ export default function LoginPage() {
 
         <main className={styles.main} id="main">
             <PopUp 
-                title="Datos Inválidos" 
-                content="Las credenciales ingresadas son incorrectas." 
+                title={title} 
+                content={content} 
                 openDialog={openDialog}
                 closeDialog={closeDialog}
                 dialogOpen={dialogOpen}
             />
             <div className={styles.loginContainer}>
                 <Image src={UserLogo} alt="User Logo" />
-                <h1>Login</h1>
+                <h1>Recuperar Contraseña</h1>
                 <form className={styles.formContainer}>
                     <div className={styles.formGroup}>
                         <label htmlFor="email">Email</label>
                         <input type="email" id="email" name="email" required placeholder="..."/>
                     </div>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="password">Password</label>
-                        <input type="password" id="password" name="password" required placeholder="..." />
+                    
+                    <div className={styles.recoveryButtons}>
+                        <BlueButton text="Enviar Correo" onClick={()=>{}} type="submit" />
+                        <BlueButton text="Ir a LOGIN" onClick={()=>(router.push('/login'))} type="button" />
                     </div>
-                    <Link href="/password_recovery" >Olvidó su contraseña</Link>
-                    <BlueButton text="LOGIN" onClick={()=>{}} type="submit" />
+                    
                 </form>
             </div>
         </main>
