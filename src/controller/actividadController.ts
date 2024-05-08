@@ -1,5 +1,5 @@
 import Profesor from "@/model/Profesor";
-import { getNextActivity, addActivity, uploadFilePoster, deleteAct, getActivitiesIt } from "../app/DAO/daoActividad";
+import { getNextActivity, addActivity, uploadFilePoster, deleteAct, getActivitiesIt, editActivity } from "../app/DAO/daoActividad";
 import Comentario from "@/model/Comentario";
 import Prueba from "@/model/Prueba";
 import { TipoActividad } from "@/model/TipoActividad";
@@ -37,7 +37,7 @@ interface activityDataPrueba {
 
 interface activitiesItData {
     id: string;
-    semana: number;
+    semanaRealizacion: number;
     nombre: string;
     estado: string;
 }
@@ -73,7 +73,7 @@ export const handlerActivitiesIt = async (idIt: string) => {
         if (actividad.isDeleted != 1) {
             const actividadData: activitiesItData = {
                 id: actividad.id,
-                semana: actividad.semana,
+                semanaRealizacion: actividad.semanaRealizacion,
                 nombre: actividad.nombre,
                 estado: actividad.estado
             };
@@ -122,7 +122,7 @@ export const sortByWeek = async (id: string) => {
         if (actividad.isDeleted != 1) {
             const actividadData: activitiesItData = {
                 id: actividad.id,
-                semana: actividad.semana,
+                semanaRealizacion: actividad.semanaRealizacion,
                 nombre: actividad.nombre,
                 estado: actividad.estado
             };
@@ -130,7 +130,7 @@ export const sortByWeek = async (id: string) => {
         }
     });
     actividades.sort((a, b) => {
-        return a.semana - b.semana;
+        return a.semanaRealizacion - b.semanaRealizacion;
     });
     setActsInLS(actividades);
 }
@@ -145,7 +145,7 @@ export const sortByName = async (id: string) => {
         if (actividad.isDeleted != 1) {
             const actividadData: activitiesItData = {
                 id: actividad.id,
-                semana: actividad.semana,
+                semanaRealizacion: actividad.semanaRealizacion,
                 nombre: actividad.nombre,
                 estado: actividad.estado
             };
@@ -168,7 +168,7 @@ export const sortByState = async (id: string) => {
         if (actividad.isDeleted != 1) {
             const actividadData: activitiesItData = {
                 id: actividad.id,
-                semana: actividad.semana,
+                semanaRealizacion: actividad.semanaRealizacion,
                 nombre: actividad.nombre,
                 estado: actividad.estado
             };
@@ -191,7 +191,7 @@ export const searchActivityByName = async (name: string, id: string) => {
         if (actividad.isDeleted != 1) {
             const actividadData: activitiesItData = {
                 id: actividad.id,
-                semana: actividad.semana,
+                semanaRealizacion: actividad.ssemanaRealizacionemana,
                 nombre: actividad.nombre,
                 estado: actividad.estado
             };
@@ -202,6 +202,17 @@ export const searchActivityByName = async (name: string, id: string) => {
         return actividad.nombre.toLowerCase().includes(name.toLowerCase());
     });
     setActsInLS(actividades);
+}
+
+//editar actividad
+export const handlerEditActivity = async (idIt: string, idAct: string, actividad: activityDataPrueba) => {
+    try {
+        await editActivity(idIt, idAct, actividad);
+        return true;
+    } catch (error) {
+        console.error("Error editing activity:", error);
+        return false;
+    }
 }
 
 const setActsInLS = (actividades: activitiesItData[]) => {

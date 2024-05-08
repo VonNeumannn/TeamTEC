@@ -93,9 +93,10 @@ export default function ActivityDetails() {
                             <label htmlFor="date">Fecha</label>
                             <input type="date" id="date" name="date" placeholder="..." value={data?.fecha + ""} disabled />
                         </div>
+                        {/* cambio: no se mostraba con type = time, asi que lo cambie a text */}
                         <div className={styles.formGroupStudentEdit}>
                             <label htmlFor="time">Hora</label>
-                            <input type="time" id="time" name="time" required placeholder="..." value={data?.hora} disabled />
+                            <input type="text" id="time" name="time" required placeholder="..." value={data?.hora} disabled />
                         </div>
                         <div className={styles.formGroupStudentEdit}>
                             <label htmlFor="reminder">Iniciar recordatorio</label>
@@ -103,7 +104,7 @@ export default function ActivityDetails() {
                         </div>
                         <div className={styles.formGroupStudentEdit}>
                             <label htmlFor="link">Enlace</label>
-                            <input type="text" id="link" name="link" required placeholder="..." value={data?.link} readOnly />
+                            <input type="text" id="link" name="link" required placeholder="..." value={data?.enlace} readOnly />
                         </div>
                     </form>
                 </div>
