@@ -26,7 +26,7 @@ export default function writingComment() {
         const itinerarioId = localStorage.getItem('itinerarioId');
         const activityId = localStorage.getItem('activityId');
         const timestamp = Timestamp.now();
-        const comentario = new Comentario('',data.title,userData.email, data.writing, timestamp, []);
+        const comentario = new Comentario('',data.title,userData.nombre, data.writing, timestamp, []);
         handlerAddComment(itinerarioId+"",activityId+"",comentario);
         router.push('/comments');
     }

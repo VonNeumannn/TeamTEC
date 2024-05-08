@@ -72,7 +72,7 @@ export default function commentsPage() {
                                 {data.map((item, index) => (
                                     <tr key={index}>
                                         <td>{item.titulo}</td>
-                                        <td>{user.email}</td>
+                                        <td>{user.nombre}</td>
                                         <td>{item.fechaYHora.toDate().toLocaleString()}</td>
                                         <td>
                                             <BlueButton text="Seleccionar" onClick={() => handleOpening(index)} type={undefined} />
