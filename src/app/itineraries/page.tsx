@@ -44,6 +44,10 @@ export default function ViewItineraries() {
         handlerAddItinerario(input[0].value, profesorNombre);
 
         setDialogOpen(false);
+
+        setTimeout(() => {
+            window.location.reload();
+        }, 300);
     };
     
     return (
