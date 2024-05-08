@@ -52,7 +52,8 @@ export default function MainMenuPage() {
         
         var fechaActividadElement = document.getElementById("fechaActividad");
         if (fechaActividadElement) {
-            fechaActividadElement.innerText = fechaActividad+""; 
+            const date = new Date(fechaActividad+"");
+             fechaActividadElement.innerText = date.toLocaleDateString();
         }
     };
     fetchData();

@@ -54,8 +54,10 @@ export const handlerNextActivity = async () => {
         data.sort((a, b) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime());
         const now = new Date();
         // Encuentra próxima actividad
-        const nextActivity = data.find(activity => new Date(activity.fecha).getTime() > now.getTime() 
-        && activity.estado == ("Planeada" || "Notificada") );
+        const nextActivity = data.find(activity => 
+            new Date(activity.fecha).getTime() > now.getTime() && 
+            (activity.estado == "Planeada" || activity.estado == "Notificada")
+        );
         return nextActivity || null;
     } catch (error) {
         console.error("Error al cargar proxima actividad:", error);
