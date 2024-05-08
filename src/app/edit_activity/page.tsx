@@ -3,7 +3,7 @@ import Actividad from '@/model/Actividad';
 import styles from '../page.module.css';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { handlerActivityDetails, handlerEditActivity } from '@/controller/actividadController';
+import { handlerActivityDetails, handlerEditActivity, handlerEditFilePoster } from '@/controller/actividadController';
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
 
 interface FileDB extends DBSchema {
@@ -164,6 +164,7 @@ export default function actEdit() {
         setAficheName(name);
     }
 
+ 
     const [file, setFile] = useState<File | null>(null);
 
     const selectProfesor = () => {
@@ -174,7 +175,9 @@ export default function actEdit() {
     function handleEdit() {
         const idIt = localStorage.getItem('itinerarioId') ?? '';
         const actividad = JSON.parse(localStorage.getItem("actividad") || "{}");
-        
+        if (file) {
+            handlerEditFilePoster(file, aficheName, idIt, actividad.id);
+        }
         
         if (data) {
             let fecha = new Date(data.fecha);

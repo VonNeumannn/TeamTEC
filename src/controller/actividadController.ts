@@ -111,6 +111,15 @@ export const handlerAddActivity = async (actividad: activityDataPrueba, idItiner
     }
 }
 
+export const handlerEditFilePoster = async (file : File, nameFile: string, idItinerario: string, idActividad: string) => {
+    let editedFile = await uploadFilePoster(file, nameFile);
+    if (editedFile) {
+        console.log("Afiche editado correctamente");
+    } else {
+        console.log("Error al editar el afiche");
+    }
+}
+
 
 //order by semana
 export const sortByWeek = async (id: string) => {
