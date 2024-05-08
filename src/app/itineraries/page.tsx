@@ -38,7 +38,10 @@ export default function ViewItineraries() {
         const input = document.getElementsByTagName('input');
         console.log(input[0].value);
         //add to db
-        handlerAddItinerario(input[0].value, "Profesor1");
+        const profesorInfo = JSON.parse(localStorage.getItem('user') as string);
+        const profesorNombre = profesorInfo.nombre + " " + profesorInfo.apellidos;
+        
+        handlerAddItinerario(input[0].value, profesorNombre);
 
         setDialogOpen(false);
     };
