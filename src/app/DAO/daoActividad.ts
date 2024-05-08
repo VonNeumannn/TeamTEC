@@ -102,3 +102,16 @@ export async function addActivity(itID: string, actividad: activityData): Promis
         return false;
     }
 }
+
+//editar actividad
+export async function editActivity(itID: string, actID: string, actividad: activityData): Promise<boolean> {
+    try {
+        const database = db;
+        const docRef = doc(database, `itinerarios/${itID}/actividades/${actID}`);
+        await updateDoc(docRef, actividad as { [x: string]: any });
+        return true;
+    } catch (error) {
+        console.error("Error editing activity:", error);
+        return false;
+    }
+}

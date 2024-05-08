@@ -3,7 +3,6 @@ import styles from "../page.module.css";
 import { BlueButton } from "../components/blueButton";
 import Image from "next/image";
 import UploadIcon from "../../../public/upload.svg";
-import router from "next/router";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { TipoActividad } from "@/model/TipoActividad";
@@ -193,6 +192,8 @@ export default function NewActivity() {
     const handleRecordatorioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const recordatorioDate = e.target.value;
         console.log(recordatorioDate >= fecha);
+        console.log(recordatorioDate);
+        console.log(fecha);
         if (recordatorioDate < fecha) {
             setRecordatorio(recordatorioDate);
         } else {

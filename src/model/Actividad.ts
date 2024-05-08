@@ -13,7 +13,7 @@ class Actividad {
     private _fecha: Date;
     private _hora: string; // Suponiendo que Time es una cadena de texto en formato de hora
     private _iniciarRecordatorio: Date;
-    private _link: string;
+    private _enlace: string;
     private _afiche: string;
     private _encargado: Profesor[];
     private _responsable: Profesor;
@@ -30,7 +30,7 @@ class Actividad {
         fecha: Date,
         hora: string,
         iniciarRecordatorio: Date,
-        link: string,
+        enlace: string,
         afiche: string,
         encargado: Profesor[],
         responsable: Profesor,
@@ -46,7 +46,7 @@ class Actividad {
         this._fecha = fecha;
         this._hora = hora;
         this._iniciarRecordatorio = iniciarRecordatorio;
-        this._link = link;
+        this._enlace = enlace;
         this._afiche = afiche;
         this._encargado = encargado;
         this._responsable = responsable;
@@ -78,11 +78,11 @@ class Actividad {
     get hora() {
         return this._hora;
     }
-    get activadorRecordatorio() {
+    get iniciarRecordatorio() {
         return this._iniciarRecordatorio;
     }
-    get link() {
-        return this._link;
+    get enlace() {
+        return this._enlace;
     }
     get afiche() {
         return this._afiche;
