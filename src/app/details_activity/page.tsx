@@ -91,7 +91,7 @@ export default function ActivityDetails() {
                         </div>
                         <div className={styles.formGroupStudentEdit}>
                             <label htmlFor="date">Fecha</label>
-                            <input type="date" id="date" name="date" placeholder="..." value={data?.fecha + ""} disabled />
+                            <input type="date" id="date" name="date" placeholder="..." value={data ? new Date(data.fecha).toISOString().slice(0, 10) : ""} disabled />
                         </div>
                         {/* cambio: no se mostraba con type = time, asi que lo cambie a text */}
                         <div className={styles.formGroupStudentEdit}>
@@ -100,7 +100,7 @@ export default function ActivityDetails() {
                         </div>
                         <div className={styles.formGroupStudentEdit}>
                             <label htmlFor="reminder">Iniciar recordatorio</label>
-                            <input type="text" id="reminder" name="reminder" required placeholder="..." value={data?.iniciarRecordatorio + ""} readOnly />
+                            <input type="date" id="reminder" name="reminder" required placeholder="..." value={data ? new Date(data.iniciarRecordatorio).toISOString().slice(0, 10) : ""} readOnly />
                         </div>
                         <div className={styles.formGroupStudentEdit}>
                             <label htmlFor="link">Enlace</label>
