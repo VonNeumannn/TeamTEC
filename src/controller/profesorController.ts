@@ -2,6 +2,7 @@ import Profesor from "../model/Profesor";
 import { deleteFile, addProfessor, updateProfessor, addProfesor, loadProfessor, uploadFile, deleteProfessor, deleteConfirmation, loadOneProfessor, loadProfessorByYear } from "../app/DAO/profesordao/daoProfesor";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { changePassword } from "@/app/DAO/daoUsuario";
 
 
 interface profesorData {
@@ -239,5 +240,15 @@ export const handlerLoadProfessorByYear = async () => {
     } catch (error) {
         console.error("Error loading professor:", error);
         return [];
+    }
+}
+
+export const handlerChangePassword = async (id:string, password : string) => {
+    try{
+        await changePassword(id, password);
+        return true;
+    } catch (error) {
+        console.error("Error loading professors:", error);
+        return false;
     }
 }
