@@ -20,7 +20,7 @@ export default function ViewStudents() {
     const [search, setSearch] = useState("");
     const [data, setData] = useState<Estudiante[]>([]);
     const [dataTemp, setDataTemp] = useState<Estudiante[]>([]);
-    
+
     let sede = '';
     let rol = '';
     const storedData = localStorage.getItem("user");
@@ -42,10 +42,10 @@ export default function ViewStudents() {
     };
 
     const openDialogCSV = () => {
-        if(rol=="Profesor" || rol == "Coordinador"){
+        if (rol == "Profesor" || rol == "Coordinador") {
             setDialogOpenCSV(true);
         };
-        
+
     };
     const closeDialogCSV = () => {
         setDialogOpenCSV(false);
@@ -54,21 +54,21 @@ export default function ViewStudents() {
 
     function handleEdit(index: number) {
         const item = data[index];
-        if(sede==item.sede || rol=="Administradora"){
+        if (sede == item.sede || rol == "Administradora") {
             handlerPassData(item);
             console.log(`Editing item: ${item.carne} ${item.nombre}`);
-            router.push(`/edit_student`); 
+            router.push(`/edit_student`);
         };
         // Aquí puedes agregar el código para editar el item
     }
 
-    function handleDownload(tipo:string) {
+    function handleDownload(tipo: string) {
         createCSV(data, tipo, sede);
     }
 
     function handleDelete(index: number) {
         const item = data[index];
-        if(rol=="Administradora"){
+        if (rol == "Administradora") {
             setDialogOpen(true);
             setItemToDelete(item);
         };
@@ -87,16 +87,16 @@ export default function ViewStudents() {
     const handleSubmit = () => {
         if (search.toLowerCase() == "") {
             setData(dataTemp);
-        }else {
+        } else {
             const resultadosFiltrados = data.filter((estudiante) =>
-            estudiante.nombre.toLowerCase().includes(search.toLowerCase())
+                estudiante.nombre.toLowerCase().includes(search.toLowerCase())
             );
             setData(resultadosFiltrados);
-      }
+        }
     };
 
     const handleAddStudents = () => {
-        if(rol=="Administradora"){
+        if (rol == "Administradora") {
             router.push('/add_students');
         };
     };
@@ -112,13 +112,23 @@ export default function ViewStudents() {
             }
         };
         fetchData();
+
+        if (rol !== "Administradora") {
+            const addButton = document.getElementById("add_students_button");
+            if (addButton) {
+                addButton.style.display = "none";
+            }
+        }
+
+
+
     }, []);
 
     return (
         <main className={styles.main} id="main">
             <div>
                 {dialogOpenCSV && (
-                    <CSVPopUp  
+                    <CSVPopUp
                         openDialog={openDialogCSV}
                         closeDialog={closeDialogCSV}
                         dialogOpen={dialogOpenCSV}
@@ -127,8 +137,8 @@ export default function ViewStudents() {
                 )}
                 {dialogOpen && (
                     <PopUp
-                        title="Alerta" 
-                        content="¿Seguro de eliminar al estudiante?" 
+                        title="Alerta"
+                        content="¿Seguro de eliminar al estudiante?"
                         openDialog={openDialog}
                         closeDialog={closeDialog}
                         dialogOpen={dialogOpen}
@@ -140,15 +150,17 @@ export default function ViewStudents() {
                 <h1>Estudiantes</h1>
                 <p>Buscar estudiante</p>
                 <div className={styles.searchAddContainer}>
-                    <input type="search" 
-                    onChange={(e) => setSearch(e.target.value)}/>
-                    <BlueButton text="Buscar" onClick={() => {handleSubmit()}} />
+                    <input type="search"
+                        onChange={(e) => setSearch(e.target.value)} />
+                    <BlueButton text="Buscar" onClick={() => { handleSubmit() }} />
                     <div className={styles.csvAddStudentContainer}>
-                        <button className={styles.downButton} onClick={() => {openDialogCSV()}}>  
+                        <button className={styles.downButton} onClick={() => { openDialogCSV() }}>
                             <Image src={DownloadIcon} alt="csv Icon" />
                             {"CSV"}
                         </button>
-                        <BlueButton text="Agregar Estudiantes" onClick={() => { handleAddStudents() }} />
+                        <button id="add_students_button" className={styles.blueButton} onClick={() => { handleAddStudents() }}>
+                            Agregar Estudiantes
+                        </button>
                     </div>
                 </div>
                 <div className={styles.tableContainer}>
@@ -166,7 +178,7 @@ export default function ViewStudents() {
                                     </button>
                                 </th>
                                 <th className={styles.pasenZelda}>Sede
-                                <button className={styles.sortButton} onClick={() => { }} >
+                                    <button className={styles.sortButton} onClick={() => { }} >
                                         <Image src={SortIcon} alt="sort icon" className={styles.sortButtonIcon} />
                                     </button>
                                 </th>
@@ -184,8 +196,8 @@ export default function ViewStudents() {
                                         <td>{item.carne}</td>
                                         <td>{item.sede}</td>
                                         <td>
-                                            <BlueButton text="Editar" onClick={() => {handleEdit(index)}} />
-                                            <button className={styles.deleteButton} onClick={() => {handleDelete(index)}}>Eliminar</button>
+                                            <BlueButton text="Editar" onClick={() => { handleEdit(index) }} />
+                                            <button className={styles.deleteButton} onClick={() => { handleDelete(index) }}>Eliminar</button>
                                         </td>
                                     </tr>
                                 ))}
