@@ -42,7 +42,7 @@ export default function LoginPage() {
             e.preventDefault();
             const email = (document.getElementById('email') as HTMLInputElement).value;
             
-            handlerRecoveryEmail(email, openDialog);
+            //handlerRecoveryEmail(email, openDialog);
         });
     });
     

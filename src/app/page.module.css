@@ -1252,3 +1252,39 @@ height: auto;
   text-align: center;
   transition: 300ms;
 }
+
+.dialogResetPassword{
+  flex-direction: column;
+  align-items: center;
+  padding: 4%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: slideInFromTop 0.80s ease-in-out;
+  justify-content: center;
+  color: #364D63;
+  width:clamp(300px, 50vw, 400px);
+  height: 60dvh;
+  border: none;
+  background-color: rgb(255, 255, 255);
+  z-index: 1000;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  overflow-y: hidden;
+}
+
+.dialogResetPassword button{
+  width: 70%;
+  font-size: 1rem;
+}
+
+.dialogResetPassword form{
+  width: 100%;
+}
+
+.error{
+  display: none;
+  color: red;
+  font-size: 0.9rem;
+}
+
