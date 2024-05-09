@@ -15,7 +15,7 @@ export default function ActivityDetails() {
 
     const [data, setData] = useState<Actividad>();
     const router = useRouter();
-   
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -57,7 +57,22 @@ export default function ActivityDetails() {
         setCurrentImageUrl(imageUrl);
         openDialog();
     };
-
+    let rol = '';
+    const storedData = localStorage.getItem("user");
+    if (storedData) {
+        const userData = JSON.parse(storedData);
+        rol = userData.rol;
+        useEffect(() => {
+            if (rol === "Administradora") {
+                const buttonComentarios = document.querySelector(`.${styles.blueButtonComments}`) as HTMLButtonElement;
+                if (buttonComentarios) {
+                    buttonComentarios.style.display = 'none';
+                }
+            }
+        }, [userData]);
+    } else {
+        console.log("No data found in localStorage for key 'user'");
+    }
     return (
         <main className={styles.main} id="main">
             <div>
@@ -110,7 +125,7 @@ export default function ActivityDetails() {
                 </div>
 
                 <div style={{ display: 'flex', gap: '10px' }}> {/* Contenedor de botones */}
-                    <button className={styles.blueButton} onClick={() => { router.push('/comments') }} style={{ width: '120px' }} >Comentarios</button>
+                    <button className={styles.blueButtonComments} onClick={() => { router.push('/comments') }} style={{ width: '120px' }} >Comentarios</button>
                     <button className={styles.blueButton} onClick={() => { handleButtonPoster(data?.afiche + "") }} style={{ width: '120px' }} >Afiche</button>
                     <button className={styles.blueButton} onClick={() => { handleButtonEvidence(data?.pruebas + "") }} style={{ width: '120px' }} >Pruebas</button>
                 </div>
