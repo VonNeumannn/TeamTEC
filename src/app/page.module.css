@@ -971,7 +971,7 @@
 
 .tableContainerResponses table tr{
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-evenly;
   background-color: #fff;
   height: 100%;
 }
@@ -989,6 +989,12 @@
 .tableContentContainerResponses table td{ 
   text-align: flex-start;
   
+}
+.tableContainerResponses,
+.tableContentContainerResponses {
+    text-align: center; 
+    margin: 0 auto; 
+    padding: 0 ; 
 }
 
 

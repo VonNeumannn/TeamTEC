@@ -25,7 +25,8 @@ export default function writingResponse() {
         const itinerarioId = localStorage.getItem('itinerarioId');
         const activityId = localStorage.getItem('activityId');
         const timestamp = Timestamp.now();
-        const respuesta = new Respuesta(data.redaccion,timestamp);
+        const userData = JSON.parse(localStorage.getItem('user') || '{}');
+        const respuesta = new Respuesta(data.redaccion,timestamp,userData.nombre);
         handlerAddResponse(itinerarioId+"",activityId+"",commentData.id,respuesta);
         router.push('/responses');
     };

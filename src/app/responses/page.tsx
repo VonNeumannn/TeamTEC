@@ -17,9 +17,9 @@ export default function responsesPage() {
             const itinerarioId = localStorage.getItem('itinerarioId');
             const activityId = localStorage.getItem('activityId');
             setData(data);
-            const responses = await handlerGetResponses(itinerarioId+"", activityId+"", data.id);
+            const responses = await handlerGetResponses(itinerarioId + "", activityId + "", data.id);
             setResponses([...responses]);
-
+            console.log(responses);
         };
         fetchData();
     }, []);
@@ -41,17 +41,25 @@ export default function responsesPage() {
                         <tbody>
                             <tr>
                                 <th className={styles.pasenZelda}>Respuesta</th>
+                                <th className={styles.pasenZelda}>Usuario</th>
+                                <th className={styles.pasenZelda}>Fecha y hora</th>
                             </tr>
                         </tbody>
                     </table>
                     <div className={styles.tableContentContainerResponses}>
                         <table>
                             <tbody>
-                                {Array.isArray(responses) ? responses.map((respuesta, index) => (
-                                    <tr key={index}>
-                                        <td>{respuesta.redaccion}</td>
-                                    </tr>
-                                )) : <tr><td>No responses found</td></tr>}
+                                {Array.isArray(responses) ? responses
+                                    .filter(respuesta => respuesta.redaccion && respuesta.redaccion.trim() !== "") // Verificar que redaccion no sea undefined antes de usar trim()
+                                    .map((respuesta, index) => (
+                                        <tr key={index}>
+                                            <td>{respuesta.redaccion}</td>
+                                            <td>{respuesta.redactor}</td>
+                                            <td>{respuesta.fechaYHora?.toDate().toLocaleString()}</td>
+                                        </tr>
+                                    ))
+                                    : <tr><td>No responses found</td></tr>
+                                }
                             </tbody>
                         </table>
                     </div>

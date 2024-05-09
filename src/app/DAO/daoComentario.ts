@@ -66,5 +66,6 @@ export async function addResponse(itinerarioId: string, actividadId: string, com
     await addDoc(respuestasRef, {
         redaccion: respuesta.redaccion,
         fechaYHora: respuesta.fechaYHora,
+        redactor: respuesta.redactor
     });
 }
