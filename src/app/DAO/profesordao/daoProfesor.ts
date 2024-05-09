@@ -121,13 +121,34 @@ export async function addProfesor(profesor: Profesor): Promise<boolean> {
       }
   }
 
-  export async function deleteConfirmation(mensaje:string,id:string): Promise<boolean> {
+  export async function deleteConfirmation(mensaje:string,authorName:string, idAutor: string,id:string): Promise<boolean> {
     try {
       const database = db;
-      const mensajesRef = collection(database, 'confirmacion');
+      const mensajesRef = collection(database, 'Registro');
         const mensajeData = {
-          correoProfesor: id,
-          porque: mensaje,
+          Justificacion: mensaje,
+          Nombre_Autor: authorName,
+          Correo_autor: idAutor,
+          Accion: "Delete",
+          Correo_Afectado: id,
+        };
+        await addDoc(mensajesRef, mensajeData);
+        return true;
+    } catch (error) {
+      console.error("Error adding mensaje:", error);
+      return false;
+    }
+  }
+
+  export async function actionLog(authorName:string, idAutor: string, idAfected: string, actionType: string): Promise<boolean> {
+    try {
+      const database = db;
+      const mensajesRef = collection(database, 'Registro');
+        const mensajeData = {
+          Nombre_Autor: authorName,
+          Correo_autor: idAutor,
+          Accion: actionType,
+          Correo_Afectado: idAfected,
         };
         await addDoc(mensajesRef, mensajeData);
         return true;

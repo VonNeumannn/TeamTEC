@@ -7,7 +7,7 @@ import Profile from '../../../public/Profile.png';
 import PopUp from '../components/popUpInformation';
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
-import { handlerDeleteFile, handlerLoad, handlerOneLoad, VerifyPassword, VerifyEmail, handlerUploadFile,handlerUpdateController } from "../../controller/profesorController";
+import { handleActionLog, handlerDeleteFile, handlerLoad, handlerOneLoad, VerifyPassword, VerifyEmail, handlerUploadFile,handlerUpdateController } from "../../controller/profesorController";
 import Profesor from '@/model/Profesor';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import { profile } from 'console';
@@ -70,10 +70,16 @@ export default function ProfessorEditor() {
     }
 
     let rol = '';
+    let sede ='';
+    let nombre = '';
+    let correo_usuario ='';
     const storedUserData = localStorage.getItem("user");
     if (storedUserData) {
         const userData = JSON.parse(storedUserData);
         rol = userData.rol;
+        sede = userData.centroAcademico;
+        nombre = userData.nombre;
+        correo_usuario = userData.correo;
     } else {
         console.log("No data found in localStorage for key 'user'");
     }
@@ -149,7 +155,7 @@ export default function ProfessorEditor() {
     };
 
     const handleChangeSelectRol = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        if(rol=="Administradora"){
+        if(rol=="Administradora" && sede=="Cartago"){
             setData({
                 ...data,
                 [e.target.id]: e.target.value
@@ -214,6 +220,7 @@ export default function ProfessorEditor() {
                 //    handlerUploadFile(file, data.fotoPerfil);
                 //}
                 handlerUpdateController(loadData[0].correo, data, loadData[0].codigo, loadData[0].estado);
+                handleActionLog(nombre,correo_usuario,data.email,"Edit");
                 router.push(`/teamMembers`);
             }
             else{

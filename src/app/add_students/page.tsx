@@ -28,6 +28,15 @@ export default function StudentRegister() {
         setDialogOpen(false);
     };
 
+    let rol = '';
+    const storedData = localStorage.getItem("user");
+    if (storedData) {
+        const userData = JSON.parse(storedData);
+        rol = userData.rol;
+    } else {
+        console.log("No data found in localStorage for key 'user'");
+    }
+
     const handlerFile = (e: React.ChangeEvent<HTMLInputElement>) => { // Utiliza React.ChangeEvent<HTMLInputElement> para manejar eventos de cambio de input
         if (e.target.files && e.target.files.length > 0) {
           const selectedFile = e.target.files[0];
@@ -75,14 +84,17 @@ export default function StudentRegister() {
 
   function handleAdd() {
     console.log(students);
-    if(students.length==0){
-      openDialog();
-      return;
-    }
-    else{
-      handlerAddData(students);
-      router.push('/viewStudents'); 
-    }
+    if(rol=="Administradora"){
+      if(students.length==0){
+        openDialog();
+        return;
+      }
+      else{
+        handlerAddData(students);
+        router.push('/viewStudents'); 
+      }
+    };
+    
   }
 
   return (

@@ -134,11 +134,15 @@ export default function MainMenuPage() {
 
     let codigo = '';
     let rol = '';
+    let nombre = '';
+    let correo ='';
     const storedData = localStorage.getItem("user");
     if (storedData) {
         const userData = JSON.parse(storedData);
         codigo = userData.codigo;
         rol = userData.rol;
+        nombre = userData.nombre;
+        correo = userData.correo;
 
         useEffect(() => {
             if (rol !== "Administradora") {
@@ -200,7 +204,7 @@ export default function MainMenuPage() {
         setDialogOpen(false);
         if (itemToDelete) {
             handleDeleteController(itemToDelete.correo);
-            handleDeleteConfirmation(mensaje,itemToDelete.correo);
+            handleDeleteConfirmation(mensaje,nombre,correo,itemToDelete.correo);
             reloadPageAfterOperation();
         } else {
             console.error("El valor a eliminar es null.");

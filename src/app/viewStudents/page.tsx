@@ -22,10 +22,12 @@ export default function ViewStudents() {
     const [dataTemp, setDataTemp] = useState<Estudiante[]>([]);
     
     let sede = '';
+    let rol = '';
     const storedData = localStorage.getItem("user");
     if (storedData) {
         const userData = JSON.parse(storedData);
         sede = userData.centroAcademico;
+        rol = userData.rol;
     } else {
         console.log("No data found in localStorage for key 'user'");
     }
@@ -40,7 +42,10 @@ export default function ViewStudents() {
     };
 
     const openDialogCSV = () => {
-        setDialogOpenCSV(true);
+        if(rol=="Profesor" || rol == "Coordinador"){
+            setDialogOpenCSV(true);
+        };
+        
     };
     const closeDialogCSV = () => {
         setDialogOpenCSV(false);
@@ -49,7 +54,7 @@ export default function ViewStudents() {
 
     function handleEdit(index: number) {
         const item = data[index];
-        if(sede==item.sede){
+        if(sede==item.sede || rol=="Administradora"){
             handlerPassData(item);
             console.log(`Editing item: ${item.carne} ${item.nombre}`);
             router.push(`/edit_student`); 
@@ -63,7 +68,7 @@ export default function ViewStudents() {
 
     function handleDelete(index: number) {
         const item = data[index];
-        if(sede==item.sede){
+        if(rol=="Administradora"){
             setDialogOpen(true);
             setItemToDelete(item);
         };
@@ -88,6 +93,12 @@ export default function ViewStudents() {
             );
             setData(resultadosFiltrados);
       }
+    };
+
+    const handleAddStudents = () => {
+        if(rol=="Administradora"){
+            router.push('/add_students');
+        };
     };
 
     useEffect(() => {
@@ -137,7 +148,7 @@ export default function ViewStudents() {
                             <Image src={DownloadIcon} alt="csv Icon" />
                             {"CSV"}
                         </button>
-                        <BlueButton text="Agregar Estudiantes" onClick={() => { router.push('/add_students'); }} />
+                        <BlueButton text="Agregar Estudiantes" onClick={() => { handleAddStudents() }} />
                     </div>
                 </div>
                 <div className={styles.tableContainer}>

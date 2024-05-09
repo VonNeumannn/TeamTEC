@@ -1,5 +1,5 @@
 import Profesor from "../model/Profesor";
-import { deleteFile, addProfessor, updateProfessor, addProfesor, loadProfessor, uploadFile, deleteProfessor, deleteConfirmation, loadOneProfessor, loadProfessorByYear } from "../app/DAO/profesordao/daoProfesor";
+import { actionLog, deleteFile, addProfessor, updateProfessor, addProfesor, loadProfessor, uploadFile, deleteProfessor, deleteConfirmation, loadOneProfessor, loadProfessorByYear } from "../app/DAO/profesordao/daoProfesor";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -190,6 +190,17 @@ export const handleDeleteController = async (id: string) => {
 
 };
 
+export const handleActionLog = async (authorName:string, idAutor: string, idAfected: string, actionType: string) => {
+    try{
+        await actionLog(authorName,idAutor,idAfected,actionType);
+        return true;
+    } catch (error) {
+        console.error("Error registrando la acción:", error);
+        return false;
+    }
+
+};
+
 export const handleAddMemberController = async (id: string) => {
     try{
         await addProfessor(id);
@@ -201,9 +212,9 @@ export const handleAddMemberController = async (id: string) => {
 
 };
 
-export const handleDeleteConfirmation = async (mensaje: string, id: string) => {
+export const handleDeleteConfirmation = async (mensaje: string, authorName:string, idAutor: string, id: string) => {
     try{
-        await deleteConfirmation(mensaje,id);
+        await deleteConfirmation(mensaje,authorName,idAutor,id);
         return true;
     } catch (error) {
         console.error("Error eliminando el profesor:", error);

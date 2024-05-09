@@ -7,7 +7,7 @@ import Profile from '../../../public/Profile.png';
 import PopUp from '../components/popUpInformation';
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
-import { handlerDeleteFile, handlerAddData, VerifyPassword, VerifyEmail, handlerLoad, handlerUploadFile  } from "../../controller/profesorController";
+import { handleActionLog, handlerDeleteFile, handlerAddData, VerifyPassword, VerifyEmail, handlerLoad, handlerUploadFile  } from "../../controller/profesorController";
 import Profesor from '@/model/Profesor';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 
@@ -112,6 +112,18 @@ export default function ProfessorRegister() {
         }
     };
 
+    let nombre = '';
+    let correo ='';
+    const storedUserData = localStorage.getItem("user");
+    if (storedUserData) {
+        const userData = JSON.parse(storedUserData);
+        nombre = userData.nombre;
+        correo = userData.correo;
+    } else {
+        console.log("No data found in localStorage for key 'user'");
+    }
+
+
     const handleSubmit = async () => {
         for (const key in data) {
             if (data.hasOwnProperty(key)) {
@@ -130,6 +142,7 @@ export default function ProfessorRegister() {
                 //    handlerUploadFile(file, data.fotoPerfil);
                 //}
                 handlerAddData(data,dataProfessors);
+                handleActionLog(nombre,correo,data.email,"Register");
                 router.push(`/mainMenu`);
             }
             else{

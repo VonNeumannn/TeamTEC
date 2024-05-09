@@ -58,6 +58,21 @@ export default function MainMenuPage() {
     };
     fetchData();
 }, []);
+
+    let rol = '';
+    const storedData = localStorage.getItem("user");
+    if (storedData) {
+        const userData = JSON.parse(storedData);
+        rol = userData.rol;
+    } else {
+        console.log("No data found in localStorage for key 'user'");
+    }
+
+    const handleProfessorRegister = () => {
+        if(rol=="Administradora"){
+            router.push('/professor_register')
+        };
+    };
   
     const router = useRouter();
 
@@ -80,7 +95,7 @@ export default function MainMenuPage() {
                             <BlueButton text="Mostrar equipo" onClick={() => { router.push('/teamMembers') }} type="button" />
                             <BlueButton text="Mostrar estudiantes" onClick={() => { router.push('/viewStudents') }} type="button" />
                             <BlueButton text="Itinerario" onClick={() => { router.push('/itineraries') }} type="button" />
-                            <BlueButton text="Registrar profesor" onClick={() => { router.push('/professor_register') }} type="button" />
+                            <BlueButton text="Registrar profesor" onClick={() => { handleProfessorRegister() }} type="button" />
                         </div>
                     </div>
                 </div>
