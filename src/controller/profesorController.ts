@@ -39,29 +39,33 @@ export const handlerDeleteFile = async (fileName: string) => {
 
 export const handlerAddData = async (data: any, dataProfessors:Profesor[]) => {
     try{
+        let codigo="";
         let cantidad=1;
+        switch(data.opciones){
+            case "Cartago":
+                codigo="CA";
+                break;
+            case "Alajuela":
+                codigo="AL";
+                break;
+            case "San Carlos":
+                codigo="SC";
+                break;
+            case "Limón":
+                codigo="LI";
+                break;
+            default:
+                codigo="SJ";
+        }
         dataProfessors.forEach((professor) => {
-            if(professor.centroAcademico==data.opciones){
+            const centroAcademico = professor.codigo.split('-')[0];
+            console.log(centroAcademico);
+            if (centroAcademico == codigo) {
                 cantidad++;
             }
         });
-        let codigo="";
-        switch(data.opciones){
-            case "Cartago":
-                codigo="CA-"+cantidad;
-                break;
-            case "Alajuela":
-                codigo="AL-"+cantidad;
-                break;
-            case "San Carlos":
-                codigo="SC-"+cantidad;
-                break;
-            case "Limón":
-                codigo="LI-"+cantidad;
-                break;
-            default:
-                codigo="SJ-"+cantidad;
-        }
+        codigo=codigo+"-"+cantidad;
+        
         const profesor: Profesor = new Profesor (
             data.name,
             data.lastName,
