@@ -28,3 +28,15 @@ export async function changePassword(userId : string, password : string) {
     contraseña: password
   });
 }
+
+export async function getIdUserByEmail(email : string) {
+  const database = db;
+  const usersRef = collection(database, 'usuarios');
+  const user = query(usersRef, where("correo", "==", email));
+  const querySnapshot = await getDocs(user);
+  let data = null;
+  querySnapshot.forEach((doc) => {
+      data = doc.id;
+  });
+  return data;
+}
