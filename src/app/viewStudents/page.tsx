@@ -152,7 +152,7 @@ export default function ViewStudents() {
                 <div className={styles.searchAddContainer}>
                     <input type="search"
                         onChange={(e) => setSearch(e.target.value)} />
-                    <BlueButton text="Buscar" onClick={() => { handleSubmit() }} />
+                    <BlueButton text="Buscar" type="button" onClick={() => { handleSubmit() }} />
                     <div className={styles.csvAddStudentContainer}>
                         <button className={styles.downButton} onClick={() => { openDialogCSV() }}>
                             <Image src={DownloadIcon} alt="csv Icon" />
@@ -196,7 +196,7 @@ export default function ViewStudents() {
                                         <td>{item.carne}</td>
                                         <td>{item.sede}</td>
                                         <td>
-                                            <BlueButton text="Editar" onClick={() => { handleEdit(index) }} />
+                                        <BlueButton text="Editar" type="button" onClick={() => { handleEdit(index) }} />
                                             <button className={styles.deleteButton} onClick={() => { handleDelete(index) }}>Eliminar</button>
                                         </td>
                                     </tr>

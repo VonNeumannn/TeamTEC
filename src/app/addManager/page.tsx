@@ -111,7 +111,7 @@ export default function addManagerPage() {
                                         <td>
                                             <button
                                                 className={styles.blueButton}
-                                                ref={button => buttonRefs.current[index] = button}
+                                                ref={button => { buttonRefs.current[index] = button!; }}
                                                 onClick={() => handleAdding(index)}
                                                 type="button"
                                             >

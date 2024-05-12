@@ -338,7 +338,11 @@ export default function NewActivity() {
             localStorage.setItem('actividad', JSON.stringify({}));
             const idItinerario = localStorage.getItem('itinerarioId');
 
-            handlerAddActivity(actividad,idItinerario, file, aficheName, router, openDialog);
+            if (idItinerario !== null && file !== null) {
+                handlerAddActivity(actividad, idItinerario, file, aficheName, router, openDialog);
+            } else {
+                console.error("No 'itinerarioId' in localStorage");
+            }
             // Eliminar el archivo de IndexedDB después de agregar la actividad
             const deleteFileFromDB = async () => {
                 const indexedDBService = new IndexedDBService();

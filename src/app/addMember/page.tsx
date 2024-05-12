@@ -155,7 +155,7 @@ export default function MainMenuPage() {
                 <div className={styles.searchAddContainer}>
                     <input type="text" 
                     onChange={(e) => setSearch(e.target.value)} />
-                    <BlueButton text="Buscar"  onClick={() => {handleSubmit()}} />
+                    <BlueButton text="Buscar" type="button" onClick={() => {handleSubmit()}} />
                 </div>
                 <div className={styles.tableContainer}>
                     <table>

@@ -7,7 +7,7 @@ import Profile from '../../../public/Profile.png';
 import PopUp from '../components/popUpInformation';
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
-import { handleActionLog, handlerDeleteFile, handlerLoad, handlerOneLoad, VerifyPassword, VerifyEmail, handlerUploadFile,handlerUpdateController } from "../../controller/profesorController";
+import { handleActionLog, handlerDeleteFile, handlerLoad, handlerOneLoad, VerifyPassword, VerifyEmail, handlerUploadFile, handlerUpdateController } from "../../controller/profesorController";
 import Profesor from '@/model/Profesor';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import { profile } from 'console';
@@ -38,7 +38,7 @@ export default function ProfessorEditor() {
     const [originalFileName, setoriginalFileName] = useState("");
 
     const router = useRouter();
-    const [loadData, setloadData]= useState<Profesor[]>([]);
+    const [loadData, setloadData] = useState<Profesor[]>([]);
     const [data, setData] = useState({
         name: '',
         lastName: '',
@@ -70,9 +70,9 @@ export default function ProfessorEditor() {
     }
 
     let rol = '';
-    let sede ='';
+    let sede = '';
     let nombre = '';
-    let correo_usuario ='';
+    let correo_usuario = '';
     const storedUserData = localStorage.getItem("user");
     if (storedUserData) {
         const userData = JSON.parse(storedUserData);
@@ -155,7 +155,7 @@ export default function ProfessorEditor() {
     };
 
     const handleChangeSelectRol = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        if(rol=="Administradora" && sede=="Cartago"){
+        if (rol == "Administradora" && sede == "Cartago") {
             setData({
                 ...data,
                 [e.target.id]: e.target.value
@@ -163,10 +163,10 @@ export default function ProfessorEditor() {
         };
     };
 
-    const handlerfileName = (name : string) => {
+    const handlerfileName = (name: string) => {
         setData({
             ...data,
-            fotoPerfil:name
+            fotoPerfil: name
         });
     }
 
@@ -179,23 +179,23 @@ export default function ProfessorEditor() {
                 alert("El archivo seleccionado no es válido");
                 return;
             }
-            if (data.fotoPerfil!=originalFileName){
+            if (data.fotoPerfil != originalFileName) {
                 handlerDeleteFile(data.fotoPerfil);
             }
             const newName = generateUniqueFileName(fileName);
             handlerfileName(newName);
             setFile(selectedFile);
             handlerUploadFile(selectedFile, newName)
-            .then(resulta => {
-                console.log(resulta);
-                if (resulta) {
-                    handleLoadProfile(newName);
-                } else {
-                }
-            })
-            .catch(error => {
-                console.log("Error cargando la imagen");
-            });
+                .then(resulta => {
+                    console.log(resulta);
+                    if (resulta) {
+                        handleLoadProfile(newName);
+                    } else {
+                    }
+                })
+                .catch(error => {
+                    console.log("Error cargando la imagen");
+                });
         }
     };
 
@@ -211,24 +211,24 @@ export default function ProfessorEditor() {
                 }
             }
         }
-        if(await VerifyPassword(data)){
-            if(await VerifyEmail(data,dataProfessors) || data.email==loadData[0].correo){
-                if (data.fotoPerfil!=originalFileName){
+        if (await VerifyPassword(data)) {
+            if (await VerifyEmail(data, dataProfessors) || data.email == loadData[0].correo) {
+                if (data.fotoPerfil != originalFileName) {
                     handlerDeleteFile(originalFileName);
                 }
                 //if (file !== null) {
                 //    handlerUploadFile(file, data.fotoPerfil);
                 //}
                 handlerUpdateController(loadData[0].correo, data, loadData[0].codigo, loadData[0].estado);
-                handleActionLog(nombre,correo_usuario,data.email,"Edit");
+                handleActionLog(nombre, correo_usuario, data.email, "Edit");
                 router.push(`/teamMembers`);
             }
-            else{
+            else {
                 setcurrentTitle("Correo duplicado");
                 setcurrentMessage("El correo ingresado ya se encuentra registrado, por favor ingresar otro.");
                 openDialog();
             }
-        } else{
+        } else {
             setcurrentTitle("Contraseña erronea");
             setcurrentMessage("Las contraseñas no concuerdan");
             openDialog();
@@ -236,107 +236,107 @@ export default function ProfessorEditor() {
     };
 
     const handleCancele = () => {
-        if (data.fotoPerfil!=originalFileName){
+        if (data.fotoPerfil != originalFileName) {
             handlerDeleteFile(data.fotoPerfil);
         }
         router.push(`/teamMembers`)
     };
-    
-  return (
-    <main className={styles.main} id="main">
-        <PopUp 
-            title={currentTitle}
-            content={currentMessage} 
-            openDialog={openDialog}
-            closeDialog={closeDialog}
-            dialogOpen={dialogOpen}
-        />  
-        <div className={styles.professorRegisterContainer}>
-            <h1>Editar Profesor</h1>
-            <div className={styles.professorScreenDivider}>
-                <div className={styles.formRegisterProfessors}>
-                    <form className={styles.formContainerRegisterProfessors}>
-                        <div className={styles.formGroupProfessorRegister}>
-                            <label htmlFor="name">Nombre</label>
-                            <input type="name" id="name" name="name" required placeholder="..." value={data.name} onChange={handleChange}/>
-                        </div>
-                        <div className={styles.formGroupProfessorRegister}>
-                            <label htmlFor="lastName">Apellidos</label>
-                            <input type="text" id="lastName" name="lastName" required placeholder="..." value={data.lastName} onChange={handleChange} />
-                        </div>
 
-                        <div className={styles.formGroupProfessorRegister}>
-                            <label htmlFor="telephone">Número de teléfono</label>
-                            <input type="tel" id="telephone" name="telephone" placeholder="..." value={data.telephone} onChange={handleChange}/>
-                        </div>
-                        <div className={styles.formGroupProfessorRegister}>
-                            <label htmlFor="email">Correo</label>
-                            <input type="email" id="email" name="email" required placeholder="..." value={data.email} onChange={handleChange}/>
-                        </div>
+    return (
+        <main className={styles.main} id="main">
+            <PopUp
+                title={currentTitle}
+                content={currentMessage}
+                openDialog={openDialog}
+                closeDialog={closeDialog}
+                dialogOpen={dialogOpen}
+            />
+            <div className={styles.professorRegisterContainer}>
+                <h1>Editar Profesor</h1>
+                <div className={styles.professorScreenDivider}>
+                    <div className={styles.formRegisterProfessors}>
+                        <form className={styles.formContainerRegisterProfessors}>
+                            <div className={styles.formGroupProfessorRegister}>
+                                <label htmlFor="name">Nombre</label>
+                                <input type="name" id="name" name="name" required placeholder="..." value={data.name} onChange={handleChange} />
+                            </div>
+                            <div className={styles.formGroupProfessorRegister}>
+                                <label htmlFor="lastName">Apellidos</label>
+                                <input type="text" id="lastName" name="lastName" required placeholder="..." value={data.lastName} onChange={handleChange} />
+                            </div>
 
-                        <div className={styles.formGroupProfessorRegister}>
-                            <label htmlFor="cellphone">Número celular</label>
-                            <input type="tel" id="cellphone" name="cellphone" required placeholder="..." value={data.cellphone} onChange={handleChange}/>
-                        </div>
-                        <div className={styles.formGroupProfessorRegister}>
-                            <label htmlFor="opciones">Centro académico</label>
-                            <select id="opciones" name="opciones" value={data.opciones} onChange={handleChangeSelect}>
-                                <option value="San José">San José</option>
-                                <option value="Cartago">Cartago</option>
-                                <option value="Alajuela">Alajuela</option>
-                                <option value="San Carlos">San Carlos</option>
-                                <option value="Limón">Limón</option>
-                            </select>
-                        </div>
-                        <div className={styles.formGroupProfessorRegister}>
-                            <label htmlFor="password">Contraseña</label>
-                            <input type="password" id="password" name="password" required placeholder="..." value={data.password} onChange={handleChange}/>
-                        </div>
-                        
-                        <div className={styles.formGroupProfessorRegister}>
-                            <label htmlFor="passwordConfirm">Confirmación de contraseña</label>
-                            <input type="password" id="passwordConfirm" name="passwordConfirm" required placeholder="..." value={data.passwordConfirm} onChange={handleChange}/>
-                        </div>
-                        <div className={styles.formGroupProfessorRegister}>
-                            <label htmlFor="rol">Rol</label>
-                            <select id="rol" name="rol" value={data.rol} onChange={handleChangeSelectRol}>
-                                <option value="Profesor">Profesor</option>
-                                <option value="Administradora">Administradora</option>
-                                <option value="Coordinador">Coordinador</option>
-                            </select>
-                        </div>
-                        <span>
-                            ❌ Ocho caracteres <br />
-                            ❌ Una letra mayúscula <br />
-                            ❌ Un minúscula <br />
-                            ❌ Un símbolo
-                        </span>
-                        
-                        
-                    </form>
-                    
+                            <div className={styles.formGroupProfessorRegister}>
+                                <label htmlFor="telephone">Número de teléfono</label>
+                                <input type="tel" id="telephone" name="telephone" placeholder="..." value={data.telephone} onChange={handleChange} />
+                            </div>
+                            <div className={styles.formGroupProfessorRegister}>
+                                <label htmlFor="email">Correo</label>
+                                <input type="email" id="email" name="email" required placeholder="..." value={data.email} onChange={handleChange} />
+                            </div>
+
+                            <div className={styles.formGroupProfessorRegister}>
+                                <label htmlFor="cellphone">Número celular</label>
+                                <input type="tel" id="cellphone" name="cellphone" required placeholder="..." value={data.cellphone} onChange={handleChange} />
+                            </div>
+                            <div className={styles.formGroupProfessorRegister}>
+                                <label htmlFor="opciones">Centro académico</label>
+                                <select id="opciones" name="opciones" value={data.opciones} onChange={handleChangeSelect}>
+                                    <option value="San José">San José</option>
+                                    <option value="Cartago">Cartago</option>
+                                    <option value="Alajuela">Alajuela</option>
+                                    <option value="San Carlos">San Carlos</option>
+                                    <option value="Limón">Limón</option>
+                                </select>
+                            </div>
+                            <div className={styles.formGroupProfessorRegister}>
+                                <label htmlFor="password">Contraseña</label>
+                                <input type="password" id="password" name="password" required placeholder="..." value={data.password} onChange={handleChange} />
+                            </div>
+
+                            <div className={styles.formGroupProfessorRegister}>
+                                <label htmlFor="passwordConfirm">Confirmación de contraseña</label>
+                                <input type="password" id="passwordConfirm" name="passwordConfirm" required placeholder="..." value={data.passwordConfirm} onChange={handleChange} />
+                            </div>
+                            <div className={styles.formGroupProfessorRegister}>
+                                <label htmlFor="rol">Rol</label>
+                                <select id="rol" name="rol" value={data.rol} onChange={handleChangeSelectRol}>
+                                    <option value="Profesor">Profesor</option>
+                                    <option value="Administradora">Administradora</option>
+                                    <option value="Coordinador">Coordinador</option>
+                                </select>
+                            </div>
+                            <span>
+                                ❌ Ocho caracteres <br />
+                                ❌ Una letra mayúscula <br />
+                                ❌ Un minúscula <br />
+                                ❌ Un símbolo
+                            </span>
+
+
+                        </form>
+
+
+                    </div>
+                    <div className={styles.dividerLine}>
+                        <span></span>
+                    </div>
+
+                    <div className={styles.photoProfessorContainer}>
+
+                        <Image src={currentImageUrl} alt="Profile" width={500} height={500} />
+                        <label htmlFor="photo">Subir foto de perfil</label>
+                        <input type="file" id="photo" name="photo" accept="image/*" hidden onChange={handlerFile} />
+
+
+                    </div>
 
                 </div>
-                <div className={styles.dividerLine}>
-                    <span></span>
+
+                <div className={styles.buttonEditContainer}>
+                    <BlueButton text="Guardar" type="button" onClick={() => { handleEdit() }} />
+                    <button className={styles.buttonCancel} onClick={() => { handleCancele() }}>Cancelar</button>
                 </div>
-                
-                <div className={styles.photoProfessorContainer}>
-                    
-                <Image src={currentImageUrl} alt="Profile" width={500}  height={500} />
-                    <label htmlFor="photo">Subir foto de perfil</label>
-                    <input type="file" id="photo" name="photo" accept="image/*" hidden onChange={handlerFile}/> 
-                    
-                    
-                </div>
-                
             </div>
-
-            <div className={styles.buttonEditContainer}>
-                <BlueButton text="Guardar" onClick={()=>{handleEdit()}}/>
-                <button className={styles.buttonCancel} onClick={()=>{handleCancele()}}>Cancelar</button>
-            </div>
-        </div>
-    </main>
-  );
+        </main>
+    );
 }

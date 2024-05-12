@@ -2,8 +2,13 @@ import { collection, query, where, getDocs, updateDoc, doc } from "firebase/fire
 import { db } from "../../constants/connection";
 
 export const dynamic = 'force-dynamic'; // Force dynamic route behavior
-
-export async function searchUserByEmail(email : string) {
+interface User {
+  correo: string;
+  contraseña: string;
+  rol: string;
+  celular: string;
+}
+export async function searchUserByEmail(email : string): Promise<User | null> {
   const database = db;
   const usersRef = collection(database, 'usuarios');
   const user = query(usersRef, where("correo", "==", email));

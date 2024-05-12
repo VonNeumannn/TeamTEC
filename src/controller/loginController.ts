@@ -27,7 +27,9 @@ export const handlerLogin = async (email : string, password : string, router: an
     } else {
         const user : userData = {
             email: data.correo,
-            password: data.contraseña
+            password: data.contraseña,
+            rol: data.rol,
+            celular: data.celular
         };
 
         if(user.password != password){

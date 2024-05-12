@@ -1,8 +1,7 @@
 import { collection, query, where, getDocs, orderBy, DocumentData, doc, addDoc } from "firebase/firestore";
 import { db } from "../../constants/connection";
-import Comentario from "@/model/Comentario";
-import Actividad from "@/model/Actividad";
-import Respuesta from "@/model/Respuesta";
+import Comentario from "../../model/Comentario"
+import Respuesta from "../../model/Respuesta";
 
 export const dynamic = 'force-dynamic'; // Force dynamic route behavior
 
