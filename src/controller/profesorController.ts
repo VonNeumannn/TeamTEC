@@ -2,7 +2,7 @@ import Profesor from "../model/Profesor";
 import { actionLog, deleteFile, addProfessor, updateProfessor, addProfesor, loadProfessor, uploadFile, deleteProfessor, deleteConfirmation, loadOneProfessor, loadProfessorByYear } from "../app/DAO/profesordao/daoProfesor";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { changePassword } from "@/app/DAO/daoUsuario";
+import { changePassword, getIdUserByEmail } from "@/app/DAO/daoUsuario";
 
 
 interface profesorData {
@@ -265,5 +265,19 @@ export const handlerChangePassword = async (id:string, password : string) => {
     } catch (error) {
         console.error("Error loading professors:", error);
         return false;
+    }
+}
+
+export const handlerEmailToUserId = async (email: string): Promise<any> => {
+    try {
+        const data = await getIdUserByEmail(email);
+        if (!data || (data as any[]).length === 0) {
+            console.log("No se encontro el profesor");
+            return [];
+        } 
+        return data;
+    } catch (error) {
+        console.error("Error loading professors:", error);
+        return [];
     }
 }

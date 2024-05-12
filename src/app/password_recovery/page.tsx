@@ -8,14 +8,25 @@ import PopUp from "../components/popUpInformation";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { handlerLogin } from "../../controller/loginController";
-import Usuario from "../../model/Usuario";
 import React from "react";
 
-
-
-
 export default function LoginPage() {
+    const [subject, setSubject] = useState('');
+
+    const sendMail = async (e) => {
+        e.preventDefault();
+        const response = await fetch('/api/sendEmail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                subject: subject
+            })
+        });
+
+        console.log(await response);
+    }
     const router = useRouter();
     const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -36,18 +47,6 @@ export default function LoginPage() {
         console.log("Cerrando dialogo");
         setDialogOpen(false);
     };
-    useEffect(() => {
-        const form = document.querySelector('form');
-        form?.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = (document.getElementById('email') as HTMLInputElement).value;
-            
-            //handlerRecoveryEmail(email, openDialog);
-        });
-    });
-    
-    
-
     
     return (
 
@@ -62,10 +61,10 @@ export default function LoginPage() {
             <div className={styles.loginContainer}>
                 <Image src={UserLogo} alt="User Logo" />
                 <h1>Recuperar Contraseña</h1>
-                <form className={styles.formContainer}>
+                <form onSubmit={sendMail} className={styles.formContainer}>
                     <div className={styles.formGroup}>
                         <label htmlFor="email">Email</label>
-                        <input type="email" id="email" name="email" required placeholder="..."/>
+                        <input type="email" id="email" name="email" required placeholder="..." value={subject} onChange={(e)=>setSubject(e.target.value)}/>
                     </div>
                     
                     <div className={styles.recoveryButtons}>
