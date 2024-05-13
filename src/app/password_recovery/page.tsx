@@ -13,7 +13,7 @@ import React from "react";
 export default function LoginPage() {
     const [subject, setSubject] = useState('');
 
-    const sendMail = async (e) => {
+    const sendMail = async (e: any) => {
         e.preventDefault();
         const response = await fetch('/api/sendEmail', {
             method: 'POST',

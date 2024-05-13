@@ -10,7 +10,7 @@ import { handlerLoad, handleDeleteController, reloadPageAfterOperation, handleDe
 import Profesor from '@/model/Profesor';
 import { set } from "firebase/database";
 
-const sortProfessorsByName = (professors: Profesor[], direction : boolean) => {
+const sortProfessorsByName = (professors: Profesor[], direction: boolean) => {
     if (direction) {
         return professors.sort((a, b) => {
             if (a.nombre.toLowerCase() < b.nombre.toLowerCase()) {
@@ -21,8 +21,8 @@ const sortProfessorsByName = (professors: Profesor[], direction : boolean) => {
             }
             return 0;
         });
-    }else{
-    
+    } else {
+
         return professors.sort((a, b) => {
             if (a.nombre.toLowerCase() > b.nombre.toLowerCase()) {
                 return -1;
@@ -35,7 +35,7 @@ const sortProfessorsByName = (professors: Profesor[], direction : boolean) => {
     }
 }
 
-const sortProfessorsByLastName = (professors: Profesor[], direction : boolean) => {
+const sortProfessorsByLastName = (professors: Profesor[], direction: boolean) => {
     if (direction) {
         return professors.sort((a, b) => {
             if (a.apellidos.toLowerCase() < b.apellidos.toLowerCase()) {
@@ -46,8 +46,8 @@ const sortProfessorsByLastName = (professors: Profesor[], direction : boolean) =
             }
             return 0;
         });
-    }else{
-    
+    } else {
+
         return professors.sort((a, b) => {
             if (a.apellidos.toLowerCase() > b.apellidos.toLowerCase()) {
                 return -1;
@@ -60,7 +60,7 @@ const sortProfessorsByLastName = (professors: Profesor[], direction : boolean) =
     }
 }
 
-const sortProfessorsByCode = (professors: Profesor[], direction : boolean) => {
+const sortProfessorsByCode = (professors: Profesor[], direction: boolean) => {
     if (direction) {
         return professors.sort((a, b) => {
             if (a.codigo.toLowerCase() < b.codigo.toLowerCase()) {
@@ -71,8 +71,8 @@ const sortProfessorsByCode = (professors: Profesor[], direction : boolean) => {
             }
             return 0;
         });
-    }else{
-    
+    } else {
+
         return professors.sort((a, b) => {
             if (a.codigo.toLowerCase() > b.codigo.toLowerCase()) {
                 return -1;
@@ -92,7 +92,7 @@ export default function MainMenuPage() {
     const [itemToDelete, setItemToDelete] = useState<Profesor | null>(null);
     const [data, setData] = useState<Profesor[]>([]);
     const [dataTemp, setDataTemp] = useState<Profesor[]>([]);
-    
+
     const openDialog = () => {
         setDialogOpen(true);
     };
@@ -135,31 +135,32 @@ export default function MainMenuPage() {
     let codigo = '';
     let rol = '';
     let nombre = '';
-    let correo ='';
-    const storedData = localStorage.getItem("user");
-    if (storedData) {
-        const userData = JSON.parse(storedData);
-        codigo = userData.codigo;
-        rol = userData.rol;
-        nombre = userData.nombre;
-        correo = userData.correo;
+    let correo = '';
+    if (typeof window !== 'undefined') {
+        const storedData = localStorage.getItem("user");
+        if (storedData) {
+            const userData = JSON.parse(storedData);
+            codigo = userData.codigo;
+            rol = userData.rol;
+            nombre = userData.nombre;
+            correo = userData.correo;
 
-        useEffect(() => {
-            if (rol !== "Administradora") {
-                const buttonAdd = document.querySelector(`.${styles.addContainer}`) as HTMLDivElement;
-                if (buttonAdd) {
-                    buttonAdd.style.display = 'none';
+            useEffect(() => {
+                if (rol !== "Administradora") {
+                    const buttonAdd = document.querySelector(`.${styles.addContainer}`) as HTMLDivElement;
+                    if (buttonAdd) {
+                        buttonAdd.style.display = 'none';
+                    }
                 }
-            }
 
-        }, [userData]);
+            }, [userData]);
 
-    } else {
-        console.log("No data found in localStorage for key 'user'");
+        } else {
+            console.log("No data found in localStorage for key 'user'");
+        }
     }
 
-    
-    
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -179,32 +180,32 @@ export default function MainMenuPage() {
     function handleEdit(index: number) {
         const item = data[index];
         console.log(item);
-        if(codigo==item.codigo || rol=="Administradora"){
+        if (codigo == item.codigo || rol == "Administradora") {
             handlerPassData(item);
-            router.push(`/professor_editor`); 
+            router.push(`/professor_editor`);
         };
         // Aquí puedes agregar el código para editar el item
     }
 
     function handleAdd() {
-        if(rol=="Administradora"){
+        if (rol == "Administradora") {
             router.push(`/addMember`)
         };
     }
 
     function handleDelete(index: number) {
         const item = data[index];
-        if(rol=="Administradora"){
+        if (rol == "Administradora") {
             setDialogOpen(true);
-            setItemToDelete(item); 
+            setItemToDelete(item);
         };
     }
 
-    function confirmDelete(mensaje:string) {
+    function confirmDelete(mensaje: string) {
         setDialogOpen(false);
         if (itemToDelete) {
             handleDeleteController(itemToDelete.correo);
-            handleDeleteConfirmation(mensaje,nombre,correo,itemToDelete.correo);
+            handleDeleteConfirmation(mensaje, nombre, correo, itemToDelete.correo);
             reloadPageAfterOperation();
         } else {
             console.error("El valor a eliminar es null.");
@@ -215,20 +216,20 @@ export default function MainMenuPage() {
         const searchField = document.getElementById('searchField') as HTMLInputElement;
         if (searchField?.value == "") {
             setData(dataTemp);
-        }else {
+        } else {
             const resultadosFiltrados = dataTemp.filter((profesor) =>
                 profesor.nombre.toLowerCase().includes(searchField?.value.toLowerCase()) ||
                 profesor.apellidos.toLowerCase().includes(searchField?.value.toLowerCase())
             );
-            
+
             setData(resultadosFiltrados);
-      }
+        }
     };
     return (
         <main className={styles.main} id="main">
             <PopUp
-                title="Alerta" 
-                content="Justifique la eliminación" 
+                title="Alerta"
+                content="Justifique la eliminación"
                 openDialog={openDialog}
                 closeDialog={closeDialog}
                 dialogOpen={dialogOpen}
@@ -238,13 +239,13 @@ export default function MainMenuPage() {
                 <h1>Miembros equipo</h1>
                 <p>Buscar profesor</p>
                 <div className={styles.searchAddContainer}>
-                    <input type="text"  
-                    onChange={(e) => {setSearch(e.target.value); handleSubmit()}} 
-                    id="searchField"
+                    <input type="text"
+                        onChange={(e) => { setSearch(e.target.value); handleSubmit() }}
+                        id="searchField"
                     />
-                    <BlueButton text="Buscar"  onClick={() => {handleSubmit()}} type="button" />
+                    <BlueButton text="Buscar" onClick={() => { handleSubmit() }} type="button" />
                     <div className={styles.addContainer}>
-                        <BlueButton text="Agregar Profesor" onClick={() => {handleAdd()}} type="button"/>
+                        <BlueButton text="Agregar Profesor" onClick={() => { handleAdd() }} type="button" />
                     </div>
                 </div>
                 <div className={styles.tableContainer}>

@@ -23,13 +23,15 @@ export default function ViewStudents() {
 
     let sede = '';
     let rol = '';
-    const storedData = localStorage.getItem("user");
-    if (storedData) {
-        const userData = JSON.parse(storedData);
-        sede = userData.centroAcademico;
-        rol = userData.rol;
-    } else {
-        console.log("No data found in localStorage for key 'user'");
+    if (typeof window !== 'undefined') {
+        const storedData = localStorage.getItem("user");
+        if (storedData) {
+            const userData = JSON.parse(storedData);
+            sede = userData.centroAcademico;
+            rol = userData.rol;
+        } else {
+            console.log("No data found in localStorage for key 'user'");
+        }
     }
 
     const openDialog = () => {
@@ -196,7 +198,7 @@ export default function ViewStudents() {
                                         <td>{item.carne}</td>
                                         <td>{item.sede}</td>
                                         <td>
-                                        <BlueButton text="Editar" type="button" onClick={() => { handleEdit(index) }} />
+                                            <BlueButton text="Editar" type="button" onClick={() => { handleEdit(index) }} />
                                             <button className={styles.deleteButton} onClick={() => { handleDelete(index) }}>Eliminar</button>
                                         </td>
                                     </tr>

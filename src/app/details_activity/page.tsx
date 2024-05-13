@@ -58,20 +58,22 @@ export default function ActivityDetails() {
         openDialog();
     };
     let rol = '';
-    const storedData = localStorage.getItem("user");
-    if (storedData) {
-        const userData = JSON.parse(storedData);
-        rol = userData.rol;
-        useEffect(() => {
-            if (rol === "Administradora") {
-                const buttonComentarios = document.querySelector(`.${styles.blueButtonComments}`) as HTMLButtonElement;
-                if (buttonComentarios) {
-                    buttonComentarios.style.display = 'none';
+    if (typeof window !== 'undefined') {
+        const storedData = localStorage.getItem("user");
+        if (storedData) {
+            const userData = JSON.parse(storedData);
+            rol = userData.rol;
+            useEffect(() => {
+                if (rol === "Administradora") {
+                    const buttonComentarios = document.querySelector(`.${styles.blueButtonComments}`) as HTMLButtonElement;
+                    if (buttonComentarios) {
+                        buttonComentarios.style.display = 'none';
+                    }
                 }
-            }
-        }, [userData]);
-    } else {
-        console.log("No data found in localStorage for key 'user'");
+            }, [userData]);
+        } else {
+            console.log("No data found in localStorage for key 'user'");
+        }
     }
     return (
         <main className={styles.main} id="main">

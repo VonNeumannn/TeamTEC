@@ -114,6 +114,7 @@ export default function ProfessorRegister() {
 
     let nombre = '';
     let correo = '';
+    if (typeof window !== 'undefined') {
     const storedUserData = localStorage.getItem("user");
     if (storedUserData) {
         const userData = JSON.parse(storedUserData);
@@ -122,6 +123,7 @@ export default function ProfessorRegister() {
     } else {
         console.log("No data found in localStorage for key 'user'");
     }
+}
 
 
     const handleSubmit = async () => {
