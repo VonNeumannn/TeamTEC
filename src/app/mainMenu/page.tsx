@@ -159,15 +159,14 @@ export default function MainMenuPage() {
             />
 
             <ChangePassword
-                title="Datos Inválidos"
-                content="Las credenciales ingresadas son incorrectas."
+                title="Cambio de contraseña"
+                content="Ingrese su nueva contraseña."
                 openDialog={openDialog}
                 closeDialog={closeDialog}
                 dialogOpen={dialogOpen}
                 confirmChangePassword={
                     (password: string) => {
                         changePasswordHandler(password);
-
                     }
                 }
 

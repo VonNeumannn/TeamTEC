@@ -10,7 +10,7 @@ import Profesor from "@/model/Profesor";
 import Comentario from "@/model/Comentario";
 import Prueba from "@/model/Prueba";
 import { handlerActivitiesIt, handlerDeleteActivity, searchActivityByName, sortByName, sortByWeek } from "@/controller/actividadController";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 
 export default function ViewItinerary() {
@@ -26,6 +26,7 @@ export default function ViewItinerary() {
             setActividades(actividades);
         });
         //localStorage.removeItem("actividades");
+        
     }, []);
 
     function handleDetails(index: number) {
@@ -46,6 +47,17 @@ export default function ViewItinerary() {
         }
         );
     }
+
+    useEffect(() => {
+        //const addActivity = document.querySelector(styles.addItineraryContainer) as HTMLDivElement | null;
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+        const addActivity = document.querySelector(`.${styles.addItineraryContainer}`) as HTMLDivElement | null;
+        if (addActivity && user.rol === 'Coordinador') {
+            addActivity.style.display = 'none';
+}
+});
+
     
     const router = useRouter();
 

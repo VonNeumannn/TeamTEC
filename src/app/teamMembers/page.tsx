@@ -182,7 +182,7 @@ export default function MainMenuPage() {
         console.log(item);
         if (codigo == item.codigo || rol == "Administradora") {
             handlerPassData(item);
-            router.push(`/professor_editor`);
+            router.push('/professor_editor');
         };
         // Aquí puedes agregar el código para editar el item
     }

@@ -293,13 +293,15 @@ export default function actEdit() {
                             <input type="file" id="myFile" name="filename" accept="image/*, .pdf" onChange={handlerFile}></input>
    
                         </div>
+                        <div className={styles.groupButton}>
+                            <button className={styles.blueButton} style={{ padding: '0.6em', width:'60%' }} onClick={() =>  handleEdit()}>Actualizar</button>
+                            <button className={styles.blueButton} style={{ padding: '0.6em', width:'60%' }} onClick={() => selectProfesor()}>Encargados</button>
+                        </div>
+                        
                     </form>
                 </div>
                 
-            <div style={{ display: 'flex', gap: '3em' }}>
-                <button className={styles.blueButton} style={{ padding: '0.6em', width:'60%' }} onClick={() =>  handleEdit()}>Actualizar</button>
-                <button className={styles.blueButton} style={{ padding: '0.6em', width:'60%' }} onClick={() => selectProfesor()}>Encargados</button>
-            </div>
+            
         </div>
     </main>
   );

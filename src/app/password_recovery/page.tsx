@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-export default function LoginPage() {
+export default function PasswordRecoveryPage() {
     const [subject, setSubject] = useState('');
 
     const sendMail = async (e: any) => {
@@ -26,6 +26,9 @@ export default function LoginPage() {
         });
 
         console.log(await response);
+        if(window !== undefined){
+            localStorage.setItem("changePasswordNeeded", "true");
+        }
     }
     const router = useRouter();
     const [dialogOpen, setDialogOpen] = useState(false);
