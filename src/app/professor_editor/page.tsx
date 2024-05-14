@@ -63,7 +63,7 @@ export default function ProfessorEditor() {
     useEffect(() => {
         let correo = '';
         console.log(window)
-        if (typeof window !== null) {
+        if (typeof window !== 'undefined') {
             const storedData = localStorage.getItem("profesor");
             if (storedData) {
                 const professorData = JSON.parse(storedData);
@@ -78,15 +78,17 @@ export default function ProfessorEditor() {
     let sede = '';
     let nombre = '';
     let correo_usuario = '';
-    const storedUserData = localStorage.getItem("user");
-    if (storedUserData) {
-        const userData = JSON.parse(storedUserData);
-        rol = userData.rol;
-        sede = userData.centroAcademico;
-        nombre = userData.nombre;
-        correo_usuario = userData.correo;
-    } else {
-        console.log("No data found in localStorage for key 'user'");
+    if (typeof window !== 'undefined') {
+        const storedUserData = localStorage.getItem("user");
+        if (storedUserData) {
+            const userData = JSON.parse(storedUserData);
+            rol = userData.rol;
+            sede = userData.centroAcademico;
+            nombre = userData.nombre;
+            correo_usuario = userData.correo;
+        } else {
+            console.log("No data found in localStorage for key 'user'");
+        }
     }
 
     useEffect(() => {
@@ -247,7 +249,7 @@ export default function ProfessorEditor() {
         router.push(`/teamMembers`)
     };
 
-    
+
 
     return (
         <main className={styles.main} id="main">
