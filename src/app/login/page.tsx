@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 import { handlerLogin } from "../../controller/loginController";
 import Usuario from "../../model/Usuario";
 import React from "react";
+import Eye from "../../../public/eye.svg";
+import EyeSlash from "../../../public/eye-off.svg";
 
 
 
@@ -18,6 +20,7 @@ import React from "react";
 export default function LoginPage() {
     const router = useRouter();
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [eye, setEye] = useState(false);
     const openDialog = () => {
         console.log("Abriendo dialogo");
         setDialogOpen(true);
@@ -36,6 +39,20 @@ export default function LoginPage() {
             handlerLogin(email,password, router, openDialog);
         });
     });
+
+    const handlerEye = () => {
+        const password = document.getElementById('password') as HTMLInputElement;
+        const eyeButton = document.getElementById('eyeButton') as HTMLButtonElement;
+        if (eye) {
+            eyeButton.style.backgroundImage = `url(${Eye.src})`;
+            setEye(false);
+        } else {
+            password.type = 'text';
+            eyeButton.style.backgroundImage = `url(${EyeSlash.src})`;
+            setEye(true);
+        }
+    }
+
     
     
 
@@ -60,7 +77,8 @@ export default function LoginPage() {
                     </div>
                     <div className={styles.formGroup}>
                         <label htmlFor="password">Password</label>
-                        <input type="password" id="password" name="password" required placeholder="..." />
+                        <input type={eye ? 'text' : 'password'} id="password" name="password" required placeholder="..." />
+                        <button className={styles.eyeButtonLogin} type="button" onClick={handlerEye} id="eyeButton"></button>
                     </div>
                     <Link href="/password_recovery" >Olvidó su contraseña</Link>
                     <BlueButton text="LOGIN" onClick={()=>{}} type="submit" />

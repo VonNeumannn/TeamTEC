@@ -15,18 +15,19 @@ import { use, useEffect, useState } from "react";
 
 export default function ViewItinerary() {
     const [actividades, setActividades] = useState([]);
+    const [isCoordinator, setIsCoordinator] = useState(false);
 
     useEffect(() => {
         //localStorage.setItem("actividades", '');
         const itinerarioId = localStorage.getItem('itinerarioId') ?? '';
-        
+
         handlerActivitiesIt(itinerarioId).then(() => {
             var actividades = JSON.parse(localStorage.getItem("actividades") || "[]");
             console.log(actividades);
             setActividades(actividades);
         });
         //localStorage.removeItem("actividades");
-        
+
     }, []);
 
     function handleDetails(index: number) {
@@ -55,10 +56,12 @@ export default function ViewItinerary() {
         const addActivity = document.querySelector(`.${styles.addItineraryContainer}`) as HTMLDivElement | null;
         if (addActivity && user.rol === 'Coordinador') {
             addActivity.style.display = 'none';
-}
-});
+            setIsCoordinator(true);
 
-    
+        }
+    });
+
+
     const router = useRouter();
 
     return (
@@ -81,10 +84,10 @@ export default function ViewItinerary() {
                         }
                     }} type={undefined} />
                     <div className={styles.addItineraryContainer}>
-                        <BlueButton text="Agregar Actividad" onClick={() => { 
+                        <BlueButton text="Agregar Actividad" onClick={() => {
                             //enviar a la pantalla de agregar
                             router.push('/newActivity');
-                        } } type={undefined} />
+                        }} type={undefined} />
                     </div>
                 </div>
                 <div className={styles.tableContainer}>
@@ -92,7 +95,7 @@ export default function ViewItinerary() {
                         <tbody>
                             <tr>
                                 <th className={styles.pasenZelda}>Semana
-                                    <button className={styles.sortButton} onClick={() => { 
+                                    <button className={styles.sortButton} onClick={() => {
                                         //ordenar por semana
                                         const id = localStorage.getItem("itinerarioId") ?? '';
                                         sortByWeek(id).then(() => {
@@ -105,7 +108,7 @@ export default function ViewItinerary() {
                                     </button>
                                 </th>
                                 <th className={styles.pasenZelda}>Nombre
-                                    <button className={styles.sortButton} onClick={() => { 
+                                    <button className={styles.sortButton} onClick={() => {
                                         //ordenar por nombre
                                         const id = localStorage.getItem("itinerarioId") ?? '';
                                         sortByName(id).then(() => {
@@ -118,7 +121,7 @@ export default function ViewItinerary() {
                                     </button>
                                 </th>
                                 <th className={styles.pasenZelda}>Estado
-                                <button className={styles.sortButton} onClick={() => {
+                                    <button className={styles.sortButton} onClick={() => {
                                         //ordenar por estado
                                         const id = localStorage.getItem("itinerarioId") ?? '';
                                         sortByName(id).then(() => {
@@ -126,7 +129,7 @@ export default function ViewItinerary() {
                                             setActividades(actividades);
                                         }
                                         );
-                                 }} >
+                                    }} >
                                         <Image src={SortIcon} alt="sort icon" className={styles.sortButtonIcon} />
                                     </button>
                                 </th>
@@ -144,8 +147,8 @@ export default function ViewItinerary() {
                                         <td id={`nombreAct${index}`}>{act.nombre}</td>
                                         <td id={`estadoAct${index}`}>{act.estado}</td>
                                         <td>
-                                            <BlueButton text="Detalles" onClick={() => { handleDetails(index)} } type={undefined} />
-                                            <button className={styles.acceptButton} onClick={() => { handleEdit(index) }}>Editar</button>
+                                            <BlueButton text="Detalles" onClick={() => { handleDetails(index) }} type={undefined} />
+                                            <button className={styles.acceptButton} onClick={() => { handleEdit(index) }} style={{display: isCoordinator ? 'none' : 'inline-block' }}>Editar</button>
                                             <button className={styles.deleteButton} onClick={() => handleDelete(act.nombre, index)}>Eliminar</button>
                                         </td>
                                     </tr>

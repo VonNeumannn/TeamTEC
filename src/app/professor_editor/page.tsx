@@ -247,6 +247,8 @@ export default function ProfessorEditor() {
         router.push(`/teamMembers`)
     };
 
+    
+
     return (
         <main className={styles.main} id="main">
             <PopUp
@@ -338,7 +340,7 @@ export default function ProfessorEditor() {
                 </div>
 
                 <div className={styles.buttonEditContainer}>
-                    <BlueButton text="Guardar" onClick={() => { handleEdit() }} />
+                    <BlueButton text="Guardar" onClick={() => { handleEdit() }} type='button' />
                     <button className={styles.buttonCancel} onClick={() => { handleCancele() }}>Cancelar</button>
                 </div>
             </div>

@@ -57,24 +57,19 @@ export default function ActivityDetails() {
         setCurrentImageUrl(imageUrl);
         openDialog();
     };
-    let rol = '';
-    if (typeof window !== 'undefined') {
-        const storedData = localStorage.getItem("user");
-        if (storedData) {
-            const userData = JSON.parse(storedData);
-            rol = userData.rol;
-            useEffect(() => {
-                if (rol === "Administradora") {
-                    const buttonComentarios = document.querySelector(`.${styles.blueButtonComments}`) as HTMLButtonElement;
-                    if (buttonComentarios) {
-                        buttonComentarios.style.display = 'none';
-                    }
-                }
-            }, [userData]);
-        } else {
-            console.log("No data found in localStorage for key 'user'");
+    useEffect(() => {
+        //const addActivity = document.querySelector(styles.addItineraryContainer) as HTMLDivElement | null;
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+        const addActivity = document.querySelector(`.${styles.blueButtonComments}`) as HTMLDivElement | null;
+        console.log(addActivity);
+        console.log(user.rol);
+        if (addActivity && user.rol === 'Administradora') {
+            addActivity.style.display = 'none';
+            
+
         }
-    }
+    });
     return (
         <main className={styles.main} id="main">
             <div>

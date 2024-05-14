@@ -8,6 +8,8 @@
 
 
 
+
+
 /* Login Screen CSS */
 
 .loginContainer{
@@ -54,6 +56,10 @@
   background-color: #ffffff;
   border-radius: 5px;
   margin-top: 10%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
 }
 
 .formGroup input{
@@ -64,6 +70,25 @@
   background:transparent;
   color: #364D63;
   border: none;
+  
+}
+
+.formGroup input[type="password"]{
+  width: 80%;
+  height: 100%;
+  outline: none;
+
+}
+.eyeButtonLogin{
+  width: 20%;
+  height: 100%;
+  background-image: url('../../public/eye.svg');
+  object-fit: contain;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  background-color: #a1a1a1;
 }
 
 .formGroup label {
@@ -103,6 +128,8 @@
   text-align: center;
   transition: 300ms;
 }
+
+
 
 .blueButton:hover{
   background-color: #0F5BDA;
