@@ -34,6 +34,7 @@ export async function addComment(itinerarioId: string, actividadId: string, come
     const comentariosRef = collection(actividadRef, 'comentarios');
     const commentDocRef = await addDoc(comentariosRef, {
         titulo: comentario.titulo,
+        redactor: comentario.redactor,
         redaccion: comentario.redaccion,
         fechaYHora: comentario.fechaYHora,
     });
