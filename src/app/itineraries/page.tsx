@@ -49,6 +49,27 @@ export default function ViewItineraries() {
             window.location.reload();
         }, 300);
     };
+
+
+    useEffect(() => {
+        if(typeof window !== 'undefined'){
+        
+            const addItineraryButton = document.getElementById('addItinerary') as HTMLDivElement;
+            
+            const storedData = localStorage.getItem("user");
+            if(storedData){
+                const userData = JSON.parse(storedData);
+                if(userData.rol === "Coordinador"){
+                    addItineraryButton.style.display = "flex";
+                }
+                else{
+                    addItineraryButton.style.display = "none";
+                }
+            }
+        }
+    });
+
+
     
     return (
         <main className={styles.main} id="main">
@@ -79,7 +100,7 @@ export default function ViewItineraries() {
                             });
                         }
                     }} type={undefined} />
-                    <div className={styles.addItineraryContainer}>
+                    <div className={styles.addItineraryContainer} id="addItinerary">
                         <BlueButton text="Agregar Itinerario" onClick={openDialog} type={undefined} />
                     </div>
                 </div>

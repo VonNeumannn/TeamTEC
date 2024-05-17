@@ -140,13 +140,25 @@ export default function MainMenuPage() {
 
 
 
-    /*const storedData = localStorage.getItem("user");
-    if (storedData) {
-        const userData = JSON.parse(storedData);
-        console.log(userData);
-    } else {
-        console.log("No data found in localStorage for key 'user'");
-    }*/
+    useEffect(() => {
+        if(typeof window !== 'undefined'){
+        
+            const divBotones = document.getElementById('divBotones') as HTMLDivElement;
+            const children = divBotones.children;
+    
+            const storedData = localStorage.getItem("user");
+            if(storedData){
+                const userData = JSON.parse(storedData);
+                if(userData.rol !== "Administradora"){
+                    if(children){
+                        const btnAddProfessor = children.item(3) as HTMLButtonElement;
+                        btnAddProfessor.style.display = "none";
+                    }
+                }
+            }
+            
+        }
+    });
 
     return (
         <main className={styles.main} id="main">
@@ -176,7 +188,7 @@ export default function MainMenuPage() {
                     <h1>Menú Principal</h1>
                     <div className={styles.flexContainer}>
                         <Image src={MainLogo} alt="Main Logo" />
-                        <div className={styles.flexFlexContainer}>
+                        <div className={styles.flexFlexContainer} id="divBotones">
                             <BlueButton text="Mostrar equipo" onClick={() => { router.push('/teamMembers') }} type="button" />
                             <BlueButton text="Mostrar estudiantes" onClick={() => { router.push('/viewStudents') }} type="button" />
                             <BlueButton text="Itinerario" onClick={() => { router.push('/itineraries') }} type="button" />

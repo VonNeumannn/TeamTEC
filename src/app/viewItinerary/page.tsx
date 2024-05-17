@@ -19,7 +19,19 @@ export default function ViewItinerary() {
 
     useEffect(() => {
         //localStorage.setItem("actividades", '');
+        if (typeof window !== 'undefined') {
+            localStorage.removeItem("actividad");
+        }
+        
+
+    });
+
+    
+
+    useEffect(() => {
+        //localStorage.setItem("actividades", '');
         const itinerarioId = localStorage.getItem('itinerarioId') ?? '';
+
 
         handlerActivitiesIt(itinerarioId).then(() => {
             var actividades = JSON.parse(localStorage.getItem("actividades") || "[]");
@@ -54,7 +66,7 @@ export default function ViewItinerary() {
         const user = JSON.parse(localStorage.getItem("user") || "{}");
 
         const addActivity = document.querySelector(`.${styles.addItineraryContainer}`) as HTMLDivElement | null;
-        if (addActivity && user.rol === 'Coordinador') {
+        if (addActivity && user.rol !== 'Coordinador') {
             addActivity.style.display = 'none';
             setIsCoordinator(true);
 
@@ -149,7 +161,7 @@ export default function ViewItinerary() {
                                         <td>
                                             <BlueButton text="Detalles" onClick={() => { handleDetails(index) }} type={undefined} />
                                             <button className={styles.acceptButton} onClick={() => { handleEdit(index) }} style={{display: isCoordinator ? 'none' : 'inline-block' }}>Editar</button>
-                                            <button className={styles.deleteButton} onClick={() => handleDelete(act.nombre, index)}>Eliminar</button>
+                                            <button className={styles.deleteButton} onClick={() => handleDelete(act.nombre, index)} style={{display: isCoordinator ? 'none' : 'inline-block' }}>Eliminar</button>
                                         </td>
                                     </tr>
                                 ))}
