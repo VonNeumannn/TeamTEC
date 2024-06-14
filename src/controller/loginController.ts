@@ -16,7 +16,7 @@ class StudentAdapter {
         this.student = student;
     }
     async login(email: string, password: string): Promise<boolean> {
-        if (this.student.correo === email && this.student.carne === password) {
+        if (this.student.correo === email && this.student.contrasena === password) {
             return true;
         }
         return false;
