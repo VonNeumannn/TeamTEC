@@ -14,8 +14,11 @@ import Prueba from "@/model/Prueba";
 import ChangePassword from "@/app/components/recoverPassword";
 import PopUpInformation from "../components/popUpInformation";
 import { handlerChangePassword } from "@/controller/profesorController";
+import Header from "@/app/components/header";
+import { set } from "firebase/database";
 
 export default function MainMenuPage() {
+    const [userName, setUserName] = useState('');
     useEffect(() => {
         const fetchData = async () => {
             const data = await handlerNextActivity();
@@ -104,7 +107,7 @@ export default function MainMenuPage() {
     });
 
 
-
+    const [bell, setBell] = useState(false);
     const [title, setTitle] = useState("Información");
     const [content, setContent] = useState("Contraseña cambiada exitosamente.");
     const [dialogInfo, setDialogInfo] = useState(false);
@@ -147,6 +150,7 @@ export default function MainMenuPage() {
             const children = divBotones.children;
     
             const storedData = localStorage.getItem("user");
+            setUserName(storedData ? JSON.parse(storedData).nombre + ' '+ JSON.parse(storedData).apellidos : '');
             if(storedData){
                 const userData = JSON.parse(storedData);
                 if(userData.rol !== "Administradora"){
@@ -161,6 +165,11 @@ export default function MainMenuPage() {
     });
 
     return (
+        <>
+        <Header 
+            bell={bell}
+            userName = {userName}
+            />
         <main className={styles.main} id="main">
             <PopUpInformation
                 title={title}
@@ -230,7 +239,7 @@ export default function MainMenuPage() {
                     </table>
                 </div>
             </div>
-        </main>
+        </main></>
     );
 }
 
