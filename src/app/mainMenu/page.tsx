@@ -67,13 +67,32 @@ export default function MainMenuPage() {
 			}
 			try {
 				// Obtener lista de actividades
-				// Obtener lista de actividades
-				const actividadesData = await handlerAllActivities(); // Ajusta según cómo obtienes la lista de actividades
+                const actividadesData = await handlerAllActivities();// Ajusta según cómo obtienes la lista de actividades
+                let actividades: Actividad[] = [];
+                actividadesData.forEach((actividadData) => { 
+                    const actividad = new Actividad(
+                        actividadData.id,
+                        actividadData.nombre,
+                        actividadData.estado,
+                        actividadData.semanaRealizacion,
+                        actividadData.tipo,
+                        actividadData.modalidad,
+                        actividadData.fecha,
+                        actividadData.hora,
+                        actividadData.iniciarRecordatorio,
+                        actividadData.enlace,
+                        actividadData.afiche,
+                        actividadData.encargado,
+                        actividadData.responsable,
+                        actividadData.comentarios,
+                        actividadData.pruebas,
+                        actividadData.fechaUltimoRecordatorio,
+                        actividadData.numRecordatorios
+                    );
+                    actividades.push(actividad);
+                });
 
-				// Convertir datos en instancias de Actividad
-				const actividades = actividadesData.map(
-					(data) => new Actividad(data)
-				);
+				console.log(actividades);
 				// Lista de fechas
 				const fechas = [
 					new Date(), // Hoy

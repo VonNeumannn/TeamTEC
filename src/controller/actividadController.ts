@@ -4,6 +4,7 @@ import Comentario from "@/model/Comentario";
 import Prueba from "@/model/Prueba";
 import { TipoActividad } from "@/model/TipoActividad";
 import { act } from "react-dom/test-utils";
+import Actividad from "@/model/Actividad";
 
 interface activityData {
     nombre: string;
@@ -44,7 +45,7 @@ interface activitiesItData {
 
 export const handlerAllActivities = async () => {
     try {
-        const data = await getAllActivities();
+        const data: Actividad[] = await getAllActivities();
         if (!data || data.length === 0) {
             console.log("No hay actividades");
             return [];
