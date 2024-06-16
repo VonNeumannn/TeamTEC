@@ -172,9 +172,12 @@ export default function actEdit() {
         router.push("/addManager");
     }
 
-    function handleEdit() {
+    const handleEdit = (e: React.FormEvent<HTMLFormElement>) => {
+        
+        e.preventDefault();
         const idIt = localStorage.getItem('itinerarioId') ?? '';
         const actividad = JSON.parse(localStorage.getItem("actividad") || "{}");
+        console.log(actividad);
         if (file) {
             handlerEditFilePoster(file, aficheName, idIt, actividad.id);
         }
@@ -209,7 +212,7 @@ export default function actEdit() {
         <div className={styles.studentEditContainer}>
             <h1>Editar Actividad</h1>
                 <div className={styles.formstudentEdit}>
-                    <form className={styles.formContainerstudentEdit}>
+                    <form className={styles.formContainerstudentEdit} onSubmit={handleEdit}>
 
                         <div className={styles.formGroupStudentEdit}>
                             <label htmlFor="actName">Nombre</label>
@@ -294,7 +297,7 @@ export default function actEdit() {
    
                         </div>
                         <div className={styles.groupButton}>
-                            <button className={styles.blueButton} style={{ padding: '0.6em', width:'60%' }} onClick={() =>  handleEdit()}>Actualizar</button>
+                            <button className={styles.blueButton} style={{ padding: '0.6em', width:'60%' }} onClick={() => { }} type="submit">Actualizar</button>
                             <button className={styles.blueButton} style={{ padding: '0.6em', width:'60%' }} onClick={() => selectProfesor()}>Encargados</button>
                         </div>
                         

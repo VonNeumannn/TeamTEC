@@ -126,6 +126,24 @@ export default function ViewStudents() {
 
     }, []);
 
+    useEffect(() => {
+        if(typeof window !== 'undefined'){
+        
+            const addItineraryButton = document.getElementById('csvButton') as HTMLButtonElement;
+            
+            const storedData = localStorage.getItem("user");
+            if(storedData){
+                const userData = JSON.parse(storedData);
+                if(userData.rol !== "Administradora"){
+                    addItineraryButton.style.display = "flex";
+                }
+                else{
+                    addItineraryButton.style.display = "none";
+                }
+            }
+        }
+    });
+
     return (
         <main className={styles.main} id="main">
             <div>
@@ -156,7 +174,7 @@ export default function ViewStudents() {
                         onChange={(e) => setSearch(e.target.value)} />
                     <BlueButton text="Buscar" type="button" onClick={() => { handleSubmit() }} />
                     <div className={styles.csvAddStudentContainer}>
-                        <button className={styles.downButton} onClick={() => { openDialogCSV() }}>
+                        <button id="csvButton" className={styles.downButton} onClick={() => { openDialogCSV() }}>
                             <Image src={DownloadIcon} alt="csv Icon" />
                             {"CSV"}
                         </button>

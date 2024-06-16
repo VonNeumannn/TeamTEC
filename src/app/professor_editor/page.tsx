@@ -60,12 +60,14 @@ export default function ProfessorEditor() {
         console.log("Cerrando dialogo");
         setDialogOpen(false);
     };
+    let correo = '';
     useEffect(() => {
-        let correo = '';
+        
         console.log(window)
         if (typeof window !== 'undefined') {
             const storedData = localStorage.getItem("profesor");
             if (storedData) {
+                console.log(storedData);
                 const professorData = JSON.parse(storedData);
                 correo = professorData.correo;
             } else {
@@ -78,6 +80,7 @@ export default function ProfessorEditor() {
     let sede = '';
     let nombre = '';
     let correo_usuario = '';
+
     if (typeof window !== 'undefined') {
         const storedUserData = localStorage.getItem("user");
         if (storedUserData) {
@@ -94,7 +97,7 @@ export default function ProfessorEditor() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const loadData = await handlerOneLoad(correo_usuario);
+                const loadData = await handlerOneLoad(correo);
                 setloadData([...loadData]);
             } catch (error) {
                 console.error('Error fetching data:', error);
