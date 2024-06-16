@@ -1,9 +1,10 @@
 import Profesor from "@/model/Profesor";
-import { getNextActivity, addActivity, uploadFilePoster, deleteAct, getActivitiesIt, editActivity } from "../app/DAO/daoActividad";
+import { getNextActivity, addActivity, uploadFilePoster, deleteAct, getActivitiesIt, editActivity, getAllActivities } from "../app/DAO/daoActividad";
 import Comentario from "@/model/Comentario";
 import Prueba from "@/model/Prueba";
 import { TipoActividad } from "@/model/TipoActividad";
 import { act } from "react-dom/test-utils";
+import Actividad from "@/model/Actividad";
 
 interface activityData {
     nombre: string;
@@ -42,6 +43,19 @@ interface activitiesItData {
     estado: string;
 }
 
+export const handlerAllActivities = async () => {
+    try {
+        const data: Actividad[] = await getAllActivities();
+        if (!data || data.length === 0) {
+            console.log("No hay actividades");
+            return [];
+        } 
+        return data;
+    } catch (error) {
+        console.error("Error al cargar actividades:", error);
+        return [];
+    }
+}
 
 export const handlerNextActivity = async () => {
     try {
@@ -229,3 +243,4 @@ export const handlerEditActivity = async (idIt: string, idAct: string, actividad
 const setActsInLS = (actividades: activitiesItData[]) => {
     localStorage.setItem("actividades", JSON.stringify(actividades));
 }
+
