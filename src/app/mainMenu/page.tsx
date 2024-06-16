@@ -1,11 +1,14 @@
-'use client'
+"use client";
 import styles from "../page.module.css";
 import Image from "next/image";
 import MainLogo from "../../../public/mainLogo.svg";
 import { BlueButton } from "../components/blueButton";
 import Actividad from "@/model/Actividad";
 import { useRouter } from "next/navigation";
-import { handlerNextActivity } from "@/controller/actividadController";
+import {
+	handlerAllActivities,
+	handlerNextActivity,
+} from "@/controller/actividadController";
 import { use, useEffect, useState } from "react";
 import { TipoActividad } from "@/model/TipoActividad";
 import Profesor from "@/model/Profesor";
@@ -14,8 +17,12 @@ import Prueba from "@/model/Prueba";
 import ChangePassword from "@/app/components/recoverPassword";
 import PopUpInformation from "../components/popUpInformation";
 import { handlerChangePassword } from "@/controller/profesorController";
+import Header from "@/app/components/header";
+import { set } from "firebase/database";
+import NotificarActividad from "@/model/NotificarActividad";
 
 export default function MainMenuPage() {
+    const [userName, setUserName] = useState('');
     useEffect(() => {
         const fetchData = async () => {
             const data = await handlerNextActivity();
@@ -58,6 +65,54 @@ export default function MainMenuPage() {
                 const date = new Date(fechaActividad + "");
                 fechaActividadElement.innerText = date.toLocaleDateString();
             }
+		try {
+				// Obtener lista de actividades
+                const actividadesData = await handlerAllActivities();// Ajusta según cómo obtienes la lista de actividades
+                let actividades: Actividad[] = [];
+                actividadesData.forEach((actividadData) => { 
+                    const actividad = new Actividad(
+                        actividadData.id,
+                        actividadData.nombre,
+                        actividadData.estado,
+                        actividadData.semanaRealizacion,
+                        actividadData.tipo,
+                        actividadData.modalidad,
+                        actividadData.fecha,
+                        actividadData.hora,
+                        actividadData.iniciarRecordatorio,
+                        actividadData.enlace,
+                        actividadData.afiche,
+                        actividadData.encargado,
+                        actividadData.responsable,
+                        actividadData.comentarios,
+                        actividadData.pruebas,
+                        actividadData.fechaUltimoRecordatorio,
+                        actividadData.numRecordatorios
+                    );
+                    actividades.push(actividad);
+                });
+
+				console.log(actividades);
+				// Lista de fechas
+				const fechas = [
+					new Date(), // Hoy
+					new Date("2024-06-15"),
+					new Date("2024-07-01"),
+				];
+
+				// Crear instancia del observador
+				const notificarActividad = new NotificarActividad();
+
+				// Suscribirse al observador para cada actividad
+				actividades.forEach((actividad: Actividad) => {
+					actividad.subscribe(notificarActividad);
+				});
+
+				// Verificar las fechas de las actividades
+				Actividad.checkActividades(actividades, fechas);
+			} catch (error) {
+				console.error("Error al obtener actividades:", error);
+			}
         };
         fetchData();
     }, []);
@@ -104,7 +159,7 @@ export default function MainMenuPage() {
     });
 
 
-
+    const [bell, setBell] = useState(false);
     const [title, setTitle] = useState("Información");
     const [content, setContent] = useState("Contraseña cambiada exitosamente.");
     const [dialogInfo, setDialogInfo] = useState(false);
@@ -147,6 +202,7 @@ export default function MainMenuPage() {
             const children = divBotones.children;
     
             const storedData = localStorage.getItem("user");
+            setUserName(storedData ? JSON.parse(storedData).nombre + ' '+ JSON.parse(storedData).apellidos : '');
             if(storedData){
                 const userData = JSON.parse(storedData);
                 if(userData.rol !== "Administradora"){
@@ -161,6 +217,11 @@ export default function MainMenuPage() {
     });
 
     return (
+        <>
+        <Header 
+            bell={bell}
+            userName = {userName}
+            />
         <main className={styles.main} id="main">
             <PopUpInformation
                 title={title}
@@ -230,7 +291,8 @@ export default function MainMenuPage() {
                     </table>
                 </div>
             </div>
-        </main>
+        </main></>
     );
 }
+
 
