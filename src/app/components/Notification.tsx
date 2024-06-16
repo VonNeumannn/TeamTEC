@@ -28,14 +28,19 @@ export default function Header(Props: Props) {
     }, [keyValue]);
 
     useEffect(() => {
-        if(status){
-            const noti = document.getElementById("notification"+keyValue) ;
-            if(noti){
+        if (status) {
+            const noti = document.getElementById(id);
+            if (noti) {
+                noti.classList.remove(styles.unreaded);
+            }
+        } else {
+            const noti = document.getElementById(id);
+            if (noti) {
                 noti.classList.add(styles.unreaded);
             }
-            
-            
-        }});
+        }
+    }, [status, id]);
+
 
     
     
