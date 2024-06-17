@@ -107,6 +107,13 @@ export const searchItineraryByName = async (nombre: string) => {
     return itinerarios[0].nombre;
 }
 
+//search id by name
+export const searchIdItineraryByName = async (nombre: string) => {
+    let data = await getIdItineraryByName(nombre);
+    const id = JSON.parse(JSON.stringify(data));
+    return id;
+}
+
 const setLocalStorage = (itinerario: itinerarioData[]) => {
     localStorage.setItem("itinerario", JSON.stringify(itinerario));
 }

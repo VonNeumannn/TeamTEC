@@ -29,7 +29,10 @@ export default function MainMenuPage() {
     useEffect(() => {
 
         //metan aqui la hora simulada
-        const date = new Date(); //holder pq tiene formato raro
+        // Crear una fecha con un valor específico usando el constructor de Date
+        const date = new Date("2024-07-25T00:00:00.000Z")
+        // Convertir la fecha a una cadena en formato ISO
+        //const timestamp = date.toISOString();
 
         //de planeada a notificada
         VisitableAct(date);
