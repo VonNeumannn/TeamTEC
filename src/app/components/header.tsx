@@ -23,6 +23,24 @@ interface Props {
 	notificationsProps: Notification[];
 }
 
+// Función para eliminar duplicados
+function removeDuplicates(arr : Notification[]) {
+  const uniqueActivities = [];
+  const seen = new Set();
+  
+  for (const activity of arr) {
+      // Crea una clave única basada en las propiedades del objeto
+      const uniqueKey = `${activity.activityName}-${activity.date}-${activity.hour}`;
+      
+      if (!seen.has(uniqueKey)) {
+          seen.add(uniqueKey);
+          uniqueActivities.push(activity);
+      }
+  }
+  
+  return uniqueActivities;
+}
+
 const orderNotificationsByDateAndTime = (notifications: Notification[]): Notification[] => {
   return notifications.sort((a, b) => {
     const [dayA, monthA, yearA] = a.date.split('/').map(Number);
@@ -59,8 +77,18 @@ export default function Header(Props: Props) {
     );
   }, []);
 
+  const setAsReaded = useCallback((keyValue : any) => {
+    setNotis((prevNotis) =>
+      prevNotis.map(notification =>
+        notification.keyValue === keyValue
+          ? { ...notification, status: true }
+          : notification
+      )
+    );
+  }, []);
+
   useEffect(() => {
-    setNotis(notificationsProps);
+    setNotis(removeDuplicates(notificationsProps));
   }, [notificationsProps]);
 
   useEffect(() => {
@@ -165,6 +193,7 @@ export default function Header(Props: Props) {
                 redirect={notification.redirect}
                 isDeleted={notification.isDeleted}
                 setNotificationAsDeleted={setNotificationAsDeleted}
+                setAsReaded={setAsReaded}
               />
             ))}
           </div>

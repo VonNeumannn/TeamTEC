@@ -61,7 +61,17 @@
   cursor: pointer;
 }
 
+.setAsReaded{
+  width: 90%;
+  color: #00125b;
+  font-size: 0.8rem;
+  text-align: right;
 
+}
+
+.setAsReaded:hover{
+  cursor: pointer;
+}
 
 .notificationBell img{
   width: 100%;

@@ -17,17 +17,19 @@ interface Props {
     redirect: string;
     isDeleted : boolean;
     setNotificationAsDeleted: (keyValue: number) => void;
+    setAsReaded: (keyValue: number) => void;
 }
 
 
 export default function Header(Props: Props) {
     const [id, setId] = useState("notification1");
     const [trashId, setTrashId] = useState("trash"+Props.keyValue);
+    const [readedId, setreadedId] = useState("readed"+Props.keyValue);
 
     
 
     const { activityName, content, date, hour, status, keyValue, redirect, isDeleted } = Props;
-    const { setNotificationAsDeleted } = Props;
+    const { setNotificationAsDeleted, setAsReaded } = Props;
     useEffect(() => {
         if(keyValue){
             setId("notification"+keyValue);
@@ -37,11 +39,20 @@ export default function Header(Props: Props) {
     }, [keyValue]);
 
     useEffect(() => {
+        const readed = document.getElementById(readedId);
+        if (readed) {
+            readed.addEventListener("click", () => {
+                setAsReaded(keyValue);
+                
+            });
+        }
         const noti = document.getElementById(id);
         if (status) {
             
-            if (noti) {
+            if (noti && readed) {
                 noti.classList.remove(styles.unreaded);
+                readed.style.display = "none";
+
             }
         } else {
             const noti = document.getElementById(id);
@@ -55,9 +66,11 @@ export default function Header(Props: Props) {
             trash.addEventListener("click", () => {
                 
                 setNotificationAsDeleted(keyValue);
-                console.log("eliminando: "+keyValue);
+
             });
         }
+
+        
 
     }, [status, id]);
 
@@ -85,6 +98,7 @@ export default function Header(Props: Props) {
                 {hour}
             </p>
         </div>
+        <p className={styles.setAsReaded} id={readedId}>Marcar como leído</p>
     </div>
   );
 }
