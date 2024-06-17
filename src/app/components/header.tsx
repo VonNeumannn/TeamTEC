@@ -2,7 +2,7 @@
 import styles from "../page.module.css";
 import Bell from "../../../public/bell.svg";
 import DotBell from "../../../public/bell-dot.svg";
-import { useCallback, useEffect, useState } from "react";
+import { use, useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Profile from "../../../public/user-round.svg";
 import Notification from "./Notification"
@@ -48,6 +48,7 @@ export default function Header(Props: Props) {
   const [displayedNotis, setDisplayedNotis] = useState<Notification[]>([]);
 
 
+
   const setNotificationAsDeleted = useCallback((keyValue : any) => {
     setNotis((prevNotis) =>
       prevNotis.map(notification =>
@@ -60,7 +61,7 @@ export default function Header(Props: Props) {
 
   useEffect(() => {
     setNotis(notificationsProps);
-  }, []);
+  }, [notificationsProps]);
 
   useEffect(() => {
     setDisplayedNotis(orderNotificationsByDateAndTime(filterNotificationsByDeleted(notis)));
