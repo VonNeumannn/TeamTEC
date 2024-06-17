@@ -142,6 +142,7 @@ export async function addStudent(newStudentsData: Estudiante[]): Promise<boolean
         correo: student.correo,
         celular: student.celular,
         sede: student.sede,
+        foto: "",
         rol: "estudiante",
         contrasena: student.carne,
         estado: "activo",
