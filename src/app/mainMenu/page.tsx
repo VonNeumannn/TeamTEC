@@ -30,7 +30,7 @@ export default function MainMenuPage() {
 
         //metan aqui la hora simulada
         // Crear una fecha con un valor específico usando el constructor de Date
-        const date = new Date("2024-07-25T00:00:00.000Z")
+        const date = new Date("2024-05-05T00:00:00.000Z")
         // Convertir la fecha a una cadena en formato ISO
         //const timestamp = date.toISOString();
 
