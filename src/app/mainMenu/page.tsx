@@ -252,6 +252,7 @@ export default function MainMenuPage() {
                             <BlueButton text="Mostrar estudiantes" onClick={() => { router.push('/viewStudents') }} type="button" />
                             <BlueButton text="Itinerario" onClick={() => { router.push('/itineraries') }} type="button" />
                             <BlueButton text="Registrar profesor" onClick={() => { router.push('/professor_register') }} type="button" />
+                            <BlueButton text="Perfil estudiante" onClick={() => { router.push('/students_profile') }} type="button" />
                         </div>
 
                     </div>
