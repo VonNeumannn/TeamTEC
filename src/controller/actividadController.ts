@@ -16,6 +16,8 @@ export interface activityData extends ActivityVisitor {
     nombre: string;
     estado: string;
     fecha: Date;
+    iniciarRecordatorio: string;
+    frecuencia: number;
     accept: (itinerary: itinerarioData, visitor: Visitor, localTime: Date) => void;
 }
 
@@ -110,6 +112,8 @@ export const handlerActivitiesForVisitor = async (idIt: string) => {
                 nombre: actividad.nombre,
                 estado: actividad.estado,
                 fecha: actividad.fecha,
+                iniciarRecordatorio: actividad.iniciarRecordatorio,
+                frecuencia: actividad.frecuencia,
                 accept: function (itinerary: itinerarioData, visitor: Visitor, localTime: Date): void {
                     visitor.visit(itinerary, this, localTime);
                 },
