@@ -135,6 +135,17 @@
 
 }
 
+.notificationHeader{
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.notificationHeader img{
+  width: 7.5%;
+}
+
 .notification:hover{
   background-color: #d7d7d7;
   transition: 300ms;

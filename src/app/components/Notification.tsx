@@ -1,7 +1,10 @@
 'use client';
 import styles from "../page.module.css";
+import Trash from "../../../public/trash.svg";
+import Image from "next/image";
 
 import { useEffect, useState } from "react";
+import { set } from "firebase/database";
 
 
 interface Props {
@@ -12,13 +15,19 @@ interface Props {
     status: boolean;
     keyValue : number;
     redirect: string;
+    isDeleted : boolean;
+    setNotificationAsDeleted: (keyValue: number) => void;
 }
 
 
 export default function Header(Props: Props) {
     const [id, setId] = useState("notification1");
+    const [trashId, setTrashId] = useState("trash"+Props.keyValue);
 
-    const { activityName, content, date, hour, status, keyValue, redirect } = Props;
+    
+
+    const { activityName, content, date, hour, status, keyValue, redirect, isDeleted } = Props;
+    const { setNotificationAsDeleted } = Props;
     useEffect(() => {
         if(keyValue){
             setId("notification"+keyValue);
@@ -28,8 +37,9 @@ export default function Header(Props: Props) {
     }, [keyValue]);
 
     useEffect(() => {
+        const noti = document.getElementById(id);
         if (status) {
-            const noti = document.getElementById(id);
+            
             if (noti) {
                 noti.classList.remove(styles.unreaded);
             }
@@ -39,6 +49,16 @@ export default function Header(Props: Props) {
                 noti.classList.add(styles.unreaded);
             }
         }
+
+        const trash = document.getElementById(trashId);
+        if (trash) {
+            trash.addEventListener("click", () => {
+                
+                setNotificationAsDeleted(keyValue);
+                console.log("eliminando: "+keyValue);
+            });
+        }
+
     }, [status, id]);
 
 
@@ -47,9 +67,13 @@ export default function Header(Props: Props) {
   
   return (
     <div className={styles.notification} id={id}>
-        <p className={styles.titleNotification}>
+        <div className={styles.notificationHeader}>
+            <p className={styles.titleNotification}>
             {activityName}
         </p>
+        {!status ? null : <Image src={Trash} alt="trash" className={styles.trash} id={trashId} />}
+        </div>
+        
         <p className={styles.contentNotification}>
             {content}
         </p>
