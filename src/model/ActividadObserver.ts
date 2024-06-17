@@ -1,5 +1,5 @@
 import Actividad from "./Actividad";
 
 export interface ActividadObserver {
-	update(actividad: Actividad): void;
+	update(contenido: string, nombreActividad: string): void;
 }

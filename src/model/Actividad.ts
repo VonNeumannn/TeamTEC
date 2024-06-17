@@ -120,33 +120,7 @@ class Actividad {
 	set id(id: string) {
 		this._id = id;
 	}
-	// Métodos para manejar observadores
-	public subscribe(observer: ActividadObserver) {
-		this.observers.push(observer);
-	}
-
-	public unsubscribe(observer: ActividadObserver) {
-		this.observers = this.observers.filter((obs) => obs !== observer);
-	}
-
-	private notify() {
-		this.observers.forEach((observer) => observer.update(this));
-	}
-	// Método para verificar si la fecha de hoy está en la lista de fechas proporcionadas
-	public checkFechas(fechas: Date[]) {
-		const hoy = new Date();
-		const hoyStr = hoy.toDateString();
-		if (fechas.some((fecha) => fecha.toDateString() === hoyStr)) {
-			this.notify();
-		}
-	}
-
-	// Método estático para verificar las fechas de un conjunto de actividades
-	public static checkActividades(actividades: Actividad[], fechas: Date[]) {
-		actividades.forEach((actividad) => {
-			actividad.checkFechas(fechas);
-		});
-	}
+	
 }
 
 export default Actividad;

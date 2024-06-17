@@ -22,10 +22,36 @@ import { VisitableReminder } from "../visitable/VisitableReminder";
 import Header from "@/app/components/header";
 import { set } from "firebase/database";
 import NotificarActividad from "@/model/NotificarActividad";
+import { get } from "http";
 
+type Notification = {
+	activityName: string;
+	content: string;
+	date: string;
+	hour: string;
+	status: boolean;
+	keyValue: number;
+	redirect: string;
+	isDeleted: boolean;
+};
+
+const getMessage = (message: string) => {
+    console.log(message);
+    return message;
+}
 
 export default function MainMenuPage() {
     const [userName, setUserName] = useState('');
+    const [keyValue, setKeyValue] = useState(0);
+
+    const [notifications, setNotifications] = useState<Notification[]>([]);
+    const addNotification = (notificacion: Notification) => {
+		setNotifications((prevNotificaciones) => [
+			...prevNotificaciones,
+			notificacion,
+        ]);
+        console.log(notificacion);
+	};
     useEffect(() => {
 
         //metan aqui la hora simulada
@@ -38,8 +64,10 @@ export default function MainMenuPage() {
         VisitableAct(date);
 
         //de notificada a la alerta
-        VisitableReminder(date);
+        const notificar = new NotificarActividad(addNotification, keyValue, setKeyValue);
+        VisitableReminder(date, getMessage, notificar);
         
+
         const fetchData = async () => {
             const data = await handlerNextActivity();
             console.log(data);
@@ -81,54 +109,7 @@ export default function MainMenuPage() {
                 const date = new Date(fechaActividad + "");
                 fechaActividadElement.innerText = date.toLocaleDateString();
             }
-		try {
-				// Obtener lista de actividades
-                const actividadesData = await handlerAllActivities();// Ajusta según cómo obtienes la lista de actividades
-                let actividades: Actividad[] = [];
-                actividadesData.forEach((actividadData) => { 
-                    const actividad = new Actividad(
-                        actividadData.id,
-                        actividadData.nombre,
-                        actividadData.estado,
-                        actividadData.semanaRealizacion,
-                        actividadData.tipo,
-                        actividadData.modalidad,
-                        actividadData.fecha,
-                        actividadData.hora,
-                        actividadData.iniciarRecordatorio,
-                        actividadData.enlace,
-                        actividadData.afiche,
-                        actividadData.encargado,
-                        actividadData.responsable,
-                        actividadData.comentarios,
-                        actividadData.pruebas,
-                        actividadData.fechaUltimoRecordatorio,
-                        actividadData.numRecordatorios
-                    );
-                    actividades.push(actividad);
-                });
-
-				console.log(actividades);
-				// Lista de fechas
-				const fechas = [
-					new Date(), // Hoy
-					new Date("2024-06-15"),
-					new Date("2024-07-01"),
-				];
-
-				// Crear instancia del observador
-				const notificarActividad = new NotificarActividad();
-
-				// Suscribirse al observador para cada actividad
-				actividades.forEach((actividad: Actividad) => {
-					actividad.subscribe(notificarActividad);
-				});
-
-				// Verificar las fechas de las actividades
-				Actividad.checkActividades(actividades, fechas);
-			} catch (error) {
-				console.error("Error al obtener actividades:", error);
-			}
+		
         };
         fetchData();
     }, []);
@@ -236,7 +217,8 @@ export default function MainMenuPage() {
         <>
         <Header 
             bell={bell}
-            userName = {userName}
+                userName={userName}
+                notificationsProps={notifications}
             />
         <main className={styles.main} id="main">
             <PopUpInformation
