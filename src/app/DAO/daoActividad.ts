@@ -116,6 +116,7 @@ export async function editActivity(itID: string, actID: string, actividad: activ
     }
 }
 
+
 //editar estado
 export async function editStateActivity(itID: string, actID: string, estado: string): Promise<boolean> {
     try {
@@ -129,4 +130,19 @@ export async function editStateActivity(itID: string, actID: string, estado: str
         console.error("Error editing activity state:", error);
         return false;
     }
+}
+export async function getAllActivities() {
+	const database = db;
+	const itinerarioRef = collection(database, "itinerarios");
+	const itinerarioSnapshot = await getDocs(itinerarioRef);
+	let actividades: Actividad[] = [];
+	for (const itinerarioDoc of itinerarioSnapshot.docs) {
+		const actividadRef = collection(itinerarioDoc.ref, "actividades");
+		const actividadSnapshot = await getDocs(actividadRef);
+		actividadSnapshot.forEach((doc) => {
+			const actividad = doc.data() as Actividad;
+			actividades.push(actividad);
+		});
+	}
+	return actividades;
 }

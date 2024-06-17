@@ -376,84 +376,173 @@ export default function NewActivity() {
 
 
     return (
-        <main className={styles.main} id="main">
-            <PopUp
-                title={titlePopUp}
-                content={contentPopUp}
-                openDialog={openDialog}
-                closeDialog={closeDialog}
-                dialogOpen={dialogOpen}
-            />
-            <div className={styles.activityContainer}>
-                <h1>Nueva Actividad</h1>
-                <form className={styles.activityFormContainer} onSubmit={handleSubmit}>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="nombre">Nombre</label>
-                        <input type="nombre" id="nombre" name="nombre" required placeholder="..." onChange={handlerNombre} value={nombre !== '' ? nombre : ""} />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="semana">Semana de realización</label>
-                        <select className={styles.selectContainer} id="semana" name="semana" required onChange={handlerSemana}>
-                            <option value="" >Selecciona una semana...</option>
-                            {
-                                Array.from({ length: 16 }, (_, i) => i + 1).map(num =>
-                                    <option key={num} value={num}>Semana {num}</option>
-                                )
-                            }
-                        </select>
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="tipo">Tipo</label>
-                        <select id="tipo" name="tipo" required onChange={handlerTipoActividad}>
-                            <option value="" >Selecciona un tipo de actividad...</option>
-                            <option value="opcion1">Orientadora</option>
-                            <option value="opcion2">Motivacional</option>
-                            <option value="opcion3">Apoyo a vida estudiantil</option>
-                            <option value="opcion4">Orden técnico</option>
-                            <option value="opcion5">Recreación</option>
-                        </select>
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="modalidad">Modalidad</label>
-                        <select id="modalidad" name="modalidad" required onChange={handlerModalidad}>
-                            <option value="" >Selecciona la modalidad...</option>
-                            <option value="Virtual">Virtual</option>
-                            <option value="Presencial">Presencial</option>
-                        </select>
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="fecha">Fecha</label>
-                        <input type="date" id="fecha" name="fecha" required placeholder="..." onChange={handlerFecha} value={fecha !== "" ? fecha : ""} />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="hora">Hora</label>
-                        <input type="time" id="hora" name="hora" required placeholder="..." onChange={handlerHora} value={hora !== "" ? hora : ""} />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="recordatorio">Iniciar recordatorio</label>
-                        <input type="date" id="recordatorio" name="recordatorio" required placeholder="..." onChange={handleRecordatorioChange} value={recordatorio !== "" ? recordatorio : ""} />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="enlace">Enlace</label>
-                        <input type="link" id="enlace" name="enlace" placeholder="..." onChange={handlerEnlace} value={enlace !== "" ? enlace : ""} />
-                    </div>
-                    <div className={styles.uploadContainer}>
-                        <label htmlFor="afiche">
-                            <Image src={UploadIcon} alt="upload Icon" />
-                            {"Afiche"}
-                        </label>
-                        <input type="file" id="afiche" name="afiche" accept="image/*, .pdf" hidden onChange={handlerFile} />
-                    </div>
+		<main className={styles.main} id="main">
+			<PopUp
+				title={titlePopUp}
+				content={contentPopUp}
+				openDialog={openDialog}
+				closeDialog={closeDialog}
+				dialogOpen={dialogOpen}
+			/>
+			<div className={styles.activityContainer}>
+				<h1>Nueva Actividad</h1>
+				<form
+					className={styles.activityFormContainer}
+					onSubmit={handleSubmit}
+				>
+					<div className={styles.formGroup}>
+						<label htmlFor="nombre">Nombre</label>
+						<input
+							type="nombre"
+							id="nombre"
+							name="nombre"
+							required
+							placeholder="..."
+							onChange={handlerNombre}
+							value={nombre !== "" ? nombre : ""}
+						/>
+					</div>
+					<div className={styles.formGroup}>
+						<label htmlFor="semana">Semana de realización</label>
+						<select
+							className={styles.selectContainer}
+							id="semana"
+							name="semana"
+							required
+							onChange={handlerSemana}
+						>
+							<option value="">Selecciona una semana...</option>
+							{Array.from({ length: 16 }, (_, i) => i + 1).map(
+								(num) => (
+									<option key={num} value={num}>
+										Semana {num}
+									</option>
+								)
+							)}
+						</select>
+					</div>
+					<div className={styles.formGroup}>
+						<label htmlFor="tipo">Tipo</label>
+						<select
+							id="tipo"
+							name="tipo"
+							required
+							onChange={handlerTipoActividad}
+						>
+							<option value="">
+								Selecciona un tipo de actividad...
+							</option>
+							<option value="opcion1">Orientadora</option>
+							<option value="opcion2">Motivacional</option>
+							<option value="opcion3">
+								Apoyo a vida estudiantil
+							</option>
+							<option value="opcion4">Orden técnico</option>
+							<option value="opcion5">Recreación</option>
+						</select>
+					</div>
+					<div className={styles.formGroup}>
+						<label htmlFor="modalidad">Modalidad</label>
+						<select
+							id="modalidad"
+							name="modalidad"
+							required
+							onChange={handlerModalidad}
+						>
+							<option value="">Selecciona la modalidad...</option>
+							<option value="Virtual">Virtual</option>
+							<option value="Presencial">Presencial</option>
+						</select>
+					</div>
+					<div className={styles.formGroup}>
+						<label htmlFor="fecha">Fecha</label>
+						<input
+							type="date"
+							id="fecha"
+							name="fecha"
+							required
+							placeholder="..."
+							onChange={handlerFecha}
+							value={fecha !== "" ? fecha : ""}
+						/>
+					</div>
+					<div className={styles.formGroup}>
+						<label htmlFor="hora">Hora</label>
+						<input
+							type="time"
+							id="hora"
+							name="hora"
+							required
+							placeholder="..."
+							onChange={handlerHora}
+							value={hora !== "" ? hora : ""}
+						/>
+					</div>
+					<div className={styles.formGroup}>
+						<label htmlFor="recordatorio">
+							Iniciar recordatorio
+						</label>
+						<input
+							type="date"
+							id="recordatorio"
+							name="recordatorio"
+							required
+							placeholder="..."
+							onChange={handleRecordatorioChange}
+							value={recordatorio !== "" ? recordatorio : ""}
+						/>
+					</div>
+					<div className={styles.formGroup}>
+						<label htmlFor="enlace">Enlace</label>
+						<input
+							type="link"
+							id="enlace"
+							name="enlace"
+							placeholder="..."
+							onChange={handlerEnlace}
+							value={enlace !== "" ? enlace : ""}
+						/>
+					</div>
+					<div className={styles.formGroup}>
+						<label htmlFor="frecuencia">Frecuencia de recordatorios</label>
+						<input
+							type="number"
+							id="frecuencia"
+							name="frecuencia"
+							placeholder="..."
+							onChange={handlerEnlace}
+							//value={frecuencia !== "" ? frecuencia : ""}
+						/>
+					</div>
+					<div className={styles.uploadContainer}>
+						<label htmlFor="afiche">
+							<Image src={UploadIcon} alt="upload Icon" />
+							{"Afiche"}
+						</label>
+						<input
+							type="file"
+							id="afiche"
+							name="afiche"
+							accept="image/*, .pdf"
+							hidden
+							onChange={handlerFile}
+						/>
+					</div>
 
-                    <div className={styles.buttonActivityContainer}>
-                        <BlueButton text="Crear actividad" onClick={() => { }} type="submit" />
-                        <BlueButton text="Encargados" onClick={selectProfesor} type="button" />
-                    </div>
-
-
-                </form>
-
-            </div>
-        </main>
-    );
+					<div className={styles.buttonActivityContainer}>
+						<BlueButton
+							text="Crear actividad"
+							onClick={() => {}}
+							type="submit"
+						/>
+						<BlueButton
+							text="Encargados"
+							onClick={selectProfesor}
+							type="button"
+						/>
+					</div>
+				</form>
+			</div>
+		</main>
+	);
 }

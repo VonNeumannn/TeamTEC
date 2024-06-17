@@ -59,7 +59,7 @@ export default function StudentRegister() {
             const data = line.split(';');
             console.log(data);
             const student: Estudiante = new Estudiante(
-              data[0],
+              data[0].trim(),
               data[1],
               data[2],
               data[3],

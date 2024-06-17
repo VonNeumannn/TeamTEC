@@ -40,3 +40,15 @@ export async function getIdUserByEmail(email : string) {
   });
   return data;
 }
+
+export async function searchStudentByEmail(email: string): Promise<any | null> {
+  const studentsRef = collection(db, 'estudiantes');
+  const studentQuery = query(studentsRef, where('correo', '==', email));
+  const querySnapshot = await getDocs(studentQuery);
+  let studentData = null;
+  querySnapshot.forEach((doc) => {
+      studentData = doc.data();
+      studentData.id = doc.id;
+  });
+  return studentData;
+}

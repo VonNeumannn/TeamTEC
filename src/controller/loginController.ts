@@ -1,5 +1,5 @@
 import Usuario from "../model/Usuario";
-import { searchUserByEmail } from "../app/DAO/daoUsuario";
+import { searchUserByEmail, searchStudentByEmail } from "../app/DAO/daoUsuario";
 import { useRouter } from "next/navigation";
 
 
@@ -8,6 +8,19 @@ interface userData {
     password: string;
     rol : string;
     celular : string;
+}
+
+class StudentAdapter {
+    private student: any;
+    constructor(student: any) {
+        this.student = student;
+    }
+    async login(email: string, password: string): Promise<boolean> {
+        if (this.student.correo === email && this.student.contrasena === password) {
+            return true;
+        }
+        return false;
+    }
 }
 
 export const handlerLogin = async (email : string, password : string, router: any, openDialog : any) => {
@@ -22,8 +35,20 @@ export const handlerLogin = async (email : string, password : string, router: an
 
     
     if(data == null){
-        console.log("Usuario no encontrado");
-        openDialog();
+        data = await searchStudentByEmail(email);
+        if (data == null) {
+            console.log("Usuario o estudiante no encontrado");
+            openDialog();
+            return;
+        }
+        // Autenticar el estudiante
+        const studentAdapter = new StudentAdapter(data);
+        const isAuthenticated = await studentAdapter.login(email, password);
+        if (!isAuthenticated) {
+            console.log("Contraseña incorrecta para el estudiante");
+            openDialog();
+            return;
+        }
     } else {
         const user : userData = {
             email: data.correo,
@@ -36,15 +61,10 @@ export const handlerLogin = async (email : string, password : string, router: an
             console.log("Contraseña incorrecta");
             openDialog();
             return;
-        }else{
-            setLocalStorage(data);
-            router.push('/mainMenu');
         }
-        
-        
-        
-        
     }
+    setLocalStorage(data);
+    router.push('/mainMenu');
 
 };
   

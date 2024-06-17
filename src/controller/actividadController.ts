@@ -1,5 +1,5 @@
 import Profesor from "@/model/Profesor";
-import { getNextActivity, addActivity, uploadFilePoster, deleteAct, getActivitiesIt, editActivity, editStateActivity } from "../app/DAO/daoActividad";
+import { getNextActivity, addActivity, uploadFilePoster, deleteAct, getActivitiesIt, editActivity, getAllActivities, editStateActivity } from "../app/DAO/daoActividad";
 import Comentario from "@/model/Comentario";
 import Prueba from "@/model/Prueba"; 
 import { TipoActividad } from "@/model/TipoActividad";
@@ -9,6 +9,7 @@ import { Visitor } from "@/app/visitor/Visitor";
 import { ActivityVisitor } from "@/app/visitor/ActivityVisitor";
 import Itinerario from "@/model/Itinerario";
 import { itinerarioData } from "./ItinerarioController";
+
 
 export interface activityData extends ActivityVisitor {
     id: string;
@@ -39,6 +40,19 @@ interface activitiesItData {
     estado: string;
 }
 
+export const handlerAllActivities = async () => {
+    try {
+        const data: Actividad[] = await getAllActivities();
+        if (!data || data.length === 0) {
+            console.log("No hay actividades");
+            return [];
+        } 
+        return data;
+    } catch (error) {
+        console.error("Error al cargar actividades:", error);
+        return [];
+    }
+}
 
 export const handlerNextActivity = async () => {
     try {
@@ -266,3 +280,4 @@ export const handlerEditState = async (idIt: string, idAct: string, estado: stri
 const setActsInLS = (actividades: activitiesItData[]) => {
     localStorage.setItem("actividades", JSON.stringify(actividades));
 }
+
