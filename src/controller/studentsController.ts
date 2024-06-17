@@ -1,6 +1,7 @@
 import Estudiante from "../model/Estudiante";
-import { loadStudents, addStudent, deleteStudent, loadOneStudent, updateStudent } from "../app/DAO/estudiantedao/daoEstudiante";
+import { updateUser, loadOneStudentUser, loadStudents, addStudent, deleteStudent, loadOneStudent, updateStudent } from "../app/DAO/estudiantedao/daoEstudiante";
 import { useRouter } from "next/router";
+import EstudianteUsuario from "@/model/EstudianteUsuario";
 
 
 interface studentData {
@@ -31,6 +32,44 @@ export const handlerLoad = async () => {
 export const handlerOneLoad = async (id:string) => {
     try{
         const data = await loadOneStudent(id);
+        if (!data || data.length === 0) {
+            console.log("No se encontro el estudiante");
+            return [];
+        } 
+        return data;
+    } catch (error) {
+        console.error("Error loading students:", error);
+        return [];
+    }
+
+};
+
+export const handlerUpdateUserController = async (id:string, Newdata: any, loadData:any) => {
+    try{
+        const student: EstudianteUsuario = new EstudianteUsuario (
+            loadData[0].carne,
+            loadData[0].nombre,
+            loadData[0].primerApellido,
+            loadData[0].segundoApellido,
+            loadData[0].correo,
+            Newdata.cellphone,
+            loadData[0].sede,
+            Newdata.password,
+            loadData[0].rol,
+            loadData[0].estado,
+            Newdata.fotoPerfil
+          );
+        await updateUser(id, student);
+        return true;
+    } catch (error) {
+        console.error("Error loading professors:", error);
+        return false;
+    }
+};
+
+export const handlerOneLoadUser = async (id:string) => {
+    try{
+        const data = await loadOneStudentUser(id);
         if (!data || data.length === 0) {
             console.log("No se encontro el estudiante");
             return [];
