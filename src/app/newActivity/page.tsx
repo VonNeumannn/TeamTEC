@@ -67,6 +67,7 @@ interface activityDataPrueba {
     enlace: string;
     afiche: string;
     encargados: Profesor[];
+    frecuencia : number;	
 }
 
 const tipoActividadFabrica = (tipo: string) => {
@@ -208,6 +209,11 @@ export default function NewActivity() {
         setEnlace(e.target.value);
     }
 
+    const [frecuencia, setFrecuencia] = useState(0);
+    const handlerFrecuencia = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFrecuencia(parseInt(e.target.value));
+    }
+
     const [aficheName, setAficheName] = useState('');
     const handlerAficheName = (name: string) => {
         setAficheName(name);
@@ -262,6 +268,9 @@ export default function NewActivity() {
             }
             if (enlace === '') {
                 setEnlace(formData.enlace);
+            }
+            if (frecuencia === 0) {
+                setFrecuencia(formData.frecuencia);
             }
             if (aficheName === '') {
                 setAficheName(formData.aficheName);
@@ -329,7 +338,8 @@ export default function NewActivity() {
                 enlace: enlace,
                 afiche: aficheName,
                 encargados: chosenProfessors,
-                estado: "Planeada"
+                estado: "Planeada",
+                frecuencia : frecuencia
             };
 
             console.log(actividad);
@@ -366,7 +376,8 @@ export default function NewActivity() {
             iniciarRecordatorio: recordatorio,
             enlace: enlace,
             aficheName: aficheName,
-            encargados: []
+            encargados: [],
+            frecuencia : frecuencia
         };
         localStorage.setItem('actividad', JSON.stringify(actividad));
 
@@ -510,8 +521,8 @@ export default function NewActivity() {
 							id="frecuencia"
 							name="frecuencia"
 							placeholder="..."
-							onChange={handlerEnlace}
-							//value={frecuencia !== "" ? frecuencia : ""}
+							onChange={handlerFrecuencia}
+							value={frecuencia !== 0 ? frecuencia : ""}
 						/>
 					</div>
 					<div className={styles.uploadContainer}>
