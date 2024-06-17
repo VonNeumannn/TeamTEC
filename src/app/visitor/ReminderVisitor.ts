@@ -27,7 +27,7 @@ export class ReminderVisitor implements Visitor{
             // Si la diferencia en días es igual a la frecuencia, enviar recordatorio
             if (differenceInDays % frecuencia == 0) {
                 //metan aqui el codigo para enviar el recordatorio
-                console.log("Recordatorio de actividad");
+                console.log("Recordatorio de actividaaaad");
             }
         }
     }
