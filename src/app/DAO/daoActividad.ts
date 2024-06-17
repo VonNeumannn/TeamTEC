@@ -115,3 +115,18 @@ export async function editActivity(itID: string, actID: string, actividad: activ
         return false;
     }
 }
+
+//editar estado
+export async function editStateActivity(itID: string, actID: string, estado: string): Promise<boolean> {
+    try {
+        const database = db;
+        const docRef = doc(database, `itinerarios/${itID}/actividades/${actID}`);
+        await updateDoc(docRef, {
+            estado: estado
+        });
+        return true;
+    } catch (error) {
+        console.error("Error editing activity state:", error);
+        return false;
+    }
+}

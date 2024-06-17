@@ -1,7 +1,7 @@
 import Profesor from "@/model/Profesor";
-import { getNextActivity, addActivity, uploadFilePoster, deleteAct, getActivitiesIt, editActivity } from "../app/DAO/daoActividad";
+import { getNextActivity, addActivity, uploadFilePoster, deleteAct, getActivitiesIt, editActivity, editStateActivity } from "../app/DAO/daoActividad";
 import Comentario from "@/model/Comentario";
-import Prueba from "@/model/Prueba";
+import Prueba from "@/model/Prueba"; 
 import { TipoActividad } from "@/model/TipoActividad";
 import { act } from "react-dom/test-utils";
 
@@ -222,6 +222,18 @@ export const handlerEditActivity = async (idIt: string, idAct: string, actividad
         return true;
     } catch (error) {
         console.error("Error editing activity:", error);
+        return false;
+    }
+}
+
+
+//editar estado de actividad
+export const handlerEditState = async (idIt: string, idAct: string, estado: string) => {
+    try {
+        await editStateActivity(idIt, idAct, estado);
+        return true;
+    } catch (error) {
+        console.error("Error editing state:", error);
         return false;
     }
 }

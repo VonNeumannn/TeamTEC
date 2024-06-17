@@ -80,6 +80,7 @@ export const searchItineraryByName = async (nombre: string) => {
     //buscar sin importar si es lowercase o uppercase
     itinerarios = itinerarios.filter((itinerario) => itinerario.nombre.toLowerCase().includes(nombre.toLowerCase()));
     setLocalStorage(itinerarios);
+    return itinerarios[0].nombre;
 }
 
 const setLocalStorage = (itinerario: itinerarioData[]) => {

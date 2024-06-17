@@ -2,6 +2,8 @@ import { TipoActividad } from './TipoActividad';
 import Profesor from './Profesor';
 import Comentario from './Comentario';
 import Prueba from './Prueba';
+import { Visitor } from '@/app/visitor/Visitor';
+import Itinerario from './Itinerario';
 
 class Actividad {
     private _id: string;
@@ -102,6 +104,10 @@ class Actividad {
     // Setters
     set id(id: string) {
         this._id = id;
+    }
+    //visitor
+    accept(itinerary: Itinerario, visitor: Visitor, localTime: Date): void {
+        visitor.visit(itinerary, this, localTime);
     }
 }
 
