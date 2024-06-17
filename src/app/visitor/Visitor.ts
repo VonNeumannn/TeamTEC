@@ -1,7 +1,7 @@
-//interface for the visitor pattern
-import Actividad from "@/model/Actividad";
-import Itinerario from "@/model/Itinerario";
+//interface for visitor pattern
+import { activityData } from "@/controller/actividadController";
+import { itinerarioData } from "@/controller/ItinerarioController";
 
 export interface Visitor {
-    visit(itinerary: Itinerario, activity: Actividad, localTime: Date): void;
+    visit(itinerary: itinerarioData, activity: activityData, localTime: Date): void;
 }

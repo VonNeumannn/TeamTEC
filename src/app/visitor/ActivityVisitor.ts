@@ -1,18 +1,20 @@
 import Actividad from "@/model/Actividad";
 import { Visitor } from "./Visitor";
-import { handlerEditState } from "../../controller/actividadController";
+import { activityData, handlerEditState } from "../../controller/actividadController";
 import Itinerario from "@/model/Itinerario";
-import { searchItineraryByName } from "@/controller/ItinerarioController";
+import { itinerarioData, searchItineraryByName } from "@/controller/ItinerarioController";
 //this works like a concrete visitor class
-class ActivityVisitor implements Visitor{
-    visit(itinerary: Itinerario, activity: Actividad, localTime: Date): void {
+export class ActivityVisitor implements Visitor{
+    visit(itinerary: itinerarioData, activity: activityData, localTime: Date): void {
+
         //si es planeada y la fecha es menor o igual a la fecha del sistema, cambiar a notificada
+        console.log(activity.fecha, localTime)
         if (activity.estado === "Planeada" && activity.fecha <= localTime) {
             //cambiar estado a notificada en bd
             //aqui paso el nombre del itinerario, pero deberia ser el id
-            searchItineraryByName(itinerary.getNombre()).then((itinerario) => {
+            searchItineraryByName(itinerary.nombre).then((itinerario) => {
                 handlerEditState(itinerario, activity.id, "Notificada");
-                console.log("Activity: noticada");
+                console.log("Activity: notificada");
             });
         }
     }

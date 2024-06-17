@@ -26,3 +26,15 @@ export async function addItinerary(nombre: string, autor: string) {
     await addDoc(itineraryRef, itinerary);
 }
 
+export async function getIdItineraryByName(name: string) {
+    const database = db;
+    const itineraryRef = collection(database, 'itinerarios');
+    const itinerary = query(itineraryRef, where("nombre", "==", name));
+    const querySnapshot = await getDocs(itinerary);
+    var id = "";
+    querySnapshot.forEach((doc) => {
+        id = doc.id;
+    });
+    return id;
+}
+

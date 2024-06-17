@@ -105,10 +105,6 @@ class Actividad {
     set id(id: string) {
         this._id = id;
     }
-    //visitor
-    accept(itinerary: Itinerario, visitor: Visitor, localTime: Date): void {
-        visitor.visit(itinerary, this, localTime);
-    }
 }
 
 export default Actividad;
