@@ -17,13 +17,26 @@ import Prueba from "@/model/Prueba";
 import ChangePassword from "@/app/components/recoverPassword";
 import PopUpInformation from "../components/popUpInformation";
 import { handlerChangePassword } from "@/controller/profesorController";
+import { VisitableAct } from "../visitable/VisitableActivity";
+import { VisitableReminder } from "../visitable/VisitableReminder";
 import Header from "@/app/components/header";
 import { set } from "firebase/database";
 import NotificarActividad from "@/model/NotificarActividad";
 
+
 export default function MainMenuPage() {
     const [userName, setUserName] = useState('');
     useEffect(() => {
+
+        //metan aqui la hora simulada
+        const date = new Date(); //holder pq tiene formato raro
+
+        //de planeada a notificada
+        VisitableAct(date);
+
+        //de notificada a la alerta
+        VisitableReminder(date);
+        
         const fetchData = async () => {
             const data = await handlerNextActivity();
             console.log(data);

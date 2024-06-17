@@ -1,7 +1,8 @@
 import Profesor from "@/model/Profesor";
-import { addItinerary, getItineraries } from "../app/DAO/daoItinerario";
+import { addItinerary, getIdItineraryByName, getItineraries } from "../app/DAO/daoItinerario";
+import Itinerario from "@/model/Itinerario";
 
-interface itinerarioData {
+export interface itinerarioData {
     nombre: string;
     autor: Profesor;
 }
@@ -19,6 +20,29 @@ export const handlerItinerario = async () => {
         itinerarios.push(itinerarioData);
     }); 
     setLocalStorage(itinerarios);
+}
+
+//this func will return a list of itineraries names for visitor
+export const handlerItinerarioForVisitor = async () => {
+    let data = await getItineraries();
+    data = JSON.parse(JSON.stringify(data));
+
+    let itinerarios: itinerarioData[] = [];
+    data.forEach((itinerario: any) => {
+        const itinerarioData: itinerarioData = {
+            nombre: itinerario.nombre,
+            autor: itinerario.autor
+        };
+        itinerarios.push(itinerarioData);
+    });
+    return itinerarios;
+}
+
+//get id of itinerary by name
+export const handlerGetIdItineraryByName = async (name: string): Promise<any> => {
+    let data = await getIdItineraryByName(name);
+    data = JSON.parse(JSON.stringify(data));
+    return data;
 }
 
 export const handlerAddItinerario = async (nombre: string, autor: string) => {
@@ -80,6 +104,7 @@ export const searchItineraryByName = async (nombre: string) => {
     //buscar sin importar si es lowercase o uppercase
     itinerarios = itinerarios.filter((itinerario) => itinerario.nombre.toLowerCase().includes(nombre.toLowerCase()));
     setLocalStorage(itinerarios);
+    return itinerarios[0].nombre;
 }
 
 const setLocalStorage = (itinerario: itinerarioData[]) => {

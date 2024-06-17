@@ -1,8 +1,11 @@
-import { TipoActividad } from "./TipoActividad";
-import Profesor from "./Profesor";
-import Comentario from "./Comentario";
-import Prueba from "./Prueba";
+import { TipoActividad } from './TipoActividad';
+import Profesor from './Profesor';
+import Comentario from './Comentario';
+import Prueba from './Prueba';
+import { Visitor } from '@/app/visitor/Visitor';
+import Itinerario from './Itinerario';
 import { ActividadObserver } from "./ActividadObserver";
+
 
 class Actividad {
 	private _id: string;
