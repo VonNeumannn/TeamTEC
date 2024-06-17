@@ -170,7 +170,7 @@ export default function Header(Props: Props) {
         <Image src={Profile} alt="profile-symbol" />
         <p>{userName}</p>
       </div>
-      <div className={styles.notificationBell}>
+      <div className={styles.notificationBell} id="bellIcon">
         <Image src={bell ? DotBell : Bell} alt="Notification Bell" id="BellBoton" />
         <div className={styles.piquitoFrame} id="piquito"></div>
         <div className={styles.notificationFrame} id="notificationFrame">

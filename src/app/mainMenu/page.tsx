@@ -199,7 +199,7 @@ export default function MainMenuPage() {
             const children = divBotones.children;
     
             const storedData = localStorage.getItem("user");
-            setUserName(storedData ? JSON.parse(storedData).nombre + ' '+ JSON.parse(storedData).apellidos : '');
+            setUserName(storedData ? JSON.parse(storedData).nombre + ' '+ (JSON.parse(storedData).apellidos ? JSON.parse(storedData).apellidos : JSON.parse(storedData).primerApellido + " " +JSON.parse(storedData).segundoApellido) : '');
             if(storedData){
                 const userData = JSON.parse(storedData);
                 if(userData.rol !== "Administradora"){
@@ -208,7 +208,27 @@ export default function MainMenuPage() {
                         btnAddProfessor.style.display = "none";
                     }
                 }
+                if(userData.rol === "estudiante"){
+                    if(children){
+                        const btnAddProfessor1 = children.item(0) as HTMLButtonElement;
+                        const btnAddProfessor2 = children.item(1) as HTMLButtonElement;
+                        const btnAddProfessor3 = children.item(2) as HTMLButtonElement;
+
+                        btnAddProfessor1.style.display = "none";
+                        btnAddProfessor2.style.display = "none";
+                        btnAddProfessor3.style.display = "none";
+                    }
+                }else{
+                    
+                    const btnAddProfessor3 = children.item(4) as HTMLButtonElement;
+                    btnAddProfessor3.style.display = "none";
+                }
             }
+            
+        }
+        const bellICON = document.getElementById("bellIcon");
+        if (bellICON && rol !=="estudiante") {
+            bellICON.style.display = "none";
             
         }
     });
